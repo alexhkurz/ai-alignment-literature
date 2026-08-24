@@ -9,7 +9,7 @@ Consumer repositories treat this tree as a sister checkout at the same directory
 ```bash
 cd <parent>
 git clone <consumer-repo-url>
-git clone <this-repo-url> ai-alignment-literature
+git clone https://github.com/alexhkurz/ai-alignment-literature.git
 ```
 
 Required layout (fixed sibling name):
