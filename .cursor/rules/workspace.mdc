@@ -1,0 +1,17 @@
+---
+description: Multi-root path prefixes for ai-alignment-literature
+alwaysApply: true
+---
+
+# Workspace (ai-alignment-literature)
+
+This repository **is** the shared literature tree (theme folders at repo root, plus `bib.bib`). In multi-root Cursor workspaces, consumer repos use it as a **sister checkout** (same parent directory), not a nested `bibliography/` copy.
+
+## Paths in agent chat
+
+When citing files from **this** repository:
+
+- **Always** prefix: `ai-alignment-literature/...`
+- **Never** use bare paths like `alignment-faking/greenblatt2024alignment_faking-notes.md` — another root may have similar layout.
+
+Consumers link here with filesystem relatives such as `../../ai-alignment-literature/...` (see each consumer’s **`LITERATURE.md`**).

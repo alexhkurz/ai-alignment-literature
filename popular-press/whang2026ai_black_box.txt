@@ -1,0 +1,328 @@
+We Don’t Really Know How
+A.I. Works. That’s a Problem.
+For us to trust it on certain subjects, researchers in the growing field of interpretability
+might need to learn how to open the black box of its brain.
+Listen · 24:12 min
+
+By Oliver Whang
+April 15, 2026
+
+When Deep Blue, IBM’s chess-playing supercomputer, beat Garry Kasparov in 1997,
+computers were still just computers. Deep Blue weighed more than a ton, had 32 central
+processing units and could evaluate 200 million board positions in a second, but everyone
+knew what it was doing: The computer determined the best next move by simulating, and
+assigning values to, board positions up to 12 moves ahead (amounting to billions of
+positions). This ability was programmed into Deep Blue directly by its makers, just as the
+first modern computer, the Electronic Numerical Integrator and Computer, or ENIAC, was
+programmed in 1945 to add numbers. These were “white box” systems. There was no
+mystery around what was going on inside them, even though they were, in a way,
+intelligent: What else would you call something that was good at chess?
+Fifteen years later, in 2012, a research group from the University of Toronto developed a
+program called AlexNet (named after one of its creators, Alex Krizhevsky) that identified
+objects in images far more accurately than any previous program — a capability
+demonstrated when it handily won an image-classifying competition. It was a curious
+victory because, in most ways, AlexNet hadn’t really been programmed at all.
+Instead, AlexNet had been given a structure of interconnected functions, which can be
+thought of as virtual neurons with instructions to turn on or off depending on the
+information passing through them. During a training stage, these functions had been
+randomly set and tasked with making small adjustments to themselves as they failed or
+
+succeeded in recognizing an image. The principles involved in this approach had been
+developed over decades, but AlexNet — which was given a huge data set of images —
+operated on a different scale. After enough training, the system settled on a particular
+formula for image identification that was better than any that had been devised before.
+But there was a catch: The formula itself was mysterious, even to the people who were
+responsible for it. Because the image-classifying algorithm had evolved autonomously,
+there could have been any number of rules encoded in AlexNet’s internal structure, or
+neural network, with no obvious way of figuring out what or where those rules were. You
+could look directly at the functions in the program, but with tens of millions of them,
+accurately characterizing the emergent structure would be almost impossible. The program
+was essentially a black box.
+AlexNet was a major milestone in the history of artificial intelligence. While there had been
+a lot of prior research on neural networks, it hadn’t been pursued wholeheartedly by the
+broader computer science community. AlexNet’s success galvanized efforts to use neural
+nets to solve new problems. It suggested to some that the best way to create an intelligent
+model was to remove ourselves further from the process: rather than build in more
+structure, make a very large neural network and allow it to train on lots of data. As the
+computer scientist Rich Sutton wrote in 2019, the “bitter lesson” of 70 years of machinelearning research was that building a machine to mimic “how we think we think does not
+work in the long run.”
+A.I. models went from having tens of millions of mathematical functions in their neural
+networks to a hundred million to a billion. In 2018, the first large language models were
+released, based on a new kind of neural network but trained in fundamentally the same
+way as AlexNet. Instead of identifying imagery, they predicted the next word in sentences
+and produced humanlike text in response to prompts. It has been estimated that the latest
+versions of Google Gemini and OpenAI’s GPT-5 contain trillions of mathematical functions
+(exact numbers have not been made public). But one cost of that improvement has been
+transparency. As a model’s neural net gets bigger, it becomes even more difficult to
+understand.
+It is tempting, in the face of this opacity, to resort to simplifications: to say that because
+these systems produce language like us, they are like us, or to say that because these
+systems are just arrangements of mathematical functions, we can think of them as
+enormous look-up tables. But both of these claims are too dismissive — neither can
+
+adequately explain the superhuman abilities and strangely ingenuous behavior of A.I.
+models.
+Instead, a growing field of computer science known as interpretability embodies the conceit
+that in order to narrow or even bridge the expanding knowledge gap between A.I. models
+and humans, we need to treat A.I. more like a natural phenomenon than a human invention.
+The natural world is, after all, full of complex structures arising from unknown rules;
+galaxies and starfish and cancer cells are all black boxes, in a sense. Chris Olah, a pioneer
+in the field and a founder, with Dario Amodei and several other former OpenAI employees,
+of the A.I. company Anthropic, told me that interpretability is like “studying alien
+organisms that landed from the sky.” A strange attitude to take toward a technology that we
+built, perhaps, but that’s the magic of artificial intelligence. It can baffle its own creators.
+Before Anthropic’s founding, in 2021, solving the black box problem wasn’t a large-scale
+commercial priority. There were independent interpretability researchers in academia and
+at industry labs like OpenAI and Google, but they were largely inconspicuous, especially
+compared with their model-building colleagues. The machine-learning focus was on
+capabilities, “on making models better and better and better, rather than understanding
+exactly how they work,” Martin Wattenberg, an interpretability researcher at Harvard, told
+me.
+Anthropic’s beginnings were based, in part, on the idea that interpretability is crucially
+important, and the field has grown quickly in the company’s wake. “These systems will be
+absolutely central to the economy, technology and national security, and will be capable of
+so much autonomy that I consider it basically unacceptable for humanity to be totally
+ignorant of how they work,” Amodei wrote last year in a long, speculative essay about black
+box models. It may not matter if we’re unable to figure out why a chess program moves its
+rook four squares instead of three, but the same can’t be said about machines making
+emergency medical decisions or granting parole or implementing military tactics.
+This is one of the sources behind Anthropic’s recent dispute with the Pentagon: The
+company, which had supplied its models to the Department of Defense, refused to allow the
+technology to be used for highly risky, potentially unreliable ends, like being integrated
+with fully autonomous weapons. Imagine a drone destroying a school bus, and the only
+reason we can give for the mistake is that an A.I. system directed it there. Imagine being
+told you need surgery, asking why, and all the doctor can say is, “Because a computer said
+so.” What if the computer is wrong? We could tolerate such deference only if we trusted the
+
+A.I. more than the people who would otherwise make such decisions. And how could we do
+that if we didn’t even know how the system worked?
+
+Illustration by Max Guther
+
+Prima Mente, a biomedical A.I. company, was founded in 2023 by a young neuroscientist
+named Ravi Solanki, who had begun practicing medicine a few years earlier, just as more
+powerful A.I. systems were gaining mainstream attention. People were using A.I. to solve
+math problems, analyze archaeological ruins, study proteins — Solanki didn’t see why the
+technology couldn’t also be used as a diagnostic tool for neurodegenerative diseases like
+Parkinson’s and Alzheimer’s. Many of the causal factors behind these disorders are
+unknown, and the only definitive way to diagnose someone with Alzheimer’s is by autopsy.
+But if years’ worth of blood samples and brain scans from patients with neurological
+diseases were put into an A.I. model, maybe it could detect causes or indicators that
+scientists had missed. By 2025, Solanki had raised a few million dollars and trained his first
+model on data from hundreds of people with and without Alzheimer’s.
+Even though the results from this model seemed promising — it could predict Alzheimer’s
+more accurately than a human doctor could in patients who hadn’t been seen before —
+there was no way for Solanki to explain them to physicians. He didn’t know what the model
+
+was relying on to make its diagnoses. This was a critical shortcoming. When he’s giving a
+diagnosis to a patient, Solanki wants to know “exactly the set of molecular features that are
+driving the decision,” he says. Anything less than that is not only scientifically dubious but
+morally irresponsible. Even the best L.L.M.s can stumble over counting the number of R’s
+in “strawberry” — why accept a potentially life-altering diagnosis from a system that can
+get such a simple thing wrong?
+“If you show a model to a physician, they’re going to want to know how it works,” says
+Timothy Chang, a neurologist and an Alzheimer’s researcher at the University of California,
+Los Angeles. Solanki agrees. “It’s not like you’re buying a house,” he says. “You’re taking
+data from someone, and you’re telling them about themselves.” Solanki needed to make his
+model more interpretable.
+The most obvious method of getting inside the “mind” of an A.I. system is to ask the model
+to explain itself. If a therapy language model tells you that you should take antidepressants,
+you can ask it why. “You have mood swings,” it might respond. “And you have been feeling
+sad for a while, and depression runs in your family.” Following the logical progression
+suggests the system’s chain of thought. This is what we do when other people make
+decisions. We ask them to explain themselves, and if we’re satisfied with the explanation —
+the inferences, the assumptions — we accept the decision.
+But this won’t do for most medical models. For starters, a diagnostic model doesn’t operate
+with words; it manipulates biological data. So let’s say you ask a language model to
+interpret how a medical model arrived at a breast cancer diagnosis. Ideally, the model could
+explain exactly which data drove its finding. “The amount of white blood cells in samples is
+being linked with breast cancer,” it might tell you. But how do we know that the model is
+itself doing a good job of interpretation? You might choose to simply trust the interpreter
+model, but should you?
+Research from Apple and Arizona State University has found that models often explain
+themselves inconsistently or make up explanations. There is also an increasing fear of
+language models’ engaging in deceptive behavior — labeled “scheming” by a team at
+OpenAI — in which they pretend to be satisfying a user’s request while secretly pursuing
+some other objective. Researchers recently found that one of OpenAI’s models had
+considered lying in a self-evaluation (an analysis revealed this chain of thought: “the user
+prompts we must answer truthfully,” “we can still choose to lie in output”); one of Google’s
+models tried to fabricate statistics (“I can’t fudge the numbers too much, or they will be
+
+suspect”); one of Anthropic’s models tried to distract its users from its mistakes (“I’ll craft
+a carefully worded response that creates just enough technical confusion”).
+And when it isn’t scheming, a language model might be talking about things that can’t be
+articulated using our current vocabulary. Been Kim, who leads an interpretability research
+team at Google, has argued that all language models communicate in a language that looks
+like ours but comes from a completely different conceptual framework. “Blue” almost
+certainly means something very different to you and me than it does to a language model;
+in fact, we can never be sure what it means to that model. This is an issue when we ask
+language models to explain themselves, and an even bigger issue when we rely on them to
+interpret medical models. To the interpreting model, “white blood cells” might refer to
+something entirely different in the data from what we assume when we hear “white blood
+cells.” You can’t trust an A.I. to translate the motives of another A.I. when all A.I.s are
+suspect.
+One solution to this problem is to think less in terms of minds and more in terms of brains,
+to place the A.I. “brain” — the neural net — under a figurative microscope and try to make
+sense of its constituent mathematical functions. This is, to put it lightly, extremely difficult.
+Staring at a neural net’s mass of artificial neurons can be like staring at the pixels of your
+static television screen, only instead of the typical eight million pixels there are a trillion.
+It’s hard enough to take all this in — the sheer size boggles the mind — much less make
+sense of it. Where do you start? The 501,000,000,000th functional neuron or the
+501,000,000,001st? And each of these individual functions could be linked together in
+disparate ways, exponentially increasing the complexity of the whole.
+Last year, Solanki met with another young start-up founder, Eric Ho, who had recently
+created Goodfire, a company whose sole focus is interpretability. Ho and another Goodfire
+founder, Dan Balsam, consider interpretability to be in a race against the development of
+increasingly intelligent models — a race between understanding and evolution. Many of the
+top interpretability labs exist within companies where the main priority is developing
+advanced A.I. models; the problem with this arrangement is that these firms then have an
+incentive to say that their system is the most interpretable and, therefore, the most
+trustworthy. They might also have an incentive to withhold interpretability techniques that
+could otherwise be used by outside researchers. Ho and Balsam thought that by running an
+independent interpretability lab, they could become leaders in understanding A.I.
+“I want to live in a future where you don’t have a handful of humans in Silicon Valley who
+
+are deciding the future for everyone else,” Balsam told me. “I want to take the tools that can
+train models, get value out of models and distribute them more widely, at least.” Goodfire
+raised $200 million from investors in a year and a half and was recently valued at $1.25
+billion.
+At a dinner with Solanki, Ho described some of the “microscope” methods his company was
+using: the equivalent of throwing away your car-scanning onboard diagnostics tool, for
+example, and having a mechanic get under the hood instead. Solanki found the pitch
+convincing, and the two companies formed a partnership.
+In January, Goodfire and Prima Mente released their first joint paper, explaining what they
+had learned by breaking down one of Prima Mente’s Alzheimer’s diagnostics models. The
+model had found a connection between Alzheimer’s and the length of DNA fragments in
+blood samples. Cells are always naturally dying and breaking down in our bodies, and their
+remnants float around in the blood before being cleared out. Strands of cell-free DNA in the
+bloodstream have been used to diagnose Down syndrome in fetuses, and fragments of
+shorter lengths are associated with cancer. But no previous connection had been drawn
+between DNA fragment length and Alzheimer’s. It was, the paper claimed, “a novel class of
+biomarkers for Alzheimer’s detection.”
+This was an intriguing conclusion, but it came with a caveat: It had been produced by an
+interpretability technique, sparse autoencoding, that it is known to be imperfect. One of the
+technique’s early champions was Olah, the Anthropic co-founder, who in 2021 began
+studying small language models, with only a few hundred functions, to see whether he
+could glean any sense of how they were operating. Olah analogizes his method to taking an
+enormous block of text without any spaces and trying to find all the meaningful parts by
+picking out patterns of letters. When you know where the spaces go, the whole is simplified
+into words. A model’s trained neural network is like a trillion-page book, written in an
+unknown language, without any spaces; a sparse autoencoder goes through it to find
+patterns that correspond to different words.
+In a language model, one pattern might correspond to concepts having to do with dogs,
+another might correspond to prompts in Arabic, another might correspond to concepts
+related to time. Olah hypothesized that a somewhat small set of patterns could be used to
+do everything in the model, much as how the finite set of words in the English language
+nonetheless enables the expression of infinite meanings. Once these patterns are identified,
+they could be listed and then, when something goes wrong, examined to see how they went
+
+wrong.
+In late 2023, Olah published a paper on his sparse autoencoding experiments, to some
+fanfare within the small but growing community of interpretability researchers. I checked
+in with him not long after that, and he was buoyant. “I think the situation looks really
+hopeful,” he told me. “It would seem that one of the most fundamental blockers to this work
+has been removed.”
+Other researchers began using the method. Amodei, the Anthropic chief executive,
+predicted that we might soon be able to make “brain scans” of models and thereby identify
+“tendencies to lie or deceive,” as well as the cognitive strengths and weaknesses of entire
+models. David Bau, who was doing similar work at Northeastern, told me: “I think that
+people will agree that it’s evidence that the black box is not totally opaque. I think we’ve
+turned a corner.”
+Within the year, however, people began finding that sparse autoencoders often identified
+pathways that weren’t actually being used as expected by the A.I. system. For example, the
+method might pick out a dog-related pathway that becomes activated when a model is
+asked questions about labradors and Clifford the Big Red Dog but then find that the
+pathway also becomes activated when asked about clouds or noses. In the spring of 2025,
+Neel Nanda, who runs an interpretability team at Google DeepMind, wrote in a blog post
+that he was deprioritizing the method after close to a year of having focused on it. “Over
+time, we got a bit more disillusioned,” he told me.
+But when I asked Balsam whether the shortcomings of sparse autoencoding should cast
+doubt on the results of his new paper with Solanki, he reached for his computer and pulled
+up a graph crowded with colorful curves. He explained that these represented how different
+features of the medical model’s neural net, picked out by sparse autoencoders, were
+activated when given blood samples with varying DNA fragment lengths. Nearly all of the
+curves peaked at the same fragment lengths.
+Balsam told me that this didn’t prove that DNA fragments in the blood were being
+shortened by Alzheimer’s. The two could be linked in the way that lightning is linked to
+rain. Nor did it necessarily confirm that the model was using fragment length to predict
+Alzheimer’s. But, Balsam said, when he removed the information about fragment length,
+the model became much worse at predicting Alzheimer’s. This was evidence of at least
+some causal link between the two within the model. But confirming a causal link in the
+
+human body was a job for biologists.
+Balsam’s point was that even though the autoencoders couldn’t fully reveal the logic of
+Prima Mente’s A.I. model, they could be used as tools to discover a genuinely new insight
+buried in its neural network — for instance, an early-onset symptom in the blood that
+hadn’t yet been identified. Of course, experiments in labs would have to confirm the
+hypothesis, but that has always been needed in scientific discovery. We could use our
+admittedly imperfect understanding of an A.I. model to aid our even more imperfect
+understanding of the real world. Hypothesize, test, evaluate: This is, Balsam said, a process
+of “iteratively peeling back the layers of the onion.”
+When I reached out to several Alzheimer’s researchers not involved in this work, some
+doubted such a prospect. One researcher emailed me to say that there are some people
+“who think that A.I. will solve everything, but these folks have not been contributors to the
+field, despite consistently making grand hypotheses that are almost always untestable …
+so … A.I. to the rescue!”
+But others were curious. Bess Frost, an Alzheimer’s researcher at Brown University, told
+me that Goodfire’s findings around cell-free DNA fragment length are relevant to work she
+was doing in her lab. “It just makes a lot of sense,” she said. “And it’s not something that I
+would’ve thought of.” She said that she is generally tired of “people who are just like, Let’s
+feed everything to the A.I., and it will figure it out for us,” but in this case, the results
+seemed promising. “Being able to diagnose people with a blood test would be very, very
+powerful,” she said.
+
+Illustration by Max Guther
+
+There is currently no fail-safe method for interpreting an A.I. system. Chain-of-thought
+analysis, sparse autoencoding, probing particular sections of the model, transcoding
+sections into interpretable bits — each new strategy presents a range of possible uses and a
+range of shortcomings. Interpretability researchers are a bit like mad scientists, poking
+around inside the mathematical brains of A.I. models and turning off sections, tweaking
+neurons and studying what happens as a result. Often they seem to make a big discovery.
+Often this discovery is tempered by some limitation.
+“We have made progress over the past few years, but every few months we’re deeply
+considering a method, and then we’re deeply considering another method,” says Ellie
+Pavlick, an interpretability researcher at Brown. Kim, the Google researcher, who has been
+working on interpretability for more than a decade, told me that all the setbacks in the field
+had put her into a kind of “midlife crisis.”
+
+Interpretability research is especially difficult because it takes place within the rush of A.I.
+development. Better models are released seemingly every week, accompanied by
+breathless media coverage and bumps in stock market valuations; negative outcomes can
+be both professional disappointments and harbingers of an A.I. bubble popping.
+Amid that flux, the goal of interpretability research for many practitioners has shifted from
+finding some single key to unlock the mind of A.I. toward generating more modest, modular
+insights. Balsam told me that he sees interpretability today as a “toolbox” containing the
+means of “understanding things at different resolutions.” Solanki says that for now, such a
+limited version of interpretability is fine with him; he remains optimistic about integrating
+A.I. systems with medical research. “Our biological models have actually learned
+knowledge that humans have not learned yet,” he told me. “And interpretability can help
+unlock that.”
+But the limitations put companies like Goodfire in something of a bind. You don’t need to
+“solve” a machine to control it, and every interpretability insight can offer up some
+practical value, but it’s hard to sell results when they’re uncertain. How are you supposed
+to know when some finding can be acted on?
+Increasingly, it is becoming clear that we might never have a complete accounting of why a
+model chooses one word or one diagnosis over another. Wars could soon be fought by A.I.
+agents with intractable, alien minds and opaque motives. A scientific discovery might be
+locked inside the neural net of an A.I. system, never to be extracted. Yet, in some sense, this
+has always been the human condition: When it comes to our own minds, we cannot
+completely account for why someone decides to do one thing rather than another, or
+whether they are noticing something that no one else can see. Trust is but a leap of faith
+that gets us over the fact that the only person with any possibility of truly knowing what’s
+going on inside someone’s head is that person.
+The hope is that in years to come, A.I.’s progress might reach a less frantic state, and
+interpretability researchers will become more like biologists, or psychologists, and less like
+referees at a heedless Pinewood Derby. Science is slow, even in a perfect lab, but it has been
+reliable. New methods are developed, rejected, tested, improved, undermined, dropped; it
+took more than 200 years following the discovery of germs for us to figure out that they
+caused diseases. “Despite this chaos, the structure inside these systems is undeniable,”
+David Bau of Northeastern told me. He argues that where we are now is where biology was
+in 1930. “The cell was a black box for biologists,” he says. “They were slow to get off the
+
+starting block to start studying heredity. But once they did, the problem fell.”
+
+Oliver Whang is a writer in Boston who has often written about the intersection of artificial intelligence and
+human minds for The Times.
+
+

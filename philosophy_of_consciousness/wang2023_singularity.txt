@@ -1,0 +1,433 @@
+D
+
+Philosophy Study, February 2023, Vol. 13, No. 2, 68-77
+doi: 10.17265/2159-5313/2023.02.003
+
+DAVID
+
+PUBLISHING
+
+Self-Awareness, a Singularity of AI
+Jinchang Wang
+Stockton University, Galloway, New Jersey, USA
+Self-awareness, or self-consciousness, refers to reflective recognition of the existence of “subjective-self”. Every
+person has a subjective-self from which the person observes and interacts with the world. In this article, we argue
+that self-consciousness is an enigmatic phenomenon unique in human intelligence. Unlike many other intelligent and
+conscious capabilities, self-consciousness is not possible to be achieved in electronic computers and robots. Selfconsciousness is an odd-point of human intelligence and a singularity of artificial intelligence (AI). Man-made
+intelligence through software is not capable of self-consciousness; therefore, robots will never become a newly
+created species. Because of the lack of self-awareness, AI software, such as Watson, Alpha-zero, ChatGPT, and
+PaLM, will remain a tool of humans and will not dominate the human society no matter how smart it is. This
+singularity of AI makes us re-think humbly what the future AI is like, what kind of robots we are going to deal with,
+and the blessing and threat of AI on humanity.
+Keywords: Self-consciousness, Subjective-self, Singularity, AI, Robot, Machine Intelligence
+
+Introduction
+The era of artificial intelligence (AI) looms large with the progresses of computer technology. Computer
+intelligence is catching up with, or surpassing, humans in intellectual capabilities. Sovereign of machine
+intelligence looks imminent and unavoidable.
+Computer’s intelligence has surprised people a couple of times in the past 70 years. In 1940s, computers
+outperformed humans in numerical computations. In 1970s, computers showed their word/text processing ability.
+Then, Deep-Blue, Alpha-go, and Alpha-zero beat best chess players in succession. Recent AI chatbots ChatGPT
+and DaLL-E have stunned people with their competence in chatting, writing, knowledge integrating, and painting.
+Computer capabilities have repeatedly broken people’s expectations of machine capabilities.
+Progress of computer’s intelligence goes with computer’s speed. As computing speed increases, a computer
+is able to handle larger amount of data and knowledge, evaluate more options, make better decisions, and learn
+better from its own experience. Better computers enhance and extend the capability of the research for
+making even better computers, which will accelerate the improvement of machine intelligence. Few doubt that
+computers will be sentient, conscious, spiritual, self-motivated to learn by itself, and capable of duplicating itself.
+Many take it for grant that AI is unlimited, and intelligent machine will become a self-sufficient and selfpropagable species.
+The future of computer intelligence had been debated for more than 60 years since “artificial intelligence”
+was coined as the title of the new field of computer science in 1956. At the center of the contention, it is the
+
+Jinchang Wang, Ph.D., Professor, School of Business, Stockton University, Galloway, New Jersey, USA.
+
+SELF-AWARENESS, A SINGULARITY OF AI
+
+69
+
+issue about whether the computer can possess all the intellectual capabilities of a human, in terms of intelligence,
+consciousness, sentiment, mind, and spirit. Dualists have insisted that computer can never be spiritual
+because computer is “fundamentally different from what compose our body” (Hawkins & Blakeslee, 2004, p. 5).
+Many scientists, on the other hand, believe that a digital robot can become a “humanoid” as smart and
+emotional as a human, because a human is nothing but a “meat machine” to the final analysis, and there is no
+logical obstacle to have an “electronic machine” mimicking a “meat machine” (Minsky, 1986; Gilder & Richards,
+2002).
+Another issue in the contention is about how consciousness is achieved in computer. A few ways have been
+put forward, such as direct programming, reverse engineering, and making system complicated enough so that
+the soul emerges automatically (Kurzweil, 1999; Searle, 1997; Hofstadter, 1999; Penrose, 1999).
+The third issue in the contention is about whether machine intelligence is a blessing or a threat to human
+beings. Optimists insist that human beings will benefit from intelligent machines and live in a more enjoyable
+life (Kurzweil, 1999). Pessimists are afraid that intelligent machines will take toll on human beings eventually.
+Bill Joy, Stephen Hawking, and many scientists and philosophers warned the world about the cataclysmic fate of
+humanity caused by the super-intelligent machines. They called for restraining the research on AI (Joy, 2000;
+Hawking, 2014). Both optimists and pessimists share a same belief that future robots will be a new “life form”
+of higher level of intelligence than humans. Their difference lies on the consequence of having such a smart life
+form.
+We in this article argue that computer intelligence is not unlimited. Self-awareness is a singularity
+unachievable by the computer. Robots will not become a new life form or a new species because of this singularity.
+A computer can never have the full range intelligence of a human, and will remain a tool of human beings. In
+Section 2, we reason that self-consciousness is unachievable in a computer, and therefore is a singularity of AI.
+Section 3 discusses implications of the singularity of AI, such as consciousnesses closely related to selfconsciousness, freewill and moral of robots, immortality of humans, legal responsibility of intelligent machines,
+and the fate of humanity.
+
+Subjective-Self Is a Singularity of AI
+In this section, we argue that enigmatic subjective-self is a singularity of AI, which is beyond the reach
+computer programming. A machine can never be self-aware.
+Characteristics of Singularity
+A singularity in mathematics refers to an odd point or singular point at which ordinary attributes do not
+apply. For example, x = 0 is a singularity point of function f(x) = 1 / x because f(x) is continuous at every point
+except for x = 0; and x = 1 is a singularity point of function f(x) = 2 + |x - 1| because f(x) is differentiable at every
+value of x except for x = 1.
+A singularity in the nature world refers to something which physics laws do not apply to. Examples include
+a black hole in universe, the “status” before Big Bang 14 billion years ago from which our universe emerged, and
+death for a person who dies. Singularity is an objective existence, unfathomable and explainable with our
+knowledge. What happens inside a black hole, for example, is beyond our touch. We can “speculate” from the
+outside with our knowledge that a black hole contains a huge mass in an infinitely small space, with infinite
+density and gravity, and with infinitely curved space-time to a one-dimensional point, where the laws of physics
+
+70
+
+SELF-AWARENESS, A SINGULARITY OF AI
+
+as we know cease to operate. We cannot do any observation and research inside a black hole to verify the
+speculations, because anything, including light and electromagnetic wave, does not come out.
+“Death” is a singularity of the process of life for a person who dies. “Death” is a reality everyone faces
+sooner or later. Death of one’s own and death of someone else are fundamentally different. No one knows exactly
+what happens after “his/her own death”. It is not researchable scientifically. What we can imagine are the eternal
+darkness and emptiness after death where logic and physical laws do not make sense. For a particular person,
+what “eternal darkness” and “eternal emptiness” are like and where they lead to are beyond logical imaginations.
+Death for the person who dies is a singularity of the life process of that person.
+Characteristics of Subjective-Self
+Every person has a subjective-self from which s/he observes and experiences the world. A person’s name
+and social security number are the person’s identity in the eyes of the others, therefore not her/his subjective-self.
+Awareness of subjective-self can be tested in a “mirror test”, which is to see whether a subject recognizes its own
+figure in a mirror. This test is for the low level of self-awareness, and a monkey may pass it. Self-awareness in
+this article refers to the higher level self-awareness. It is identified by so-called “test of knowing death”, which
+is to see whether the subject understands death in such a way that the world around the subject will be gone
+forever after death. Only human passes the test (Wang, 2019). A human realizes that after he dies, he and
+everything around him will disappear forever. No other animal on Earth passes the “test of knowing death”. Selfconsciousness is the recognition of the existence of such a higher level subjective-self from the first-person’s
+standpoint.
+Subjective-self has the following characteristics (Wang, 2016; 2019):
+1. Subjective-self exists as an internal mental phenomenon. “I think therefore I am”. Self-awareness and
+self-consciousness are cognitions of the existence of subjective-self.
+2. “Myself” is unique. That is, for a particular person, there is one and only one subjective-self in this world.
+3. “My-self” is unique all time. That is, for a particular person, his subjective-self did not exist before his
+birth, and will not re-appear after his death.
+4. Subjective-self and awareness of subjective-self cannot be copied.
+5. Subjective-self defies scientific researches, because scientific researches are for the objective objects
+instead of subjective phenomena.
+Subjective-Self Is an Unachievable Singularity of AI
+A computer can be programmed to gain intellectual capabilities, such as numerical calculating, memorizing,
+logical reasoning, self-learning, decision making, visuality, audibility, language translating, speaking, and
+navigating. The idea of Turing Test (Turing, 1950) tells that intelligence level of a machine is determined by the
+performance of the machine, rather than the internal process. For example, we say a computer can do calculation
+“32 times 15” because it can tell 480 as the result correctly. We do not care how the computer does the calculation
+internally. Similarly, a computer is deemed intelligent if it beats a chess world master, even it “thinks” in the way
+different from the chess master. A computer achieves human capabilities in an electronic way without emulating
+human’s biochemical mechanism, as an airplane achieves the capability of “flying” without mimicking birds.
+Based on this idea, we say a computer is “conscious” if it looks having feelings, without caring about the
+electronical process inside the computer.
+
+SELF-AWARENESS, A SINGULARITY OF AI
+
+71
+
+A computer is programmed to look to be conscious. Some robots have already been claimed to look
+“conscious”. A robot-mop recharges itself automatically when its battery is low. It looks that the robot-mop has
+the consciousness of “hunger” which is the internal signal for energy replenishment. The robot-mop catches the
+signal of “hunger” and goes for recharging, just like a human feels hungry and finds food to eat. Many other
+consciousnesses can be similarly realized in a computer by emulating.
+Despite that many human consciousnesses can be “emulated” or “mimicked” through programming, one
+piece of consciousnesses cannot be programmed. It is self-consciousness.
+To prove subjective-self cannot be programmed, two “axioms” are used. The first is: subjective-self is
+unitary. The second axiom is: Any executable computer program can be converted to equivalent 0-1 codes on the
+tape of Turing Machine. The first axiom implies that subjective-self is not copiable. The second axiom implies
+that a computer program is copiable since the tape of Turing Machine is copiable obviously. Therefore, copiable
+computer programs cannot be used to code uncopiable subjective-self (Wang, 2016).
+The above proving is tenable as far as the two axioms hold. The first axiom “any subjective-self is unitary”
+is a consensus: “There is only one ‘I’ in this world”. Its trueness is obvious to everyone. The second axiom is
+Church-Turing Thesis (Turing, 1950), which has been accepted in the computer field although it is not strictly
+proved. The conclusion that “subjective-self cannot be programmed” therefore stands on a solid ground.
+A robot can be programmed to declare, “I’m self-aware!” or “I understand that I’m unique in this world”.
+But saying “I’m self-aware” does not mean the robot has achieved self-awareness. Such a declaration just shows
+that the robot is programmed to lie, since the robot can never be self-aware. This fake self-consciousness is
+different from a robot-mop being programmed to “feel hungry” and charge itself automatically. The signal of
+“hungry”, battery-low, is genuine in a robot-mop when battery drops to the preset level. While claiming “I’m
+self-aware” is claiming a non-existent thing, since subjective-self does not exist with a robot at all.
+Stephen Wolfram hypothesized that all phenomena in this world are programmable, “Beneath all the
+complex phenomena we see in physics there lies simple program which, if run for long enough, would reproduce
+our universe in every detail” (Wolfram, 2002, p.35). His hypothesis was advocated by James Gardner,
+“Wolfram’s software of everything would be the mother of all source codes, generating not only the movements
+of stars and planets but also the emergence and evolution of life and intelligence” (Gardner, 2007, p. 12). This
+“software of everything” thesis is the base of “strong AI”.
+Subjective-self and self-consciousness do not belong to Wolfram’s “everything”. Everything can be
+duplicated without causing logical contradiction, except for subjective-self. It is logically fine to program
+intelligence and consciousness such as computation, reasoning, learning, artistic creativity, sentience, and
+consciousness. But programming subjective-self would be logically prohibited. Subjective-self is therefore an
+odd-point in intelligence/consciousness. No matter how smart an intelligent machine is, subjective-self is a
+“forbidden blind-spot” which cannot be realized in a computer. Subjective-self is an unreachable singularity of
+AI.
+
+Implications of the Singularity of AI
+In the last section, we reasoned that self-awareness, as a singularity of AI, is a blind-spot of machine
+intelligence, which can never be achieved or realized in a computer. We next look at what it implies by this
+singularity, what the future perspective of machine intelligence is like with the absence of subjective-self, and
+how it will affect the humanity.
+
+72
+
+SELF-AWARENESS, A SINGULARITY OF AI
+
+Self-Conscious Emotion (SCE), and Robot’s Soul and Spirit
+Some consciousnesses of human are related to and dependent on self-awareness. They are called SelfConscious Emotions (SCE) (Tracy & Robins, 2004). Here are examples of SCE:
+understanding death and fear of death
+inspiration of exploring the unknown
+self-respect
+self-restraining
+sense of expectation/frustration
+sense of morality
+sense of solemn
+sense of dignity
+keeping up with the Joneses
+
+curiosity
+regret
+reverence
+shyness
+greed
+pride
+conscience
+sense of nobleness
+impulse to dominate
+
+aggressiveness
+glory,
+embarrassment
+faith
+envy
+guilt
+shame
+empathy
+determination
+
+Some SCEs are more closely related to subjective-self than the others. Wang categorized SCEs into two
+groups, strong SCEs and weak SCEs (Wang, 2018). Some animals may have, arguably, some weak SCEs such
+as aggressiveness and jealousness. But no animals have strong SCEs, such as regret, self-respect, dignity, sense
+of nobleness and solemn, sense of morality, and inspiration of exploring the unknown.
+Since self-awareness cannot be programmed in a computer, SCEs, especially strong-SCEs, cannot be
+programmed either. Robots with no self-awareness would not understand death, and will have no sense of glory,
+reverence, faith, conscience, shyness, and empathy. They will never have full range of human intelligence and
+consciousness. Robots will never be “humans” like we are.
+A soul contains mindful elements such as dignity, self-respect, self-restraining, dignity, conscience, glory,
+shame, reverence, and sense of nobleness and solemn, which are all closed related to self-awareness. Without
+these SCEs, a robot will be just a machine with no soul.
+A robot may pretend to have SCEs, but it will never genuinely possess them. An individual robot pretending
+to “fear death” would behave differently from a person who fears death deeply in the heart. “Bravery” will not
+make sense to a robot because it is not fearful of the dangers to its “life”. A robot will be inherently apathetic
+although they may pretend to be empathetic. A robot cannot be spiritual due to the singularity of AI, although it
+may be programmed to “look” spiritual. A robot will not have genuine initiative to pursue the meaning of life as
+humans have done for thousands of years. Religion does not belong to robots.
+SCE is a portion of human consciousness. Many consciousnesses are not based on subjective-self, known
+as non-SCEs, such as pain, hunger, thirst, fatigue, dread, sexual desire, tasting sweet or spicy, and sensation of
+pleasure. While SCEs exist exclusively in humans who can reflectively cognize their being in the world, nonSCEs are found in both animals and humans. Since non-SCEs are not dependent on subjective-self, nothing
+prevents a robot from possessing non-SCEs through programming. It is not impossible for a robot to “feel” hungry,
+pain, angry, happy, and even to “fall in love”. But it is logically impossible for a robot to possess self-awareness
+and the related SCEs.
+Will Robots Become a New Species Dominating Humans
+The robots in the future will be super-intelligent. They are not only millions of times faster than humans in
+calculating and reasoning, but also intellectual in making decisions, translating languages, understanding a book,
+driving a car, writing articles, drawing pictures, and learning by themselves. They will outsmart humans in many
+aspects. However, they will not outplay humans in the aspects that require strong-SCEs.
+
+SELF-AWARENESS, A SINGULARITY OF AI
+
+73
+
+Many scholars are seriously concerned about the future of human beings. They are afraid that, in the era of
+AI, humanity’s fate will be at the mercy of the smarter robots. Stephen Hawking, Elon Masks, Bill Joys, and
+hundreds of scientists addressed this deep concerns in an open letter in 2015 (Hawking, 2015). Their worries are
+reasonable, considering that once robots became a species, then humans would be in big trouble. Between two
+species, the one less intelligent is destined to be controlled and dominated by the more intelligent. Think of the
+fate of pigs, tigers, and dogs in the current world dominated by humans. However, the singularity of AI implies
+that what they worry will not come true. They may rest assured. Robots without self-awareness and SCEs will
+not form a species and will not have internal driving force of dominating.
+A necessary condition for something to become a “species” is its self-reproduction, which requires inherent
+initiative and capability to propagate itself. Cars and computers are not species even though there are hundreds
+of millions of them on Earth. That is because cars and computers do not have “internal desires” to reproduce
+themselves. Their reproduction relies on human’s desire. Bees or elephants are a species. They have instinctive
+impulse and capability of self-reproduction. The future robots do not have self-awareness and SCEs. They do not
+fear to die and have no internal desire in self-reproduction. They will not form a species.
+Moreover, robots do not have the SCE of “dominating” so that they will not cause a threat on human race.
+Animals do not have sense of subjective-self, and they do not have driving force of dominating and controlling
+other species on Earth. Lions attack individual preys when they are hungry. But they have no desire to dominate
+the species of their preys. Except for human beings, no animals have the inherent impulse of dominating other
+species and controlling the Earth. Neither do robots.
+ChatGPT, the state-of-the-art language chatbot, signals a new stage of AI. It can write essays, articles,
+computer codes, and poems. ChatGPT has once again aroused people of the threats of AI: What would people
+do when computers could surpass us in writing and chatting, in addition to computing, playing chess, storing
+knowledge, learning, and processing data? We are not sure how smart ChatGPT would be. But we are sure, due
+to the singularity of AI, that ChatGPT is not a prototype of a new species of AI that will dominate human beings
+someday. No matter how capable and knowledgeable ChatGPT can be, it will never be self-aware. It will remain
+a tool of humans, as other AI software like Google Search, Watson, Alpha-go, and Alpha-zero.
+Freewill and Moral of Robots
+Freewill and sense of morality are two strong-SCEs which are closely related to self-awareness and selfconsciousness. Liberty is about “freedom of self”. Moral is about “restraint of self”. Without self-consciousness,
+liberty and moral would make no sense. “Without liberty, a life is of no sense other than a tool” (John Locke).
+Spiritual pursuit of liberty and meaning of life is found exclusively in self-conscious humans. Thinking about the
+meaning of life requires awareness of subjective-self and capability of reflection. Humans have kept probing
+“who I am”, “where I come from”, “why I am here”, “how I live”, “what is the meaning of my life” for thousands
+of years. All these inquiries prerequire awareness of subjective-self.
+Future robots are not self-aware; therefore, they will have no freewill, no desire for liberty, and no sense of
+morality. There will be no religions among robots because they are not interested in pursuing the meaning of life
+and death. Democracy or authoritarianism does not make sense to horses, dogs, and fish, neither to robots, due
+to the absence of freewill. For the same token, robots by nature would not care about being “unfairly” treated.
+Robot’s moral can be “injected” externally by the human programmers. But no moral would come from the
+inside of robots initiatively. Robot’s moral is dependent on its human manufacturer.
+
+74
+
+SELF-AWARENESS, A SINGULARITY OF AI
+
+Does AI Lead to Immortality
+Living forever has become a topic in serious journals and periodicals, along with the progresses of AI. Some
+believe that immortality is no longer a dream, which can be reached by reverse engineering, man-made chips and
+parts, and AI software.
+Kurzweil proposed a wild way of immortality: Scan and copy a person’s brain into a computer and rebuild
+it after the person’s death, so as to make the person resurrect (Kurzweil, 2013). However, this method of “copying
+brain” will not work, because if it worked, then multiple resurrected lives could be rebuilt based on the copy of
+one person’s brain, which would contradict the uniqueness of a person’s subjective-self.
+What if replacing human’s body and brain part by part? We have already had artificial parts in our bodies,
+such as prosthetic arm/leg, denture, implanted breast, synthetic blood vessel and heart valve. Individuals with
+hearing impairment or visual disability have been helped by implanted semiconductor chips in the head to
+enhance aurality and eyesight. At the time when every failing or faulty part of one’s brain was replaced by an
+artificial one, a person would become immortal.
+To see this method of “gradual-replacement” does not work for immortality, let us consider two processes.
+Process A is building a robot by “copying” a person P’s brain. Process B is replacing person P’s brain by chips
+one by one. In Process B, person P’s brain starts with 0% artificial part, and ends up with 100% chips after his
+original brain is fully replaced by chips. The brains as the results of Process B and Process A are same in terms
+of outcome, which are the copy of the brain of person P. As we have reasoned above, the brain from Process A
+does not have P’s subjective-self since subjective-self is not copiable. So, the brain built by Process B does not
+have person P’s self-identity either. Although we do not know at what stage of Process B person P’s subjectiveself is lost, we are sure that at the end of Process B, P’s subjective-self is not there. Wang hypothesized,
+subjective-self is something beyond our current knowledge, which looks to have a third mysterious constituent
+unknown for us like dark matters or something in the higher dimension (Wang, 2019). Anyway, simply copying
+or replacing physical parts of the brain cannot save a person from his/her own death, even though AI may extend
+the life. Immortality remains a dream.
+Who Takes Responsibility for What a Robot Does
+Let’s take chatbot ChatGPT as an example of robots. Who takes responsibility for the remarks of defamation
+of ChatGPT?—The chatbot or its developer? Obviously, at this stage of ChatGPT, its developer must take
+responsibility.
+But, what if ChatGPT “grows” up sometime in the future? The capability of ChatGPT comes mainly from
+its self-learning. What ChatGPT says is not told directly by its developer. Its developer just teaches it how to
+learn, instead of what to say. Parents are legally responsible for their child before the child becomes an adult.
+Take ChatGPT as a child of its developer. At the “early age” of ChatGPT, its developer takes responsibility. The
+growing process of ChatGPT is not fully under the control of its developer. Instead, it is dependent on its own
+experience and self-learning, just like a child’s growing process. It seems that at certain point, ChatGPT should
+take full responsibility of its own speech, as when a child becomes an adult.
+However, not any “adult” takes legal responsibility for its behavior. An adult dog does not take legal
+responsibility for its behavior. The owner of the dog does. That’s because even an adult dog is a not self-aware.
+A self-aware human knows that “‘I’ do it therefore ‘I’ take the consequence of what ‘I’ do”. A dog does not have
+such a sense of “I”.
+
+SELF-AWARENESS, A SINGULARITY OF AI
+
+75
+
+A human child does not take responsibility for what he does, because a child’s self-consciousness is not
+fully developed, until he becomes an adult. In the case of ChatGPT, it should take responsibility for what it says
+when it possesses self-consciousness. However, as computer software, ChatGPT will never be self-aware!
+Therefore, ChatGPT will never take responsibility for what it says. Its developer does.
+Is a Robot a Juridical Person
+Is “killing a robot” a crime of murdering? Is letting robots do dirty and dangerous jobs “discrimination”?
+Does a robot have its “robot-rights”? The answers are “no”. Robots are not self-conscious. They are tools without
+soul. Destroying a tool is not murdering. Taking robots as “slaves” is not enslaving and discrimination. A robot
+without self-awareness is not a human. It is treated a tool such as a calculator, a TV set, and a laptop computer.
+Self-awareness is a prerequisite for the sense of justice which underlies a human society’s moral and legal
+systems. Due to the singularity of AI, robots will not have the sense of moral and the desire for rule of law. Our
+juridical system will never be appliable to robots, despite they look like us and are more intelligent than us.
+The Threat of AI Comes From the Humans Who Use AI
+Digital robots are expected to be supersmart. Their intelligence level can be millions of times better than
+humans in computation, logical reasoning, and decision making. They may look like humans in aspects of
+speaking, seeing, hearing, walking, running, and facial expression. They can be capable of anything we are
+capable of. But they are not self-aware. They have no SCEs. And they have no spirit and soul. Without spirit and
+soul, a robot will remain a tool of human beings. It has no initiative to “explore the unknowns” and “dominate
+the world”. Such a tool by nature inherently has no threat to the humanity.
+But it does not mean a tool will have no threat to us at all. The safety of a tool is dependent on who makes
+the tool and who uses the tool. Supersmart robot is a tool of humans, which can be used constructively or
+destructively. People wishfully intend to restrain the research for destructive applications. But if some “bad guys”
+designed and manufactured harmful robots, then good guys must react to do the “counter-research” even it is
+against their kind wills. That is the “law of following-the-evil”, as it is called. Validity of “law of following-theevil” is showed in developments of nuclear power, cloning technology, and stem-cell research, in addition to AI
+robots.
+Robots without self-consciousness will remain a tool of humans. Its usefulness or harmfulness is up to the
+designers and users of the tool. How much robots will be threatening human beings is not determined by the
+robots, but by the humans who make and control the robots.
+Kurzweil’s Singularity Is Not a Singularity
+Futurist Ray Kurzweil predicted that the “technological singularity” was near (Kurzweil, 2005). His
+“singularity” referred to the uncontrollable machine intelligence which surpassed human beings thousands of
+times and became the most capable life form on Earth. By that time, machines think and learn so quickly that
+biological humans cannot follow and comprehend. Moreover, intelligent machines can improve themselves
+without human’s help. Enhancing machine intelligence will thus form a self-reinforced loop of positive-feedback
+by which robots make smarter robots by themselves, causing an “explosion of intelligence”. The self-reinforced
+explosion will necessarily lead to exponentially improved computer intelligence that will soon dominate the earth
+and whole universe. That’s Kurzweil’s singularity. He predicted that the singularity would happen as early as
+2045.
+
+76
+
+SELF-AWARENESS, A SINGULARITY OF AI
+
+Kurzweil’s singularity stems from the fact of accelerated computing speed up to now. Since 1950’s,
+computer speed has been doubled every two years, which almost matches what Moore’s Law predicted (Moore,
+1965). Moore’s law indicates an exponential increase of computing speed. Computer intelligence, proportional
+to computing speed, has thus improved with the similar rate in the past years. Kurzweil believes the exponential
+improvement will continue for a long time. After Moore’s Law stops due to the limit of number of atoms on a
+chip, there will be other forms of computing to pick up the rate.
+Kurzweil’s singularity assumes that computer will be intelligent enough so as to keep improving itself
+initiatively. This assumption is not true. Self-awareness is unachievable by computer intelligence, as we have
+reasoned. Without self-awareness, computer would have no SCEs and no the internal drive for improving itself
+and exploring the unknowns. Human beings with self-consciousness would remain the initiators of any new
+research projects for the improvement of machine intelligence. How far and how fast machine intelligence will
+go are ultimately dependent on humans who are imperfect and of limited intelligence. Computer intelligence will
+not “fly off the handle” to conquer the universe. Kurzweil’s “singularity” is an unrealistic illusion. It is not a
+singularity at all.
+
+Final Remarks
+Robots will never achieve the full range of human intelligence because they do not have human’s selfawareness and SCEs. What AI will achieve is just a highly intelligent tool, instead of a self-sufficient species.
+We are not making a new species of AI on top of the varieties of species already created by the supernature or
+God. Trying to play God to make a new species of AI is a bold but unrealistic dream.
+Technology has been advanced with an explosive rate during the past two hundred years. Imaginations have
+turned to reality. Miracles have become routines. Stronger than any time in human history, we now regard
+ourselves as the juggernaut of the world, of the earth, and even of the universe. The singularity of AI warns us
+about the limit of our knowledge and capabilities. For those filled with fanatic zeal of dominating the world with
+man-made intelligence, the singularity of AI reminds them of the humble role of humans in the Nature.
+
+References
+Gardner, J. (2007). The intelligent universe—AI, ET, and the emerging mind of the cosmos. Wayne: The Career Press.
+Gilder, G., & Richards, J. (2002). Are we spiritual machines? The beginning of debate. In J. Richards (Ed.), Are we spiritual
+machine?—Ray Kurzweil vs. the critics of strong AI (p. 11). Seattle, Washington: Discovery Institute Press.
+Hawking, S. (2014). Artificial intelligence may end mankind. Retrieved from http://www.bbc.com/news/technology-30290540
+Hawking, S. (2015). An open letter, research priorities for robust and beneficial artificial intelligence. Retrieved from
+https://futureoflife.org/2015/10/27/ai-open-letter/
+Hawkins, J., & Blakeslee, S. (2004). On intelligence. New York: Henry Holt and Company.
+Hofstadter, D. R., & Godel, E. (1999). Bach—An eternal golden braid. New York: Basic Books, Inc.
+Joy, B. (2000). Why the future doesn’t need us? Wired. Retrieved from http://www.wired.com/2000/04/joy-2/
+Kurzweil, R. (1999). The age of spiritual machines—When computers exceed human intelligence. New York: Penguin Books.
+Kurzweil, R. (2005). The singularity is near—When humans transcend biology. New York: Penguin Books.
+Kurzweil, R. (2013). How to create a mind—The secret of human thought revealed. New York: Penguin Books.
+Minsky, M. (1986). The society of mind. New York: Touchstone, Simon & Schuster.
+Moore, G. E. (1965). Cramming more components onto integrated circuits. Electronics, 38(8).
+Penrose, R. (1999). The emperor’s new mind. Oxford: Oxford University Press.
+Searle, J. (1997). The mystery of consciousness. New York: The New York Review of Books.
+Tracy, J. L., & Robins, R. W. (2004). Putting the self into self-conscious emotions: A theoretical model. Psychological Inquiry,
+15(2), 103-125.
+
+SELF-AWARENESS, A SINGULARITY OF AI
+
+77
+
+Turing, A. (1950). Computing machinery and intelligence. Mind, 59, 433-466.
+Wang, J. C. (2016). Is subjective self-identity programmable? International Journal of Artificial Intelligence, 14, 41-52.
+Wang, J. C. (2018). Self-Conscious Emotions (SCEs) and their achievability on robots. Proceedings of Annual Conference of
+Decision Science Institute, Chicago, IL. Nov. 17-19, 2018. Retrieved from https://decisionsciences.org/wpcontent/uploads/2018/12/dsi-2018-proceedings.pdf
+Wang, J. C. (2019). Regarding constituents of subjective-self. Journal of Philosophy Study, 9(4), 171-180.
+Wolfram, S. (2002). A new kind of science. Champaign: Wolfram Media, Inc.
+
+

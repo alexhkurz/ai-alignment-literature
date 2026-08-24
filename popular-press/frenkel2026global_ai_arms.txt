@@ -1,0 +1,260 @@
+Mutually Automated Destruction:
+The Escalating Global A.I. Arms Race
+China, the U.S., Russia and others have ramped up their contest over artificial-intelligence-backed
+weapons and military systems. The buildup has been compared to the dawn of the nuclear
+weapons age.
+Listen · 15:09 min
+
+By Sheera Frenkel, Paul Mozur and Adam Satariano
+Sheera Frenkel reported from San Francisco; Paul Mozur from Taipei, Taiwan; and Adam Satariano from London.
+April 12, 2026
+
+At a military parade in Beijing in September, President Xi Jinping and his special guests,
+President Vladimir V. Putin of Russia and the North Korean leader, Kim Jong-un, watched
+as Chinese forces showed off several models of drones that could autonomously fly
+alongside fighter jets into battle.
+The demonstration of technological might immediately set off alarm bells in the United
+States. Pentagon officials concluded that America’s program for unmanned combat drones
+was lagging China’s, according to three U.S. defense and intelligence officials. Russia, too,
+was thought to be ahead in building facilities that could produce advanced drones, said the
+officials, who were not authorized to speak publicly on military capabilities.
+U.S. officials pushed domestic defense companies to step up. Last month, Anduril, a defense
+technology start-up in California, began manufacturing A.I.-backed, self-flying drones that
+appeared similar to the ones shown in China. Production at a factory outside Columbus,
+Ohio, started three months ahead of schedule, part of an effort to close the gap with China,
+one defense official said.
+China’s military display and the U.S. countermove were part of an escalating global arms
+race over A.I.-backed autonomous weapons and defense systems. Designed to operate by
+
+themselves using A.I., the technology reduces the need for human intervention in decisions
+like when to hit a moving target or defend against an attack.
+In recent years, many nations have quietly engaged in a contest of one-upmanship over
+these arsenals, including drones that identify and strike targets without human command,
+self-flying fighter jets that coordinate attacks at speeds and altitudes that few human pilots
+can reach, and central systems run by A.I. that analyze intelligence to recommend airstrike
+targets quickly.
+The United States and China, the world’s largest military powers, are at the center of the
+competition. But the race has widened. Russia and Ukraine, now in their fifth year of war,
+are looking for every technological advantage. India, Israel, Iran and others are investing in
+military A.I., while France, Germany, Britain and Poland are rearming amid doubts about
+the Trump administration’s commitment to NATO.
+Each nation is aiming to amass the most advanced technological stockpile in case they
+need to fight drone against drone and algorithm against algorithm in ways that people
+cannot match, defense and intelligence officials said.
+Russia, China and the United States are all building A.I. arms as a deterrent and for
+“mutually assured destruction,” Palmer Luckey, Anduril’s founder, said in an interview in
+February.
+The buildup has been compared to the dawn of the nuclear age in the 1940s, when the
+atomic bomb’s destructive power forced rival nations into an uneasy standoff, leading to
+more than four decades of nuclear weapons brinkmanship.
+But while the implications of nuclear weapons are well understood, A.I.’s military
+capabilities are just beginning to be known. The technology — which does not need to
+pause, eat, drink or sleep — is set to upend warfare by making battles faster and more
+unpredictable, officials said.
+Exactly which nation is furthest ahead is unclear. Many programs are in a research and
+development phase, and budgets are classified. Operatives from China, the United States
+and Russia watch one another’s factory lines, military displays and weapons deals to
+deduce what the other is doing, intelligence officials said.
+China and Russia are experimenting with letting A.I. make battlefield decisions on its own,
+two U.S. officials said. China is developing systems for dozens of autonomous drones to
+
+coordinate attacks without human input, while Russia is building Lancet drones that can
+circle in the sky and autonomously pick targets, they said.
+Even as the specifics of the technologies remain veiled, the intentions are clear. In 2017, Mr.
+Putin declared that whoever leads in A.I. “will become the ruler of the world.” Mr. Xi said in
+2024 that technology would be the “main battleground” of geopolitical competition. In
+January, Defense Secretary Pete Hegseth directed all branches of the U.S. military to adopt
+A.I., saying they needed to “accelerate like hell.”
+
+Defense Secretary Pete Hegseth behind President Trump at Joint Base Andrews in Maryland last month. Mr.
+Hegseth has directed all branches of the military to adopt A.I. Eric Lee for The New York Times
+
+Billions of dollars are being poured into the efforts. The Pentagon requested more than $13
+billion for autonomous systems in its latest budget, and has spent billions more over the
+past decade, though the total is difficult to track because A.I. funding has been spread
+across many programs.
+
+China, which some researchers said was spending amounts comparable to those of the
+United States, has used financial incentives to spur private industry to build A.I.
+capabilities. Russia has invested in drone and autonomy-related programs, analysts said,
+using the war in Ukraine to test and refine them on the battlefield.
+Liu Pengyu, a spokesman for the Chinese Embassy in Washington, said China had
+proposed international frameworks for governing military A.I. and called for “a prudent
+and responsible attitude” toward its development.
+
+What you should know about anonymous sources. The Times makes a careful
+decision any time it shields the identity of a source. The information the source
+supplies must be newsworthy, credible and give readers genuine insight.
+Learn more about our process.
+
+The Pentagon and Russia’s Ministry of Defense did not respond to requests for comment.
+The dynamics may resemble the Cold War, but experts cautioned that the A.I. era was
+different. Start-ups and investors now play a role in the military and are as critical as
+universities and governments. A.I. technology is becoming widely available, opening the
+door for countries from Turkey to Pakistan to develop new capabilities. What’s emerging is
+a grinding innovation race without any obvious endpoint.
+Ethical questions about ceding life-or-death choices to machines are being overtaken by the
+rush to build. The only major accord on A.I. weaponry between China and the United States
+was reached in 2024, a nonbinding pledge to maintain human control over the decision to
+use nuclear weapons. Other countries, like Russia, have made no commitments.
+Some argued that A.I.’s impact would be bigger than any arms race.
+“A.I. is a general-purpose technology like electricity. And we don’t talk about an electricity
+arms race,” said Michael Horowitz, a former Pentagon official involved in autonomous
+weapons development. “To the extent A.I. is transforming our military, it’s the way that
+electricity or computers or the airplane did.”
+
+An unmanned combat aerial vehicle at a parade for the Chinese military in Beijing’s Tiananmen Square in
+September. Kevin Frayer/Getty Images
+
+The Buildup Begins
+In 2016 at an air show in the southern Chinese city of Zhuhai, a Chinese supplier flew 67
+drones in unison. An animated film separately showed the drones destroying a missile
+launcher, a demonstration of their capabilities.
+Russia, too, was building its drone arsenal. In 2014, its military planners set a goal of
+making 30 percent of its combat power autonomous by 2025. By 2018, the Russian military
+was testing an unmanned armed vehicle in Syria. While the tank failed, losing its signal and
+missing targets, it underscored Moscow’s ambitions.
+In Washington, Lt. Gen. Jack Shanahan, who had previously worked in intelligence at the
+Defense Department, was assessing whether A.I. could solve a more immediate problem.
+The U.S. military was collecting so much data — drone footage, satellite imagery,
+intercepted signals — that nobody could make sense of it all.
+
+“There was nothing in any of the research labs in the military that were capable of
+generating results in less than a couple of years,” General Shanahan said. “We had a
+problem we could not solve without A.I.”
+In 2017, General Shanahan helped create Project Maven, a Defense Department effort for
+the military to incorporate A.I. into its systems. One aim was to work with Silicon Valley to
+build software to swiftly process images like drone footage for intelligence purposes.
+Google was tapped to help.
+But the project quickly ran into hurdles. The Pentagon’s procurement system, built around
+legacy contractors and long timelines, slowed things down.
+
+Project Maven, now a Palantir platform, was designed as part of a Defense Department effort for the military to
+incorporate A.I. into its systems. It has played a role in the Iran war. Palantir
+
+When word spread inside Google about Project Maven, employees also protested, saying a
+company that had once pledged “Don’t be evil” should not help identify targets for drone
+strikes. Google eventually backed away from the project.
+In 2019, Palantir, a data analytics company co-founded by the tech investor Peter Thiel, took
+over Maven. New defense tech start-ups like Anduril also emerged, supplying the federal
+government with A.I.-backed sensor towers along the southern U.S. border.
+
+Palmer Luckey, the founder of Anduril, which developed A.I.-backed sensor towers to be
+placed at borders. Philip Cheung for The New York Times
+
+In China, Beijing pushed commercial tech companies toward defense partnerships in a
+strategy called “civil-military fusion.” Private firms were drawn into military procurement,
+joint research and other work with defense institutions. Companies working on drones and
+unmanned boats found growing military demand for their technologies.
+
+Russia’s invasion of Ukraine in 2022 turned theory into reality.
+Outgunned, outspent and outnumbered, Ukraine held off Russia with an improvised
+arsenal of cheap technology. Hobbyist racing drones were used to attack Russian positions
+on the front lines, eventually becoming more lethal than artillery and, in some cases,
+gaining autonomous capabilities. Remote-controlled boats kept Russia’s Black Sea fleet
+pinned down.
+Russia adapted as well. Its Lancet drone, which was initially piloted by humans, has
+incorporated autonomous targeting features.
+
+Russian soldiers carrying a Lancet drone in an undisclosed location in Ukraine. The
+photo was taken from video distributed by the Russian Defense Ministry Press Service
+in August. Russian Defense Ministry Press Service, via Associated Press
+
+“The four years of brutality on the battlefield in Ukraine has served as a laboratory for the
+world,” said Mr. Horowitz, the former Pentagon official.
+In recent months, Ukraine began sharing its troves of battlefield data with Palantir and
+other firms so A.I. systems can better learn to fight wars.
+Across Europe, where governments are aiming to diminish their reliance on the American
+military, the lessons from Ukraine resounded. In February, Germany, France, Italy, Britain
+and Poland said they would develop a joint air defense system to guard against drones.
+
+China also advanced. At the 2024 Zhuhai Airshow, Norinco, one of the country’s main
+defense manufacturers, revealed multiple weapons with A.I. capabilities. One of its systems
+showed an entire brigade, including armored vehicles and drones, which were controlled
+and operated by A.I.
+Another craft, unveiled by the state-run Aviation Industry Corporation of China, was a 16ton jet-powered drone designed to serve as a flying aircraft carrier that could deploy
+dozens of smaller drones midflight.
+
+A drone mother ship that can launch swarms of smaller drones, shown at the 2024
+Zhuhai Airshow. Tingshu Wang/Reuters
+
+‘Left Click, Right Click’
+A week after American and Israeli forces struck Iran in February, a senior Pentagon official
+gave a glimpse into what computerized warfare now looks like at a conference
+livestreamed by Palantir.
+A satellite feed showed a warehouse. With the click of a mouse, an officer selected a row of
+white trucks parked outside to target in real time. In seconds, the A.I. software suggested a
+weapon, calculated fuel and ammunition needs, weighed the cost and generated a strike
+plan.
+
+It was the present-day version of Project Maven, which General Shanahan had started and
+was now run by Palantir and powered by commercial A.I. The system analyzed intelligence
+from various sources, generated target lists ranked by priority and recommended weapons,
+all but eliminating the lag between identifying a target and destroying it.
+Embedded with a military version of Claude, the chatbot made by the A.I. firm Anthropic,
+Maven helped generate thousands of targets in the opening weeks of the Iran campaign, a
+pace that Adm. Brad Cooper, the head of U.S. Central Command, attributed in part to
+“advanced A.I. tools.”
+Cameron Stanley, the Defense Department’s chief digital and artificial intelligence officer,
+who spoke at Palantir’s conference, said that what Maven was doing was “revolutionary.”
+Human involvement amounted to “left click, right click, left click,” he said.
+The claims about Maven’s abilities might be overstated and much of the American
+advantage came from the scale of data flowing in and the skills of the people using it, said
+Emelia Probasco, a senior fellow at Georgetown University’s Center for Security and
+Emerging Technology.
+“It’s not rocket science,” she said. “I suspect that China already has something like it.”
+In a recent report analyzing thousands of People’s Liberation Army procurement
+documents, Ms. Probasco found that China was building systems that mirrored American
+ones. In one case, China was trying to replicate the Joint Fires Network, an American
+program set up to link sensors and weapons globally so a drone on one side of the world
+could cue a strike from the other.
+In some areas, China clearly leads. Its manufacturing dominance means it can produce
+autonomous weapons at a scale the Pentagon cannot match.
+Inside the Trump administration, the push for A.I. weapons has taken on an almost
+evangelical fervor. Last month, the Pentagon labeled Anthropic a security risk, partly
+because the company wanted to limit its technology’s use for automated weapons.
+“We will win the A.I. race,” Jacob Helberg, the under secretary of state for economic affairs,
+said last month at the Hill & Valley Forum, an annual conference in Washington, which he
+co-founded to bridge Silicon Valley and the government.
+
+Jacob Helberg, now the under secretary of state for economic affairs, and Alex Karp, Palantir’s chief executive, at
+the Hill & Valley Forum in 2024. Jason Andrew for The New York Times
+
+At the conference, tech executives, investors and government officials cheered speakers
+who called for tech companies to give the military unfettered access to A.I.
+Anduril’s Mr. Luckey argued that the A.I. arms buildup might prevent major wars. The
+logic mirrored the Cold War: If both sides knew what the machines could do, neither would
+risk finding out.
+“Conflicts between superpowers will similarly deteriorate if you can build the things that
+deter warfare effectively enough,” he said.
+Yet deterrence assumes rationality, while A.I. weapons are designed to move faster than
+human reason. In exercises dating to 2020, researchers explored how autonomous systems
+could accelerate escalation and erode human control — with some alarming results.
+In one scenario, a system operated by the United States and Japan responded to a missile
+launch from North Korea by autonomously firing an unexpected counterattack.
+
+“The speed of autonomous systems led to inadvertent escalation,” said the report by
+analysts at RAND Corporation, a nonprofit research organization that works with the
+military.
+General Shanahan, who retired from the military in 2020 and is now a fellow at the Center
+for a New American Security, a think tank, said the race he had helped start kept him up at
+night. Governments must set clear boundaries before the technology outruns their control,
+he said.
+
+Jack Shanahan, a retired lieutenant general and former director of the Joint Artificial
+Intelligence Center, said A.I. would put “even more emphasis on moving faster and
+faster.” Artur Widak/Anadolu, via Getty Images
+
+“There is a risk of an escalatory spiral where we’re in danger of fielding untested, unsafe
+and unproven systems if we’re not careful, because we each feel like the other side is hiding
+something from us,” he said.
+Sheera Frenkel is a reporter based in the San Francisco Bay Area, covering the ways technology affects everyday lives
+with a focus on social media companies, including Facebook, Instagram, Twitter, TikTok, YouTube, Telegram and
+WhatsApp.
+Paul Mozur is the global technology correspondent for The Times, based in Taipei. Previously he wrote about technology
+and politics in Asia from Hong Kong, Shanghai and Seoul.
+
+Adam Satariano is a technology correspondent for The Times, based in London.
+A version of this article appears in print on , Section A, Page 1 of the New York edition with the headline: A Global Race For Arsenals Of A.I. Drones
+
+

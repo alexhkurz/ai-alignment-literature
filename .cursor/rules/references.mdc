@@ -1,0 +1,15 @@
+---
+description: BibTeX keys and bib.bib — ai-alignment-literature
+globs: bib.bib, "**/*.md"
+alwaysApply: false
+---
+
+# References and BibTeX (ai-alignment-literature)
+
+**Canonical mechanics:** [`../../../bib-mcp/docs/styleguide.md`](../../../bib-mcp/docs/styleguide.md)
+
+- **`bib.bib`** at this repo’s root is the **single BibTeX source** for the AI alignment literature cluster (consumers point LaTeX / notes at this file via the sister path `../ai-alignment-literature/bib.bib`).
+- **New keys:** `{lastname}{year}_{memorable_snake}` — underscore immediately after the year.
+- Prefer open-access `url` / `eprint` when available.
+
+Pair with **`bibliography.mdc`** for the note tree and ingestion checklist.

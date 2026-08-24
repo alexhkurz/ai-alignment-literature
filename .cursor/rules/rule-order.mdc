@@ -1,0 +1,13 @@
+---
+description: Bibliography / citations — read bib-mcp styleguide first, then bibliography.mdc here
+alwaysApply: true
+---
+
+# Rule order (ai-alignment-literature)
+
+1. [`../../../bib-mcp/docs/styleguide.md`](../../../bib-mcp/docs/styleguide.md)
+2. **`.cursor/rules/bibliography.mdc`** in this repo
+
+Meta: [`../../../bib-mcp/docs/cursor-bibliography-rules.md`](../../../bib-mcp/docs/cursor-bibliography-rules.md).
+
+Chat path prefix: **`workspace.mdc`**.
