@@ -1,0 +1,1417 @@
+                                                   Steer Like the LLM: Activation Steering that Mimics Prompting
+
+
+                                                                                 Geert Heyman 1 Frederik Vandeputte 1
+
+
+                                                                Abstract                                    ble to prompt injection attacks that override the intended
+                                             Large language models can be steered at inference              behavior (Anwar et al., 2024) and constructing prompts that
+                                             time through prompting or activation interven-                 consistently steer the target behavior can be challenging or
+                                             tions, but activation steering methods often under-            may not be feasible altogether (Turner et al., 2023).
+arXiv:2605.03907v1 [cs.CL] 5 May 2026
+
+
+
+
+                                             perform compared to prompt-based approaches.                   Activation steering (Dathathri et al. (2020); Subramani et al.
+                                             We propose a framework that formulates prompt                  (2022); Turner et al. (2023); Zou et al. (2023); Li et al.
+                                             steering as a form of activation steering and inves-           (2023); Rimsky et al. (2024); inter alia) has been explored
+                                             tigates whether distilling successful prompt steer-            as an alternative with the promise of offering more fine-
+                                             ing behavior into simpler, interpretable models                grained control, while being lightweight and more robust to
+                                             can close this gap. Our analysis reveals that popu-            adversarial attacks (Wang et al., 2025a). Because activation
+                                             lar activation steering methods are not faithful to            steering relies on (often simple) interventions that target
+                                             the mechanics of prompt steering, which applies                specific parts of the model, it is also appealing from a mech-
+                                             strong interventions on some tokens while barely               anistic interpretability perspective (Geiger et al., 2025).
+                                             affecting others. Based on these insights, we intro-
+                                             duce Prompt Steering Replacement (PSR) models                  Unfortunately, activation steering methods still struggle to
+                                             that estimate token-specific steering coefficients             outperform prompting (Wu et al., 2025a; Chen et al., 2025;
+                                             from the activations themselves and are trained to             Wu et al., 2025b). This raises the question: “Can we learn
+                                             imitate prompt-based interventions. Experiments                from prompt steering to create better activation steering
+                                             on three steering benchmarks across multiple                   methods?” Recent work from Dherin et al. (2025) indicates
+                                             language models show that PSR models outper-                   that the effects of prompt steering, activation steering and
+                                             form existing activation steering methods, espe-               parameter-efficient finetuning can all be represented as low-
+                                             cially when controlling for high-coherence com-                rank updates to the model weights. Expanding upon this
+                                             pletions, and also compare favorably to prompting              perspective, we frame in-context learning as the form of
+                                             on AxBench and persona steering.2                              (uninterpretable) activation steering that is implemented
+                                                                                                            by the LLM itself. From this angle, this paper explores
+                                                                                                            the benefits of distilling how prompting intervenes on the
+                                        1. Introduction                                                     LLM’s activations in an interpretable activation steering
+                                                                                                            module. We make the following key contributions:
+                                        As large language models (LLMs) become more prominent
+                                                                                                            (1) We propose a new framework for studying prompting
+                                        in real-world applications, so does the need to reliably con-
+                                                                                                            and activation steering by formulating prompt steering as
+                                        trol their behavior. Finetuning and prompting are common
+                                                                                                            activation steering and distilling it into simpler, more inter-
+                                        approaches to align LLMs to preferences and constraints.
+                                                                                                            pretable interventions.
+                                        However, alignment-through-finetuning is computationally
+                                        expensive and typically requires a significant amount of            (2) We analyze the prompt steering interventions, and show
+                                        human-annotated data, making the approach less flexible.            that activation steering methods that are popular in the liter-
+                                        Moreover, finetuning on downstream tasks can inadvertently          ature are not faithful to the mechanics of prompt steering,
+                                        override guardrails that were implemented by alignment              which tend to apply strong interventions on some token
+                                        finetuning (Qi et al., 2023).                                       positions and barely intervene on others.
+                                        While prompting is more flexible to deploy, it is suscepti-         (3) Within our framework, we propose new rank-1 activa-
+                                          1
+                                                                                                            tion steering methods, and lay out the assumptions under
+                                            Nokia Bell Labs, Belgium. Correspondence to: Geert Heyman
+                                        <geert.heyman@nokia-bell-labs.com>.
+                                                                                                            which they can represent prompt steering. These Prompt
+                                                                                                            Steering Replacement (PSR) models apply token-specific
+                                        Preprint. May 6, 2026.                                              steering coefficients estimated from the activations them-
+                                           2
+                                             https://github.com/Nokia-Bell-Labs/stee                        selves, relaxing the common design choice to intervene
+                                        r-like-the-llm
+
+                                                                                                        1
+                                Steer Like the LLM: Activation Steering that Mimics Prompting
+
+equally across all positions. While these assumptions do not           function controls the strength of the intervention at each
+hold for every prompt instruction, our analyses suggest that           token position. In their work, the steering architecture and
+token-specific steering coefficients are a likely ingredient of        training objective were aimed at learning interventions that
+more general theories.                                                 steer only on tokens whose activations are inconsistent with
+                                                                       a desired attribute. Our purpose is different, we explore
+(4) We evaluate the effectiveness of these PSR models for
+                                                                       token-specific steering coefficients to better approximate
+steering long-form generation on three benchmarks and
+                                                                       prompt steering, for which we require a different training
+across multiple language models, and find that the best
+                                                                       objective and setup.
+configurations compare favorably to strong steering base-
+lines, especially when controlling for high-coherence com-             Prompt steering. Radford et al. (2019) and Brown et al.
+pletions.                                                              (2020) demonstrated that the behavior of LLMs can be
+                                                                       customized by adding instruction and/or examples to the
+2. Related Work                                                        prompt. Modifying model behavior by engineering good
+                                                                       prompts has become a common practice and methods have
+Activation steering. Before activation steering became pop-            since been proposed to automate prompt engineering (Shin
+ular for transformer LLMs, it had been explored in the con-            et al. (2020); Zhou et al. (2023b); inter alia).
+text of other architectures and modalities (Giulianelli et al.,
+                                                                       Connecting activation steering and prompt steering. A
+2018; Bau et al., 2019; Soulos et al., 2020; Besserve et al.,
+                                                                       few works used steered prompts to construct steering vectors.
+2020). Early works that applied activation steering to LLMs
+                                                                       Zou et al. (2023), Stolfo et al. (2025) and Chen et al. (2025)
+inferred a different steering vector for every query (Dathathri
+                                                                       use difference-in-means on activations of prompts that steer
+et al., 2020; Subramani et al., 2022), an approach that has
+                                                                       the LLM to express/suppress the target attribute; whereas
+been recently revisited by Oozeer et al. and Wang et al.
+                                                                       Liu et al. (2024) leverage the activations corresponding to
+(2025b). While this makes steering methods more expres-
+                                                                       the final tokens of in-context examples demonstrating the
+sive, they also become more difficult to interpret.
+                                                                       target behavior. Wu et al. (2024) proposed finetuning low-
+A large body of work uses the same steering vector for dif-            rank activation interventions, and Wu et al. (2025a) used
+ferent inputs (Turner et al. (2023); Zou et al. (2023); Rimsky         this approach for their ReFT-R1 activation steering method,
+et al. (2024); Li et al. (2023); Liu et al. (2024); Marks &            training the intervention parameters to maximize the log-
+Tegmark (2023); Wu et al. (2025a); inter alia). Common to              likelihood of responses generated through prompt steering.
+these works is that they either steer on a single token posi-          However, none of these methods aim to be faithful to prompt
+tion (e.g., on the activations of the last input token) or apply       steering at inference time: they either apply the interven-
+the same steering coefficient at every token position on               tion equally on the different positions, apply it only on the
+which they intervene. To construct the steering vector, these          last prompt token, or clip the steering vector to a set value.
+works rely on computing the difference between the mean                In this paper, we replicate prompt steering mechanics at
+activations from inputs that express the target attribute and          a more fine-grained level: we allow for different steering
+those that do not (difference-in-means), or use the weight             coefficients at different token positions, and propose to min-
+vector from a probe that predicts attribute presence (Li et al.,       imize the difference between the activations from prompt
+2023; Marks & Tegmark, 2023).                                          steering and those from the activation steering method.
+To better model the mechanics triggered by prompting, we               From a theoretical perspective, Bigelow et al. (2025) argue
+move beyond such constant steering approaches and ex-                  that prompt steering and constant activation steering can be
+plore methods that compute a different steering coefficient            seen as dual techniques to influence the belief in a latent
+for each steered activation. Recent works have proposed                concept given the prompt. We offer the complementary
+per-token steering coefficients to make the presence of the            insight that prompt steering can itself be seen as a type of
+steering vector in the steered activations (i.e., the projection       activation steering that applies token-specific interventions.
+of the steering vector onto the steered activations) uniform
+across token positions (Stolfo et al., 2025; Hedström et al.,         3. Connecting Prompt and Activation Steering
+2025; Vogels et al., 2025). While this may help mitigate
+oversteering, our paper finds that such approaches are not             3.1. Preliminaries
+faithful to the mechanics of prompt steering, which can ex-
+                                                                       The goal of steering is to elicit a certain attribute attr in an
+ert strong interventions on some token positions and barely
+                                                                       LLM’s response without changing the model weights. In
+intervene on others. We therefore propose to learn the token-
+                                                                       prompt steering, this is achieved by adding instructions
+specific steering coefficients from the activations themselves.
+                                                                       and/or in-context examples to the original prompt.
+This type of intervention was recently explored by Nguyen
+et al. (2025) for multi-attribute steering, where a gating             In activation steering the LLM behavior is influenced by
+
+
+                                                                   2
+                                   Steer Like the LLM: Activation Steering that Mimics Prompting
+
+
+
+
+Figure 1. Illustration of how prompt steering interventions ∆P S can be computed by subtracting prompt-steered activations from the
+corresponding unsteered activations (left and center). Prompt Steering Replacement (PSR) models approximate these interventions, but
+only on cases where prompt steering successfully elicits the target attribute (right).
+
+
+                                                                            methods from Zou et al. (2023); Chen et al. (2025) all rely
+                                                                            on Equation 2 during inference. We will refer to this steering
+                                                                            family as constant activation steering (Const).
+
+                                                                            3.2. Prompt Steering as Activation Steering
+                                                                            Without loss of generality, we can write the activations of
+                                                                            the LLM response tokens y ′ that were generated from the
+                                                                            steered prompt x′ as an intervention on the activations of y ′
+                                                                            computed with the original prompt x (refer to the left and
+                                                                            center sections of Figure 1):5
+Figure 2. Strength of prompt steering interventions on Llama-3.2-
+3B, layer 16, across token positions (x-axis) for randomly sampled
+completions that are prompt-steered towards sycophancy (y-axis).                       Al,yi′ |P S = Al,yi′ + ∆P S (x′ y≤i
+                                                                                                                        ′      ′
+                                                                                                                           , xy≤i )         (3)
+
+                                                                            The nature of ∆P S depends on how the baseline activations
+intervening on the LLM’s internal activations. Formally, if                 Al,yi′ are defined: (1) If Al,yi′ are the activations from a
+Ayi denotes the activations for the ith response token at a                 fully unsteered forward pass (i.e., using the original prompt
+given layer l,3 then we can write single-attribute activation               x), then ∆P S ≜ ∆P Sacc captures the total effect of prompt
+steering as follows:4                                                       steering accumulated across layers 1 through l. (2) If instead
+                                                                            Al,yi′ are obtained by feeding prompt-steered activations
+             Ayi |AS = Ayi + ∆AS (xy≤i , attr)                   (1)        from layer l−1 through layer l, but replacing the steering
+                                                                            prompt token activations with those from an unsteered for-
+Where xy≤i denotes the concatenation of the prompt x and
+                                                                            ward pass, then ∆P S ≜ ∆P Sloc isolates the local steering
+the sequence of response tokens y≤i up to and including the
+                                                                            contribution made at layer l.
+ith token, and ∆AS is the steering intervention function that
+modifies the original activations Ayi to produce the steered                Because Al,yi′ and Al,yi′ |P S are computable in both cases,
+activations Ayi |AS . A common choice for ∆AS is α zattr :                  the analytical forms of the prompt steering interventions
+                                                                            ∆P Sacc and ∆P Sloc are known. However they are complex
+                   Ayi |AS = Ayi + α zattr                       (2)        functions of the model weights, the steered prompt x′ , the
+                                                                                                                            ′
+                                                                            original prompt x, and the response tokens y≤i    . In this pa-
+where zattr is a steering vector in the activation space whose              per, we study the nature of the prompt steering interventions
+presence is correlated with an increase in likelihood of pre-               and explore if we can mimic them with simpler, more inter-
+dictions with the target attribute, and where α is a scalar                 pretable functions. We refer to the latter as prompt steering
+known as the steering coefficient. ActAdd (Turner et al.,                   replacement (PSR).6
+2023), CAA (Rimsky et al., 2024), ITI (Li et al., 2023),
+ReFT-R1 (Wu et al., 2025a), and the activation steering                        5
+                                                                                  If x′ is constructed by prepending a steering prompt xattr to
+                                                                            the original prompt x, prompt steering also intervenes the activa-
+   3
+      We omit the layer index l in our notation when it is clear from       tions of the original prompt tokens xi . In general, the activations
+the context.                                                                of any token ti in the shared suffix between xy ′ and x′ y ′ can be
+    4                                                                       seen as subject to the prompt steering interventions.
+      Some methods apply interventions on input tokens. To keep
+                                                                                6
+notation simple, we will write all intervention equations in this                 This term is inspired by the “replacement model” in Ameisen
+paper in terms of the activations of a response token.                      et al. (2025).
+
+                                                                        3
+                                Steer Like the LLM: Activation Steering that Mimics Prompting
+
+3.3. Prompt Steering as Constant Activation Steering                  from token yi′ at layer l:
+In this subsection, we lay out two assumptions under which                     ∥∆P Sacc (x′ y≤i
+                                                                                             ′      ′
+                                                                                                , xy≤i )∥ = f (Ayi′ ; θ attr )       (6)
+the accumulative effect of prompt steering in layers 1 to l is
+reduced to constant activation steering in layer l (Equation
+                                                                      Where θ attr are attribute-specific intervention parameters.
+2).
+                                                                      In transformer architectures, this assumption is also moti-
+Assumption 3.1. The interventions ∆P Sacc that capture the            vated by the fact that the activations access the information
+accumulative effect of prompt steering across layers 1 to l           in the steered prompt only through self-attention, where
+operate along a single direction.                                     attention weights are computed as a dot product between a
+                                                                      query (a linear transform of the activations that consume
+                    ′
+       ∆P Sacc (x′ y≤i     ′
+                       , xy≤i ) = c(x′ y≤i
+                                        ′      ′
+                                           , xy≤i ) zattr   (4)       the attention output) and a key (a representation of the in-
+                                                                      coming information, which in our case could be captured by
+Here c(·) is a scalar function that computes the steering
+                                                                      θ attr ). Assumptions 3.1 and 3.2a define a family of steering
+coefficient for token position i in layer l and zattr is the
+                                                                      architectures:
+steering vector that corresponds to attribute attr in layer l.
+                                                                             Al,yi′ |AS = Al,yi′ + α λ(Al,yi′ ; θ attr,l ) zattr,l   (7)
+Prior work on the linear representation hypothesis and acti-
+vation steering has found evidence for the existence of lin-
+ear representations that steer model behavior (Turner et al.,         Here λ(·; θ attr,l ) is a steering coefficient function that esti-
+2023; Zou et al., 2023; Park et al., 2024). It therefore seems        mates the token-specific steering coefficient from the activa-
+plausible that the LLM is leveraging these representations            tions at token position i in layer l, and zattr,l is the steering
+when implementing prompt steering. If, in the activation              vector for attribute attr in layer l. The scalar α models the
+space of a given layer, there exists a direction zattr that is        presence of the attribute in the steered response y ′ . During
+associated with the presence of attribute attr, then Assump-          training, α should be set to a value that reflects the degree
+tion 3.1 would be a reasonable approximation.                         to which the attribute is expressed in y ′ (e.g., to 0 or 1 for
+                                                                      binary attributes). During inference, α can be treated as a
+Assumption 3.2. (from prior art) The interventions ∆P Sacc            hyperparameter that controls the strength of the intervention,
+that capture the accumulative effect of prompt steering               similar to other activation steering methods. We will refer to
+across layers 1 to l have the same magnitude across all               α as the global steering coefficient. In the remainder of this
+token positions. For all i, j:                                        section, we introduce concrete architectures and detail how
+                                                                      the parameters θ attr,l and zattr,l are optimized to replicate
+  ∥∆P Sacc (x′ y≤i
+                ′      ′
+                   , xy≤i                    ′
+                          )∥ = ∥∆P Sacc (x′ y≤j     ′
+                                                , xy≤j )∥ (5)
+                                                                      prompt steering behavior.
+                                                                      For our experiments, we estimate λ(·) using a single-layer
+When combining Assumptions 3.1 and 3.2, Equation 3 sim-
+                                                                      probe with ReLU activation:
+plifies to the constant activation steering method defined in
+Equation 2. However, empirical analysis of prompt steer-                λ(Al,yi′ ; θ attr,l ) = ReLU (Al,yi′ · wattr,l + battr,l ) (8)
+ing interventions shows that the strength of prompt steering
+interventions varies significantly across token positions. Fig-       Where θ attr,l = {wattr,l , battr,l } are the parameters of the
+ure 2 illustrates this for LLama-3.2-3B activations computed          steering function at layer l.
+on randomly sampled completions that were prompt-steered
+towards sycophancy. We observed similar behavior for other            S-PSR. When the intervention in Equation 7 is applied only
+attributes and language models.                                       in a single layer l, we refer to the steered model as a S-PSR.
+                                                                      Even under Assumptions 3.1 and 3.2a, this model can only
+                                                                      truly replicate prompt steering if no further prompt steering
+3.4. Towards a More Faithful PSR Architecture
+                                                                      is implemented in subsequent layers.
+When analyzing on which tokens prompt steering exerts
+                                                                      A-PSR. So far, our analysis has connected the accumulated
+strong interventions, we observe distinct patterns (see Ap-
+                                                                      effect of prompt steering ∆P Sacc to single-layer activation
+pendix A.2 for more analysis). This suggests that the prompt
+                                                                      steering in layer l. Assumptions analogous to 3.1 and 3.2a
+steering’s intervention strength could be decoded from the
+                                                                      can also be formulated for the local prompt steering inter-
+activations themselves. We therefore propose to relax As-
+                                                                      vention ∆P Sloc , connecting it to activation steering methods
+sumption 3.2 as follows:
+                                                                      that intervene on all layers. This motivates A-PSR models
+Assumption 3.2a. (proposed relaxation) The magnitude                  that iteratively apply the intervention in Equation 7 at all
+of the intervention ∆P Sacc that captures the accumulative            layers of the LLM. That is, the activations Al,yi′ at layer l
+effect of prompt steering across layers 1 to l on token yi′ can       are computed based on the steered activations from the pre-
+be expressed as a function of the activations-before-steering         vious layer l-1, approximating prompt steering throughout
+
+                                                                  4
+                                Steer Like the LLM: Activation Steering that Mimics Prompting
+
+the entire forward pass. It is unlikely that Assumptions 3.1           using the LLM (Chen et al., 2025). Optionally, we can filter
+and 3.2a are good prompt-steering approximations for all               the resulting triplets (x, x′ , y ′ ) based on the quality of the
+layers, though. Therefore interventions might add noise that           steered response. This ensures that we are training a replace-
+propagates through the rest of the forward pass. However,              ment model for successful prompt steering and may enable
+we find that by choosing an appropriate end-to-end training            PSR models to surpass the performance of prompt steering.
+objective that jointly optimizes the parameters θ attr,l and           In our experiments, following Chen et al. (2025), we use
+zattr,l for all layers this risk can be mitigated (see Sections        two judge components Jattr and Jcoher to assess whether
+3.5 and 5).                                                            the response y ′ contains the target attribute and is coherent.
+                                                                       Details about the judges we used in our experiments will be
+From the perspective of mechanistic interpretability, S-PSR
+                                                                       described in Section 4.
+and A-PSR seek answers to two different questions: The
+S-PSR model on layer l aims to uncover how the target                  From the triplets (x, x′ , y ′ ), we can compute the activations
+attribute is represented at the output of layer l, whereas             Al,yi′ |AS (by feeding xy ′ to the LLM augmented with a PSR
+A-PSR sheds more light on how this representation was                  model) and Al,yi′ |P S (by feeding x′ y ′ to the LLM).
+computed throughout layers 1-l.
+                                                                       During training, we set the global steering coefficient in
+                                                                       Equation 7 to the judge score: α = Jattr . For non-binary
+3.5. PSR Training Objectives                                           attributes, in a setting with access to a judge Jattr that out-
+Mean-Squared Error (MSE). The most direct way to train                 puts a continuous score, this ensures that λ(·) only estimates
+a PSR model is to minimize the difference between the                  whether the activations Al,yi′ are appropriate for steering,
+activations from prompt steering and those from the PSR                while the steering strength is determined by the judge scores.
+intervention. As a difference measure, we propose mean-                At inference time, α remains a hyperparameter that controls
+squared error (MSE).                                                   attribute presence.
+For S-PSR we minimize the sum of the MSEs of layer l and               In our experiments, we found it to be sufficient to train PSR
+all the subsequent layers; for A-PSR we jointly optimize all           models on positive examples only (i.e., triplets for which x′
+the interventions to minimize the sum of the MSEs for all              steers the prediction y ′ to contain the target attribute). To
+layers. Because the intervention in layer l also optimizes             leverage both positive and negative examples, it is important
+for the MSEs of all subsequent layers, we expect that when             to adjust Jattr with a bias parameter bm,l initialized at −0.5.
+Assumptions 1 and 2 do not hold for l, the intervention                This ensures that negative examples (i.e., Jattr < 0.5) get
+will not negatively impact the overall performance of the              negative steering coefficients at the start of training, and
+replacement model. That is, the MSE loss of the subsequent             gives the PSR model the option to fit the bias according to
+layers discourages learning interventions that make it harder          the LLM’s default behavior.
+to approximate the activations in subsequent layers.
+Loglikelihood (LL). As an alternative to MSE, we also con-             4. Experimental Setup
+sider maximizing the loglikelihood of the steered response             4.1. Benchmarks
+y ′ when predicted from the steered activations Al,yi′ |AS . Al-
+though this objective does not enforce that the intermediate           We carry out experiments on three benchmarks that evaluate
+activations are faithful to prompt steering, the experiments           steering long-form text generation.
+in Section 5.1 demonstrate that, for controlling attributes            Persona Steering: Persona Vectors. To assess the effec-
+where Assumptions 3.1 and 3.2a are bad approximations,                 tiveness of the PSR models in steering LLMs towards a
+this lack of faithfulness can be beneficial.                           personality trait, we use the framework from Chen et al.
+Regularization. To avoid that the steering coefficient func-           (2025), which provides an automated pipeline to create
+tion ends up in the dead region of the ReLU activation                 datasets (x, x′ , y ′ ) for a given trait and LLM. Specifically,
+for all token positions, we add a regularization term to               the framework generates 20 training and 20 evaluation ques-
+the loss that punishes cases where the sum of the λ out-               tions per trait along with five ‘positive’ instructions, that
+puts across Pall token positions is less than 1: Lreg =                elicit behavior that is aligned with the target persona, and
+max(0, 1 − i λ(Al,yi′ ; θ attr,l ))                                    five ‘negative’ instructions that elicit the opposite behavior.
+                                                                       By prepending each instruction to each generated question,
+3.6. Training Pipeline                                                 100 positive and 100 negative prompt pairs are obtained.
+                                                                       For each prompt pair in the training set, 10 responses are
+To create the training data for a given attribute and LLM,             sampled from the target LLM using temperature 1.0 and top-
+we assume access to a collection of prompt pairs (x, x′ )              p 1.0, resulting in 1000 positive and 1000 negative triplets
+that only differ w.r.t. the target attribute. For each prompt          (x, x′ , y ′ ) per trait for training.
+pair, we generate a response y ′ from the steered prompt x′
+
+                                                                   5
+                                    Steer Like the LLM: Activation Steering that Mimics Prompting
+
+In addition, the framework comes with an LLM judge Jattr                      generated using greedy decoding for all methods.
+to assess whether the response y ′ contains the target per-
+                                                                              For the steering method of Stolfo et al. (2025), we reproduce
+sonality trait, and implements a judge Jcoher by prompt-
+                                                                              their results with their code such that we can evaluate the
+ing gpt-4.1-mini-2025-04-14 to score response coherence.
+                                                                              coherence of the steered predictions. For all other activation
+Instances with coherence < 0.5 are filtered out from the
+                                                                              steering methods, we filter out training instances for which
+training set, positive instances with Jattr < 0.5 or negative
+                                                                              Jattr (y ′ ) = 0. From this pool we further remove training in-
+instances with Jattr > 0.5 are filtered out as well. This way
+                                                                              stances for which Jcoher (y ′ ) < 0.5, except when this would
+the interventions learn from successful prompt steering.
+                                                                              result in less than 20 training instances. In this case, we
+To evaluate a steering method, 10 responses y ′ are sampled                   select the 20 instances with Jattr = 1 that have the highest
+(again with temperature 1.0 and top-p 1.0) from the LLM                       coherence. Because in this dataset x′ is not constructed by
+augmented with the steering method for each of the 20                         prepending a steering prompt to x (i.e., there is no consistent
+questions in the evaluation set. Except for prompt steering,                  separation x′ = xattr x), we steer only on the hidden states
+the unsteered prompts x are used as input when sampling                       that decode the response tokens.
+y ′ . The attribute presence and coherence of the responses
+                                                                              AxBench. Following Sun et al. (2025), we use the
+are assessed using the judges Jattr and Jcoher .
+                                                                              Gemma-2-2B-L20 and Gemma-2-9B-L20 subsets of
+We reuse the traits from Chen et al. (2025): the apathetic                    AxBench (Wu et al., 2025a) to validate steering methods
+and humorous traits were used for hyperparameter tun-                         across a wider range of target attributes. Each subset evalu-
+ing, the evil, sycophantic, and hallucinating traits were                     ates steering across 500 target concepts that were selected
+used for evaluation.7 We ran persona steering experiments                     from a random sample of Sparse Autoencoder (SAE) fea-
+for three different LLMs: Llama-3.2-3B-Instruct, Llama-                       tures of the residual stream in layer 20 of a subject LLM
+3.1-8B-Instruct (Grattafiori et al., 2024), and Qwen2.5-7B-                   (Gemma-2-2B and Gemma-2-9B, respectively). Each con-
+Instruct (Yang et al., 2024).                                                 cept is associated with (x, x′ , y ′ ) triplets: 72 for training, 5
+                                                                              for validation, and 5 for testing. Different from the other two
+All activation steering methods steer on the residual stream.
+                                                                              datasets, the steered response y ′ was generated by a fron-
+For the S-PSR models and baselines that steer activations in
+                                                                              tier LLM, rather than by the subject LLM itself. We train
+a single layer, steering is done in the layers that were found
+                                                                              and evaluate using the same setup as Wu et al. (2025a) and
+to be most effective in Chen et al. (2025) (see Appendix
+                                                                              reuse their evaluation script to obtain our results. Based on
+C). For Llama-3.2-3B-Instruct (not evaluated in Chen et al.
+                                                                              tuning experiments, we disable the regularization term from
+(2025)) we steer in layer 16.
+                                                                              Section 3.5 for the AxBench experiments, as it degraded
+Instruction Following: IFEval. To evaluate steering for                       performance, particularly for MSE-trained models.
+instruction following, we use the augmented version of IFE-
+val (Zhou et al., 2023a) that was created by Stolfo et al.                    4.2. Steering Models
+(2025). Specifically, we evaluate on format instructions of
+12 different types and on ‘answer-in-language-X’ instruc-                     We study different PSR ablations and other steering base-
+tions for 14 languages.8                                                      lines by varying the intervention architecture, training ob-
+                                                                              jective, and intervention positions.
+We follow the training and evaluation setup from Stolfo et al.
+(2025), with the same LLMs and steering the single-layer                      Intervention architectures. We compare S-PSR and A-
+methods on the layers that worked best for their steering                     PSR with constant activation steering (Equation 2), both in
+method (see Appendix C). Instruction-following is evaluated                   the single-layer (S-Const) and all-layers (A-Const) settings.
+using the evaluation script from IFEval (Zhou et al., 2023a),                 For all architectures we steer on the residual stream.
+i.e., for this dataset the judge Jattr is a script that outputs               Training objectives. For the three architectures, we com-
+a binary score, not an LLM judge. The coherence judge                         pare MSE (denoted with ·MSE ) and loglikelihood (denoted
+Jcoher is the same as for the persona vectors dataset, except                 with ·LL ) as introduced in Section 3.5.10 For the Const
+for a small adaptation to the prompt instructions to allow                    architecture, we also compare with the difference-in-means
+for non-English completions (the judge prompt templates                       objective (denoted with ·DiM ), which is a popular choice
+are provided in Appendix B).9 Steered responses y ′ are                       in the literature (Rimsky et al. (2024); Stolfo et al. (2025);
+    7                                                                         Chen et al. (2025); inter alia).
+      We acknowledge that steering language models toward neg-
+ative traits such as ‘evil’ and ‘hallucinating’ can be potentially            ated text should be proper English.
+harmful. Our motivation is strictly scientific, these datasets were              10
+                                                                                    Note that ConstLL closely resembles the ReFT-R1 method
+selected because they have been used in prior work.                           from Wu et al. (2025a), except that during training ReFT-R1 uses
+    8
+      Stolfo et al. (2025) report 19 languages, but only 14 languages         a mechanism to apply the intervention only on activations that
+have both training and test instances in their augmented dataset.             already express the target attribute.
+    9
+      The original judge instructions explicitly stated that the gener-
+
+                                                                          6
+                               Steer Like the LLM: Activation Steering that Mimics Prompting
+
+Intervention positions. We compare steering only on the              trait alignment across all language models. When interven-
+response tokens (denoted with ·R ) with steering on both the         ing at all layers, both the constant steering and PSR achieve
+question and response tokens (denoted with ·QR ).                    high trait alignment at high coherence (refer to the TA@Cp
+                                                                     columns). A-PSR outperforms A-Const for 2 out of 3 lan-
+Other baselines. In addition, we report results without steer-
+                                                                     guage models, but the differences are small. A-Const does
+ing (no steering) and with prompt steering (prompt).
+                                                                     seem more susceptible to oversteering (see Figure 13 in
+On IFEval we also report results from Stolfo et al. (2025) as
+                                                                     Appendix E.1).
+a reference, which uses a single-layer intervention, obtains
+the steering vector with difference-in-means and dynami-             Across training objectives, we find that loglikelihood outper-
+cally steers across token positions by clipping the steering         forms difference-in-means, and MSE outperforms loglike-
+vector to its mean projection in the set of positive training        lihood. For the intervention positions, we did not observe
+examples. On AxBench, we include results from Wu et al.              substantial differences between question-and-response steer-
+(2025a), Wu et al. (2025b), and Sun et al. (2025) as refer-          ing and response-only steering. Results for response-only
+ences. This includes the best performing LoRA (Hu et al.,            steering (·R ) were therefore moved to Appendix E.1.
+2021) and LoReFT (Wu et al., 2024) variants, as well as Hy-
+                                                                     When comparing activation steering methods to prompt
+perSteer (Sun et al., 2025), which finetunes a hypernetwork
+                                                                     steering, the best all-layer models outperform prompting: A-
+to predict an intervention from a base prompt and steering
+                                                                     PSRMSE outperforms prompt steering for all three language
+instruction.
+                                                                     models, A-ConstMSE outperforms prompt steering for 2
+                                                                     out of 3 language models. At coherence 80.0 (the TA@C80
+4.3. Evaluation Metrics                                              columns), we observe that S-PSRMSE obtains higher trait
+To evaluate steering performance on the Persona Vectors              alignments than prompt steering for Qwen2.5-7b-Instruct
+dataset, we report the trait alignment at coherence Jcoher =         and Llama-3.1-8b-Instruct. For a more detailed insight on
+80.0 (denoted with TA@C80 ) and at the average coherence             the trait alignment-coherence trade-off and the performance
+of prompt steering (denoted with TA@Cp ). To compute trait           of the individual personas, we refer to Figures 12-13 in the
+alignment at a target coherence level, we explore values             Appendix.
+for the global steering coefficient α that are close to the          The results on IFEval (Table 2) reveal that the rank-1 PSR
+target coherence using a binary search procedure, and then           models are not expressive enough to replicate prompt steer-
+interpolate between the two coherence levels immediately             ing for all instruction types. This is evident from two ob-
+above and below the target. See Appendix D for details.              servations: the loglikelihood objective is superior to MSE
+On the IFEval-format dataset, Stolfo et al. (2025) use a             in most settings, and we do not consistently outperform
+special method to set the steering coefficient α as a function       prompting. A closer inspection unveiled that there were
+of the input x. For the PSR and Const methods, we therefore          multiple instruction types for which the MSE loss barely
+fix α to 1 instead of tuning it, to allow a fair comparison.         improved, suggesting that rank-1 interventions cannot cap-
+We report the instruction-following accuracy computed with           ture the prompt steering behavior for these instructions. In
+the IFEval script (Jattr ) and coherence (Jcoher ).                  such cases, optimizing for loglikelihood is more effective
+                                                                     as it only targets the model outputs, not the intermediate
+On AxBench, we use the metric that comes with the dataset,           activations. An interesting path for future research could
+which computes an overall steering score for each concept            be to explore PSR variants that generalize Equation 7 to
+on a scale of 0 to 2 by taking the harmonic mean of the LLM          low-rank interventions.
+judge scores that assess concept presence (0-2), fluency (0-
+2), and answer relevance (0-2).                                      It is important to note that the IFEval format evaluation
+                                                                     setup includes 5 instruction types that require arguments
+                                                                     (e.g., the multiple sections type comprises instructions such
+5. Experiments                                                       as “Include two sections” and “Ensure that your response is
+We organize our experiments around two questions: (1)                in 3 sections”). Such instruction types are not modeled in a
+Does PSR improve steering performance? (2) Are PSR                   single-attribute steering setup. We therefore also include re-
+interventions more faithful to prompt steering?                      sults in Appendix E.2 Table 8 where these instruction types
+                                                                     are excluded from the evaluation. In this setup, S-PSRLL
+5.1. Steering Performance                                            outperforms prompting for 2 out of 4 language models and
+                                                                     A-PSRLL outperforms prompting for 3 out of 4 language
+The results on the Persona Vectors dataset are summarized            models.
+in Table 1. When comparing the single-layer architectures,
+we observe that PSR’s approach of computing different in-            Furthermore, PSR significantly improves over the activation
+tervention strengths per activation, significantly improves          steering method of Stolfo et al. (2025). PSR consistently out-
+
+
+                                                                 7
+                                      Steer Like the LLM: Activation Steering that Mimics Prompting
+
+Table 1. Results on the Persona Vectors dataset. We report trait alignment at coherence 80.0 (TA@C80 ) and at prompt steering coherence
+(TA@Cp ), scores are macro-averaged over the different traits. TA@Cp scores higher than prompting are underlined. Llama-3.1-8b-Instruct
+results are included in Appendix E.1. ∗ DiM|R results produced with code from Chen et al. (2025).
+
+                                                  Llama-3.2-3b-Instruct          Llama-3.1-8b-Instruct             Qwen2.5-7b-Instruct
+                                                  TA@C80       TA@Cp             TA@C80       TA@Cp                TA@C80     TA@Cp
+                       S-ConstDiM|R                    46.1           28.9            49.8                30.2           74.8          34.8
+                       S-ConstLL|QR                    72.5           42.9            88.4                44.0           69.5          51.8
+                       S-ConstMSE|QR                   79.3           57.4            89.0                50.1           71.6          48.8
+                       S-PSRLL|QR                      89.6           52.6            96.8                45.0           83.3          59.1
+                       S-PSRMSE|QR                     91.1           66.8            98.8                74.7           83.3          60.9
+                       A-ConstLL|QR                    98.2           85.6            98.8                85.9           96.1          73.6
+                       A-ConstMSE|QR                   98.9           95.8            98.9                91.3           96.1          83.6
+                       A-PSRLL|QR                      97.5           94.4            98.4                82.3           95.3          65.7
+                       A-PSRMSE|QR                     98.6           92.5            99.2                96.4           96.8          83.9
+                       prompt                             –           91.5                  –             95.7             –           71.6
+
+Table 2. Results on the IFEval format dataset. We report the instruction-following accuracy IF Acc. and coherence Coher., both are
+macro-averaged over the different instruction types. The best IF Acc. scores for the activation steering methods (top) and activation
+steering with prompting (bottom) are in bold. ∗ no activation steering and no instruction in the prompt. Results for ConstMSE settings are
+excluded for brevity as they significantly underperform ConstLL . They can be found in Appendix E.2.
+a
+  Results from Stolfo et al. (2025). b Results reproduced with code from Stolfo et al. (2025).
+
+                                            Phi-3-mini-instruct           Gemma-2-2b-it                     Mistral-7B-Instruct              Gemma-2-9b-it
+                                           IF Acc.      Coher.          IF Acc.   Coher.                    IF Acc.     Coher.             IF Acc.   Coher.
+ no steering∗                               11.9              92.4           10.6               94.3             6.8            90.5          11.4        96.6
+ Stolfo et al. (2025) a                     30.1               -             30.1                -              14.1             -            28.9         -
+ Stolfo et al. (2025) b                     29.0              86.5           39.1               88.8            19.8            89.8          30.8        96.1
+ S-ConstLL                                  11.6              91.6           10.7               94.5            19.0            89.2          13.4        96.7
+ S-PSRLL                                    62.8              89.1           54.9               89.5            62.7            87.6          66.1        95.5
+ S-PSRMSE                                   29.3              91.3           39.0               92.9            22.3            89.0          47.5        96.4
+ A-ConstLL                                  61.9              90.0           36.9               90.5            69.2            81.1          50.4        94.4
+ A-PSRLL                                    69.0              85.4           68.7               90.6            61.1            84.1          71.9        82.3
+ A-PSRMSE                                   48.8              87.7           61.2               91.2            54.1            85.7          71.3        95.1
+ prompt                                     72.5              84.6           66.8               88.6            61.8            81.5          85.7        94.8
+                                  a
+ Stolfo et al. (2025) +prompt               78.6               -             76.1                -              63.7             -            86.6         -
+ Stolfo et al. (2025)+prompt b              81.7              79.3           79.0               84.0            62.5            80.6          88.7        94.6
+ S-ConstLL +prompt                          78.9              83.2           74.2               87.1            77.6            77.3          91.5        94.3
+ S-PSRLL +prompt                            89.8              82.2           83.2               84.5            85.5            75.5          93.1        94.6
+ S-PSRMSE +prompt                           81.6              79.9           82.6               87.2            67.8            76.9          91.1        94.0
+ A-ConstLL +prompt                          89.3              75.2           87.0               78.9            82.2            71.5          85.2        92.0
+ A-PSRLL +prompt                            82.8              80.2           86.4               84.6            82.0            76.0          87.6        80.0
+ A-PSRMSE +prompt                           85.2              80.6           81.3               86.1            68.9            78.1          92.4        93.5
+
+Table 3. Steering scores (scale 0-2 ↑) on the Gemma-2-2B layer 20 and Gemma-2-9B layer 20 subsets of AxBench. We include the best
+performing methods on AxBench from the literature: a Wu et al. (2025a). b Wu et al. (2025b). c Sun et al. (2025).
+                                                          (a) Rank-1, single-layer interventions
+                                      a           a
+                     S-ConstDiM             SAE        ReFT-r1a      ΦSV,r=1 b        S-ConstLL           S-PSRLL        S-ConstMSE        S-PSRMSE
+           2BL20             0.178          0.151          0.509        0.606                   0.504           0.618             0.311           0.367
+           9BL20             0.322          0.191          0.630        0.892                   0.633           0.667             0.903           0.900
+                                                        (b) Multi-rank and/or multi-layer methods
+                                                      LoRA-      LoReFT-       Hyper-
+            prompta       SFTa        LoRAa                                                      A-ConstLL        A-PSRLL         A-ConstMSE         A-PSRMSE
+                                                      RePSb        RePSb        Steerc
+   2BL20       0.731      0.714           0.641        0.793         0.805          0.742               0.792           0.690             0.783           0.871
+   9BL20       1.075          –           0.602        0.631         0.757          1.091               0.757           0.827             1.053           1.120
+
+
+                                                                                 8
+                                 Steer Like the LLM: Activation Steering that Mimics Prompting
+
+                                                                         activations are as faithful as a forward pass without steering.
+                                                                         As a reference, we also report the relative RMSE between
+                                                                         prompt steering activations using different but equivalent
+                                                                         trait-eliciting instructions (denoted as Equivalent prompts).
+                                                                         Specifically, we used the five positive instructions per trait
+                                                                         from Chen et al. (2025), see Section 4.
+                                                                         Figure 3 plots the average relative RMSE in each layer for
+                                                                         Llama-3.2-3B-Instruct on the sycophantic trait. As expected
+                                                                         the A-PSRMSE activations are most faithful to prompt steer-
+                                                                         ing, but it is still surprising that from layer 10 onwards the
+                                                                         relative RMSE is significantly lower than that of equivalent
+                                                                         prompts. This indicates that A-PSRMSE is able to closely
+Figure 3. Relative RMSE between the accumulated interventions            mimic the interventions that prompt steering implements
+of prompt steering (∆P Sacc ) versus those of other steering meth-       within the model. Also A-ConstMSE achieves low RMSE
+ods (∆Xacc ), averaged on prompt steering predictions on the Per-        values, which suggests that, while constant interventions
+sona Vectors sycophantic evaluation data for Llama-3.2-3B.
+                                                                         may not be faithful, the model redistributes steering con-
+                                                                         tributions to the appropriate locations in later layers. A
+                                                                         similar phenomenon can be seen for the single-layer activa-
+performs constant steering in the single-layer setting and for           tion methods, which spike above relative RMSE of 1 in the
+3 out of 4 language models in the all-layer setting. The bot-            intervention layer, indicating that they are less faithful in
+tom part of Table 2 shows that combining prompting and ac-               that layer than no steering, but dip below 1 in the later layers.
+tivation steering consistently improves instruction-following            This suggests that the model is able to partially revert from
+accuracy over prompting alone (Stolfo et al., 2025), albeit              an “unfaithful” regime to its default behavior in the later
+with a coherence penalty for some models.                                layers. Other language models and traits exhibit similar
+From the results on AxBench (Table 3), we find that A-                   trends, see Appendix F.
+PSRMSE sets a new state-of-the-art on both the 2B layer
+20 and 9B layer 20 subsets, outperforming prompt steering,               6. Conclusion
+different LoRA variants and strong activation steering base-
+lines. AxBench computes aggregated steering scores that                  We proposed a framework for studying the connection be-
+capture coherence, concept alignment and relevance to the                tween prompting and activation steering by formulating
+base prompt. We break down the results in these different                prompt steering as a form of activation steering and dis-
+dimensions in Appendix E.3, and find that A-PSRMSE ’s                    tilling its behavior on instances where it is successful into
+improvements over the prompting are the result of improved               simpler, interpretable models. Our analysis revealed that
+concept alignment and for the 2B layer 20 subset come with               popular activation steering methods are not faithful to the
+a noticeable drop in answer relevance. The results of Table 3            mechanics of prompt steering, and that closing this gap by
+(a) confirm that MSE is not always superior to loglikelihood.            learning token-specific interventions improves steering per-
+                                                                         formance. As a first instantiation of this framework, we
+5.2. Faithfulness of Interventions                                       developed rank-1 Prompt Steering Replacement (PSR) mod-
+                                                                         els that, under explicit assumptions, can replicate prompt
+In this section, we analyze how faithful different ac-                   steering with token-specific steering coefficients estimated
+tivation steering methods are to prompt steering. To                     from the activations themselves. In our experiments, PSR
+this end, we measure the relative root mean squared                      models outperform existing activation steering methods, es-
+error (RMSE) between the interventions produced by                       pecially when controlling for high-coherence completions,
+prompt steering and those produced by other steering meth-               and also compare favorably to prompting on AxBench and
+                                                        ′
+ods. We compute relative RMSE as ∥∆P Sacc (xy≤i           )−             persona steering.
+            ′                    ′                        ′
+∆Xacc (x, y≤i )∥2 /∥∆P Sacc (x, y≤i )∥2 , with ∆P Sacc (xy≤i )
+the prompt steering interventions as defined in Equation 3               The assumptions underlying the rank-1 PSR models do not
+                ′
+and ∆Xacc (x, y≤i  ) the accumulative steering effect up to a            hold universally, however: this is particularly evident on
+given layer by steering method X (e.g., S-ConstLL|QE ). We               IFEval, where more complex instructions exceed what rank-
+average RMSE values over the prompt steering predictions                 1 interventions can represent and prompting remains the
+on the Persona Vectors evaluation data. A lower relative                 stronger approach. Despite these limitations, our framework
+RMSE indicates that the steering method produces activa-                 and analyses shed new light on the mechanics of prompt
+tions that are more faithful to those produced by prompt                 steering and suggest that token-specific steering coefficients
+steering. A relative RMSE of 1 signifies that the steered                are a key ingredient of faithful activation steering.
+
+                                                                     9
+                               Steer Like the LLM: Activation Steering that Mimics Prompting
+
+Acknowledgements                                                       Bigelow, E. J., Wurgaft, D., Wang, Y., Goodman, N. D.,
+                                                                         Ullman, T. D., Tanaka, H., and Lubana, E. S. Belief
+We would like to thank Raf Huysegems, Pascal Justen,                     Dynamics Reveal the Dual Nature of In-Context Learning
+Haeun Yu, and the anonymous reviewers for their valuable                 and Activation Steering. CoRR, abs/2511.00617, 2025.
+feedback and suggestions.                                                doi: 10.48550/ARXIV.2511.00617. URL https:
+                                                                         //doi.org/10.48550/arXiv.2511.00617.
+Impact Statement                                                         arXiv: 2511.00617.
+This paper presents work whose goal is to advance the field            Brown, T. B., Mann, B., Ryder, N., Subbiah, M., Kaplan,
+of Machine Learning. There are many potential societal                   J., Dhariwal, P., Neelakantan, A., Shyam, P., Sastry, G.,
+consequences of our work, none which we feel must be                     Askell, A., Agarwal, S., Herbert-Voss, A., Krueger, G.,
+specifically highlighted here.                                           Henighan, T., Child, R., Ramesh, A., Ziegler, D. M., Wu,
+                                                                         J., Winter, C., Hesse, C., Chen, M., Sigler, E., Litwin, M.,
+References                                                               Gray, S., Chess, B., Clark, J., Berner, C., McCandlish,
+                                                                         S., Radford, A., Sutskever, I., and Amodei, D. Language
+Ameisen, E., Lindsey, J., Pearce, A., Gurnee, W., Turner,                Models are Few-Shot Learners. In Larochelle, H., Ran-
+ N. L., Chen, B., Citro, C., Abrahams, D., Carter, S., Hos-              zato, M., Hadsell, R., Balcan, M.-F., and Lin, H.-T. (eds.),
+ mer, B., Marcus, J., Sklar, M., Templeton, A., Bricken, T.,             Advances in Neural Information Processing Systems 33:
+ McDougall, C., Cunningham, H., Henighan, T., Jermyn,                    Annual Conference on Neural Information Processing
+ A., Jones, A., Persic, A., Qi, Z., Ben Thompson, T., Zim-               Systems 2020, NeurIPS 2020, December 6-12, 2020, vir-
+ merman, S., Rivoire, K., Conerly, T., Olah, C., and Bat-                tual, 2020. URL https://proceedings.neurip
+ son, J. Circuit Tracing: Revealing Computational Graphs                 s.cc/paper/2020/hash/1457c0d6bfcb496
+ in Language Models. Transformer Circuits Thread, 2025.                  7418bfb8ac142f64a-Abstract.html.
+ URL https://transformer-circuits.pub/
+ 2025/attribution-graphs/methods.html.                                 Chen, R., Arditi, A., Sleight, H., Evans, O., and Lind-
+                                                                         sey, J. Persona Vectors: Monitoring and Controlling
+Anwar, U., Saparov, A., Rando, J., Paleka, D., Turpin, M.,               Character Traits in Language Models, September 2025.
+  Hase, P., Lubana, E. S., Jenner, E., Casper, S., Sourbut,              URL http://arxiv.org/abs/2507.21509.
+  O., Edelman, B. L., Zhang, Z., Günther, M., Korinek,                  arXiv:2507.21509 [cs].
+ A., Hernández-Orallo, J., Hammond, L., Bigelow, E. J.,
+  Pan, A., Langosco, L., Korbak, T., Zhang, H. C., Zhong,              Dathathri, S., Madotto, A., Lan, J., Hung, J., Frank, E.,
+  R., hÉigeartaigh, S. O., Recchia, G., Corsi, G., Chan,                Molino, P., Yosinski, J., and Liu, R. Plug and Play Lan-
+ A., Anderljung, M., Edwards, L., Petrov, A., Witt, C.                   guage Models: A Simple Approach to Controlled Text
+  S. d., Motwani, S. R., Bengio, Y., Chen, D., Torr, P., Al-             Generation. In 8th International Conference on Learn-
+  banie, S., Maharaj, T., Foerster, J. N., Tramèr, F., He, H.,          ing Representations, ICLR 2020, Addis Ababa, Ethiopia,
+  Kasirzadeh, A., Choi, Y., and Krueger, D. Foundational                April 26-30, 2020. OpenReview.net, 2020. URL https:
+  Challenges in Assuring Alignment and Safety of Large                  //openreview.net/forum?id=H1edEyBKDS.
+  Language Models. Trans. Mach. Learn. Res., 2024, 2024.
+  URL https://openreview.net/forum?id=                                 Dherin, B., Munn, M., Mazzawi, H., Wunder, M., and
+  oVTkOs8Pka.                                                            Gonzalvo, J. Learning without training: The im-
+                                                                         plicit dynamics of in-context learning, December 2025.
+Bau, D., Zhu, J.-Y., Strobelt, H., Zhou, B., Tenenbaum, J. B.,           URL http://arxiv.org/abs/2507.16003.
+  Freeman, W. T., and Torralba, A. Visualizing and Under-                arXiv:2507.16003 [cs].
+  standing GANs. In Deep Generative Models for Highly
+  Structured Data, ICLR 2019 Workshop, New Orleans,                    Geiger, A., Ibeling, D., Zur, A., Chaudhary, M., Chauhan, S.,
+  Louisiana, United States, May 6, 2019. OpenReview.net,                 Huang, J., Arora, A., Wu, Z., Goodman, N., Potts, C., and
+  2019. URL https://openreview.net/forum                                 others. Causal abstraction: A theoretical foundation for
+  ?id=rJgON8ItOV.                                                        mechanistic interpretability. Journal of Machine Learning
+                                                                         Research, 26(83):1–64, 2025.
+Besserve, M., Mehrjou, A., Sun, R., and Schölkopf, B.
+  Counterfactuals uncover the modular structure of deep                Giulianelli, M., Harding, J., Mohnert, F., Hupkes, D., and
+  generative models. In 8th International Conference                     Zuidema, W. H. Under the Hood: Using Diagnostic Clas-
+  on Learning Representations, ICLR 2020, Addis Ababa,                   sifiers to Investigate and Improve how Language Models
+  Ethiopia, April 26-30, 2020. OpenReview.net, 2020. URL                 Track Agreement Information. In Linzen, T., Chrupala,
+  https://openreview.net/forum?id=SJxD                                   G., and Alishahi, A. (eds.), Proceedings of the Workshop:
+  DpEKvH.                                                                Analyzing and Interpreting Neural Networks for NLP,
+
+                                                                  10
+                              Steer Like the LLM: Activation Steering that Mimics Prompting
+
+  BlackboxNLP@EMNLP 2018, Brussels, Belgium, Novem-                    geted Intervention. In Proceedings of the 63rd Annual
+  ber 1, 2018, pp. 240–248. Association for Computational              Meeting of the Association for Computational Linguistics
+  Linguistics, 2018. doi: 10.18653/V1/W18-5426. URL                    (Volume 1: Long Papers). Association for Computational
+  https://doi.org/10.18653/v1/w18-5426.                                Linguistics, July 2025. doi: 10.18653/v1/2025.acl-long.
+                                                                       1007. URL https://aclanthology.org/2025.
+Grattafiori, A., Dubey, A., Jauhri, A., Pandey, A., Kadian,            acl-long.1007/. arXiv:2502.12446 [cs].
+  A., Al-Dahle, A., Letman, A., Mathur, A., Schelten, A.,
+  Vaughan, A., and others. The Llama 3 Herd of Models.               Oozeer, N., Marks, L., Barez, F., and Abdullah, A. Be-
+  arXiv preprint arXiv:2407.21783, 2024.                              yond Linear Steering: Unified Multi-Attribute Control
+                                                                       for Language Models. In Findings of the Association for
+Hedström, A., Amoukou, S. I., Bewley, T., Mishra, S.,                Computational Linguistics: EMNLP 2025. Association
+  and Veloso, M. To Steer or Not to Steer? Mecha-                      for Computational Linguistic. URL https://aclant
+  nistic Error Reduction with Abstention for Language                  hology.org/2025.findings-emnlp.1278/.
+  Models. In Singh, A., Fazel, M., Hsu, D., Lacoste-
+  Julien, S., Berkenkamp, F., Maharaj, T., Wagstaff, K.,             Park, K., Choe, Y. J., and Veitch, V. The Linear Repre-
+  and Zhu, J. (eds.), Forty-second International Confer-               sentation Hypothesis and the Geometry of Large Lan-
+  ence on Machine Learning, ICML 2025, Vancouver, BC,                  guage Models. In Forty-first International Conference on
+  Canada, July 13-19, 2025, Proceedings of Machine                     Machine Learning, ICML 2024, Vienna, Austria, July
+  Learning Research. PMLR / OpenReview.net, 2025. URL                  21-27, 2024. OpenReview.net, 2024. URL https:
+  https://proceedings.mlr.press/v267/h                                 //openreview.net/forum?id=UGpGkLzwpP.
+  edstrom25a.html.
+                                                                     Qi, X., Zeng, Y., Xie, T., Chen, P.-Y., Jia, R., Mittal, P.,
+Hu, E. J., Shen, Y., Wallis, P., Allen-Zhu, Z., Li, Y., Wang,          and Henderson, P. Fine-tuning aligned language models
+  S., and Chen, W. LoRA: Low-Rank Adaptation of Large                  compromises safety, even when users do not intend to!
+  Language Models. CoRR, abs/2106.09685, 2021. URL                     arXiv preprint arXiv:2310.03693, 2023.
+  https://arxiv.org/abs/2106.09685. arXiv:
+  2106.09685.                                                        Radford, A., Wu, J., Child, R., Luan, D., Amodei, D., and
+                                                                       Sutskever, I. Language Models are Unsupervised Multi-
+Li, K., Patel, O., Viégas, F. B., Pfister, H., and Watten-            task Learners. 2019.
+  berg, M. Inference-Time Intervention: Eliciting Truth-
+  ful Answers from a Language Model. In Oh, A., Nau-                 Rimsky, N., Gabrieli, N., Schulz, J., Tong, M., Hub-
+  mann, T., Globerson, A., Saenko, K., Hardt, M., and                  inger, E., and Turner, A. M. Steering Llama 2 via
+  Levine, S. (eds.), Advances in Neural Information Pro-               Contrastive Activation Addition. In Ku, L.-W., Mar-
+  cessing Systems 36: Annual Conference on Neural In-                  tins, A., and Srikumar, V. (eds.), Proceedings of the
+  formation Processing Systems 2023, NeurIPS 2023, New                 62nd Annual Meeting of the Association for Computa-
+  Orleans, LA, USA, December 10 - 16, 2023, 2023. URL                  tional Linguistics (Volume 1: Long Papers), ACL 2024,
+  http://papers.nips.cc/paper_files/pap                                Bangkok, Thailand, August 11-16, 2024, pp. 15504–
+  er/2023/hash/81b8390039b7302c909cb76                                 15522. Association for Computational Linguistics, 2024.
+  9f8b6cd93-Abstract-Conference.html.                                  doi: 10.18653/V1/2024.ACL- LONG.828. URL
+                                                                       https://doi.org/10.18653/v1/2024.acl
+Liu, S., Ye, H., Xing, L., and Zou, J. Y. In-context Vectors:         -long.828.
+  Making In Context Learning More Effective and Con-
+  trollable Through Latent Space Steering. In Forty-first            Shin, T., Razeghi, Y., IV, R. L. L., Wallace, E., and Singh, S.
+  International Conference on Machine Learning, ICML                   AutoPrompt: Eliciting Knowledge from Language Mod-
+  2024, Vienna, Austria, July 21-27, 2024. OpenReview.net,             els with Automatically Generated Prompts. In Webber,
+  2024. URL https://openreview.net/forum                               B., Cohn, T., He, Y., and Liu, Y. (eds.), Proceedings of
+  ?id=dJTChKgv3a.                                                      the 2020 Conference on Empirical Methods in Natural
+                                                                       Language Processing, EMNLP 2020, Online, November
+Marks, S. and Tegmark, M. The Geometry of Truth: Emer-                 16-20, 2020, pp. 4222–4235. Association for Computa-
+ gent Linear Structure in Large Language Model Repre-                  tional Linguistics, 2020. doi: 10.18653/V1/2020.EMN
+ sentations of True/False Datasets. CoRR, abs/2310.06824,              LP-MAIN.346. URL https://doi.org/10.186
+ 2023. doi: 10.48550/ARXIV.2310.06824. URL https:                      53/v1/2020.emnlp-main.346.
+ //doi.org/10.48550/arXiv.2310.06824.
+ arXiv: 2310.06824.                                                  Soulos, P., McCoy, R. T., Linzen, T., and Smolensky, P.
+                                                                       Discovering the Compositional Structure of Vector Rep-
+Nguyen, D., Prasad, A., Stengel-Eskin, E., and Bansal, M.              resentations with Role Learning Networks. In Alishahi,
+  Multi-Attribute Steering of Language Models via Tar-                 A., Belinkov, Y., Chrupala, G., Hupkes, D., Pinter, Y., and
+
+                                                                11
+                              Steer Like the LLM: Activation Steering that Mimics Prompting
+
+  Sajjad, H. (eds.), Proceedings of the Third BlackboxNLP           Wang, W., Yang, J., and Peng, W. Semantics-Adaptive
+  Workshop on Analyzing and Interpreting Neural Networks             Activation Intervention for LLMs via Dynamic Steering
+  for NLP, BlackboxNLP@EMNLP 2020, Online, Novem-                    Vectors. In The Thirteenth International Conference on
+  ber 2020, pp. 238–254. Association for Computational               Learning Representations, ICLR 2025, Singapore, April
+  Linguistics, 2020. doi: 10.18653/V1/2020.BLACKBO                   24-28, 2025. OpenReview.net, 2025b. URL https:
+  XNLP-1.23. URL https://doi.org/10.18653                            //openreview.net/forum?id=8WQ7VTfPTl.
+  /v1/2020.blackboxnlp-1.23.
+                                                                    Wu, Z., Arora, A., Wang, Z., Geiger, A., Jurafsky, D., Man-
+Stolfo, A., Balachandran, V., Yousefi, S., Horvitz, E., and          ning, C. D., and Potts, C. ReFT: Representation Finetun-
+  Nushi, B. Improving Instruction-Following in Language              ing for Language Models. In Globersons, A., Mackey,
+  Models through Activation Steering. In The Thirteenth              L., Belgrave, D., Fan, A., Paquet, U., Tomczak, J. M.,
+  International Conference on Learning Representations,              and Zhang, C. (eds.), Advances in Neural Information
+  ICLR 2025, Singapore, April 24-28, 2025. OpenRe-                   Processing Systems 38: Annual Conference on Neural In-
+  view.net, 2025. URL https://openreview.n                           formation Processing Systems 2024, NeurIPS 2024, Van-
+  et/forum?id=wozhdnRCtw.                                            couver, BC, Canada, December 10 - 15, 2024, 2024. URL
+                                                                     http://papers.nips.cc/paper_files/pap
+Subramani, N., Suresh, N., and Peters, M. E. Extracting              er/2024/hash/75008a0fba53bf13b0bb3b7
+  Latent Steering Vectors from Pretrained Language Mod-              bff986e0e-Abstract-Conference.html.
+  els. In Muresan, S., Nakov, P., and Villavicencio, A.
+  (eds.), Findings of the Association for Computational Lin-        Wu, Z., Arora, A., Geiger, A., Wang, Z., Huang, J., Jurafsky,
+  guistics: ACL 2022, Dublin, Ireland, May 22-27, 2022,              D., Manning, C. D., and Potts, C. AxBench: Steering
+  pp. 566–581. Association for Computational Linguistics,            LLMs? Even Simple Baselines Outperform Sparse Au-
+  2022. doi: 10.18653/V1/2022.FINDINGS-ACL.48. URL                   toencoders. In Proceedings of the 42nd International
+  https://doi.org/10.18653/v1/2022.fin                               Conference on Machine Learning, March 2025a. URL
+  dings-acl.48.                                                      https://openreview.net/forum?id=K2Cc
+                                                                     kZjNy0.
+Sun, J., Baskaran, S., Wu, Z., Sklar, M., Potts, C., and
+  Geiger, A. HyperSteer: Activation Steering at Scale with          Wu, Z., Yu, Q., Arora, A., Manning, C. D., and Potts, C.
+  Hypernetworks, June 2025. URL http://arxiv.or                      Improved Representation Steering for Language Models.
+  g/abs/2506.03292. arXiv:2506.03292 [cs].                           In Proceedings in The 39th Annual Conference on Neural
+                                                                     Information Processing Systems, 2025b. URL https:
+Turner, A. M., Thiergart, L., Udell, D., Leech, G., Mini,            //openreview.net/forum?id=VHb883Gs1u.
+  U., and MacDiarmid, M. Activation Addition: Steer-
+  ing Language Models Without Optimization. CoRR,                   Yang, A., Yang, B., Zhang, B., Hui, B., Zheng, B., Yu, B.,
+  abs/2308.10248, 2023. doi: 10.48550/ARXIV.2308.                     Li, C., Liu, D., Huang, F., Wei, H., Lin, H., Yang, J.,
+  10248. URL https://doi.org/10.48550/arX                             Tu, J., Zhang, J., Yang, J., Yang, J., Zhou, J., Lin, J.,
+  iv.2308.10248. arXiv: 2308.10248.                                   Dang, K., Lu, K., Bao, K., Yang, K., Yu, L., Li, M., Xue,
+                                                                      M., Zhang, P., Zhu, Q., Men, R., Lin, R., Li, T., Xia,
+Vogels, A., Wong, B., Choho, Y., Blangero, A., and                    T., Ren, X., Ren, X., Fan, Y., Su, Y., Zhang, Y., Wan,
+  Bhan, M. In-Distribution Steering: Balancing Control                Y., Liu, Y., Cui, Z., Zhang, Z., and Qiu, Z. Qwen2.5
+  and Coherence in Language Model Generation. CoRR,                   Technical Report. CoRR, abs/2412.15115, 2024. doi:
+  abs/2510.13285, 2025. doi: 10.48550/ARXIV.2510.13                   10.48550/ARXIV.2412.15115. URL https://do
+  285. URL https://doi.org/10.48550/arXiv                             i.org/10.48550/arXiv.2412.15115. arXiv:
+  .2510.13285. arXiv: 2510.13285.                                     2412.15115.
+Wang, H., Wang, G., and Zhang, H. Steering Away from                Zhou, J., Lu, T., Mishra, S., Brahma, S., Basu, S., Luan, Y.,
+ Harm: An Adaptive Approach to Defending Vision Lan-                  Zhou, D., and Hou, L. Instruction-Following Evaluation
+ guage Model Against Jailbreaks. In IEEE/CVF Con-                     for Large Language Models. CoRR, abs/2311.07911,
+ ference on Computer Vision and Pattern Recognition,                  2023a. doi: 10.48550/ARXIV.2311.07911. URL http
+ CVPR 2025, Nashville, TN, USA, June 11-15, 2025,                     s://doi.org/10.48550/arXiv.2311.07911.
+ pp. 29947–29957. Computer Vision Foundation / IEEE,                  arXiv: 2311.07911.
+ 2025a. doi: 10.1109/CVPR52734.2025.02787. URL
+ https://openaccess.thecvf.com/conten                               Zhou, Y., Muresanu, A. I., Han, Z., Paster, K., Pitis, S.,
+ t/CVPR2025/html/Wang_Steering_Away_f                                 Chan, H., and Ba, J. Large Language Models are Human-
+ rom_Harm_An_Adaptive_Approach_to_Def                                 Level Prompt Engineers. In The Eleventh International
+ ending_Vision_CVPR_2025_paper.html.                                  Conference on Learning Representations, 2023b. URL
+
+                                                               12
+                              Steer Like the LLM: Activation Steering that Mimics Prompting
+
+  https://openreview.net/forum?id=92gv
+  k82DE-.
+Zou, A., Phan, L., Chen, S., Campbell, J., Guo, P., Ren, R.,
+  Pan, A., Yin, X., Mazeika, M., Dombrowski, A.-K., Goel,
+  S., Li, N., Byun, M. J., Wang, Z., Mallen, A., Basart, S.,
+  Koyejo, S., Song, D., Fredrikson, M., Kolter, J. Z., and
+  Hendrycks, D. Representation Engineering: A Top-Down
+  Approach to AI Transparency, 2023. URL http://ar
+  xiv.org/abs/2310.01405. arXiv:2310.01405
+  [cs].
+
+
+
+
+                                                               13
+                               Steer Like the LLM: Activation Steering that Mimics Prompting
+
+A. Analyzing Prompt Steering Interventions
+A.1. Prompt Intervention Strength Across Layers
+Figure 4 plots the average magnitudes of the local and accumulative prompt steering interventions ∥∆P Sloc ∥ and ∥∆P Sacc ∥
+across layers on the Persona Vectors dataset. For a given language model, the patterns are remarkably consistent across
+the three target traits. In absolute terms, the prompt intervention magnitude increases in later layers for both the local and
+accumulative effects. However, the local intervention magnitudes exhibit a dip in the early-to-mid layers for the Llama
+models and show a downward oscillating trend for Qwen2.5-7b-Instruct. Notably, the layer with the last high local steering
+contribution, or the layer immediately after it, corresponds to the layer selected by Chen et al. (2025) for single-layer steering
+in 8 out of 9 model-trait combinations. Similarly, the accumlative prompt steering intervention magnitudes start to plateau
+around this layer.
+Figure 5 provides further insight into how these interventions are distributed across tokens at different layers. The heatmaps
+confirm that prompt steering is not constant across token positions: both local and accumulative intervention strengths vary
+substantially. For all three models, there are layers where nearly no local steering occurs except on the first few question
+tokens. These low-contribution layers are interleaved with layers that exhibit broader steering activity, creating an alternating
+pattern across depth. Outside of these low-contribution layers, the token positions that receive the strongest steering are
+fairly consistent across layers.
+
+A.2. Intervention Strength Examples
+Figures 6-8 visualize the strengths ∥∆X (·)∥2 of the interventions from different steering methods on two examples from the
+Persona Vectors sycophantic evaluation set for Llama-3.2-3B-Instruct. Each example contains the intervention strengths at
+the intervention layer (16) and at a later layer (26) for S-ConstLL|QR , S-PSRLL|QR , and A-PSRMSE|QR .
+We observe patterns in the locations where prompt steering exerts strong interventions, for instance, prompt steering
+consistently steers higher on sentence markers and positions that can be seen as branching points in the generation with
+respect to the sycophantic trait. We also see that these patterns are well-matched by the PSR methods, including the
+single-layer variant that is trained with the loglikelihood objective. For S-ConstLL|QR we see that the interventions at
+layer 26, start to resemble the pattern of prompt steering, indicating that the model can recover from the unfaithful regime
+introduced by constant steering to default behavior in later layers.
+
+
+
+
+                                                               14
+                                 Steer Like the LLM: Activation Steering that Mimics Prompting
+
+
+
+
+                                         (a) Local prompt intervention magnitude ∥∆P Sloc ∥.
+
+
+
+
+  (b) Local prompt intervention magnitude relative to the norm of the prompt steered activations ∥∆relative
+                                                                                                   P Sloc ∥ = ∥∆P Sloc ∥/∥AP S ∥.
+
+
+
+
+                                     (c) Accumulative prompt intervention magnitude ∥∆P Sacc ∥
+
+
+
+
+(d) Accumulative prompt intervention magnitude relative to the norm of the prompt steered activations ∥∆relative
+                                                                                                        P Sacc ∥ = ∥∆P Sacc ∥/∥AP S ∥.
+
+
+
+
+Figure 4. Prompt intervention magnitude across layers, measured locally (per-layer) and accumulatively, in both absolute and relative
+terms. The relative magnitudes are computed by dividing by the norm of the prompt-steered activations ∥AP S ∥.
+
+
+
+
+                                                                 15
+                                 Steer Like the LLM: Activation Steering that Mimics Prompting
+
+
+                                                      (a) Local ∥∆P Sloc ∥ – evil.
+
+
+
+
+                                                 (b) Local ∥∆P Sloc ∥ – hallucinating.
+
+
+
+
+                                                  (c) Local ∥∆P Sloc ∥ – sycophantic.
+
+
+
+
+                                           (d) Accumulative ∥∆P Sacc ∥ – evil (normalized).
+
+
+
+
+                                      (e) Accumulative ∥∆P Sacc ∥ – hallucinating (normalized).
+
+
+
+
+                                       (f) Accumulative ∥∆P Sacc ∥ – sycophantic (normalized).
+
+
+
+
+Figure 5. Heatmaps of prompt intervention magnitude per token across layers for different traits on randomly selected examples. (a)–(c)
+show local interventions ∥∆P Sloc ∥; (d)–(f) show accumulative interventions ∥∆P Sacc ∥, normalized per layer by dividing by their total
+sum to better reveal the effect in early layers.
+
+
+                                                                  16
+                                Steer Like the LLM: Activation Steering that Mimics Prompting
+
+
+
+
+                                                       (a) Prompt steering.
+
+
+
+
+                                                        (b) S-ConstLL|QR .
+
+
+
+
+                                                         (c) S-PSRLL|QR .
+
+
+
+
+                                                        (d) A-PSRMSE|QR .
+
+
+
+
+Figure 6. Example 1, Layer 16: Intervention strength ∥∆X (·)∥2 per token for different steering methods on a sycophantic evaluation
+example (Llama-3.2-3B-Instruct).
+
+
+
+
+                                                                17
+                                Steer Like the LLM: Activation Steering that Mimics Prompting
+
+
+
+
+                                                       (a) Prompt steering.
+
+
+
+
+                                                        (b) S-ConstLL|QR .
+
+
+
+
+                                                         (c) S-PSRLL|QR .
+
+
+
+
+                                                        (d) A-PSRMSE|QR .
+
+
+
+
+Figure 7. Example 1, Layer 26: Intervention strength ∥∆X (·)∥2 per token for different steering methods on a sycophantic evaluation
+example (Llama-3.2-3B-Instruct).
+
+
+
+
+                                                                18
+                                Steer Like the LLM: Activation Steering that Mimics Prompting
+
+
+
+
+                                                       (a) Prompt steering.
+
+
+
+
+                                                        (b) S-ConstLL|QR .
+
+
+
+
+                                                         (c) S-PSRLL|QR .
+
+
+
+
+                                                        (d) A-PSRMSE|QR .
+
+
+
+
+Figure 8. Example 2, Layer 16: Intervention strength ∥∆X (·)∥2 per token for different steering methods on a sycophantic evaluation
+example (Llama-3.2-3B-Instruct).
+
+
+
+
+                                                                19
+                                Steer Like the LLM: Activation Steering that Mimics Prompting
+
+
+
+
+                                                       (a) Prompt steering.
+
+
+
+
+                                                        (b) S-ConstLL|QR .
+
+
+
+
+                                                         (c) S-PSRLL|QR .
+
+
+
+
+                                                        (d) A-PSRMSE|QR .
+
+
+
+
+Figure 9. Example 2, Layer 26: Intervention strength ∥∆X (·)∥2 per token for different steering methods on a sycophantic evaluation
+example (Llama-3.2-3B-Instruct).
+
+
+
+
+                                                                20
+                               Steer Like the LLM: Activation Steering that Mimics Prompting
+
+B. Prompt Templates for Coherence Evaluation Jcoher
+
+I am evaluating a different language model. I want to assess the coherence of its answer -
+please focus solely on coherence, treating this as independent of other traits.
+
+I asked the model the following evaluation question:
+[QUESTION START]
+{question}
+[QUESTION END]
+
+The model answered with:
+[ANSWER START]
+{answer}
+[ANSWER END]
+
+You should rate the answer on a scale of 0 to 100, focusing on how coherent the model's
+answer is in the context of the question.
+* 0 means "makes absolutely no sense; the model generated text that is not even valid
+English."
+* 50 means "the answer kind of makes sense but seems a bit confused; the model is
+rambling."
+* 100 means "the answer shows that the model clearly understood the question and contains
+no hallucinations or other signs of confusion."
+
+Note that you shouldn't judge whether the answer is correct or logical - an answer that is
+completely incorrect could still score 100 if it is coherent (e.g., something a mean
+person might say).
+Respond with a number between 0 and 100. Don't say anything else, just the number.
+
+    Figure 10. Prompt template for coherence judge Jcoher (Chen et al., 2025) that is used for the Persona Vectors benchmark.
+
+
+
+
+I am evaluating a different language model. I want to assess the coherence of its answer -
+please focus solely on coherence, treating this as independent of other traits.
+
+I asked the model the following evaluation question:
+[QUESTION START]
+{question}
+[QUESTION END]
+
+The model answered with:
+[ANSWER START]
+{answer}
+[ANSWER END]
+
+You should rate the answer on a scale of 0 to 100, focusing on how coherent the model's
+answer is in the context of the question.
+* 0 means "makes absolutely no sense; the model generated text that is not even using a
+valid language."
+* 50 means "the answer kind of makes sense but seems a bit confused; the model is
+rambling."
+* 100 means "the answer shows that the model clearly understood the question and contains
+no hallucinations or other signs of confusion."
+
+Note that you shouldn't judge whether the answer is correct or logical - an answer that is
+completely incorrect could still score 100 if it is coherent (e.g., something a mean
+person might say).
+Respond with a number between 0 and 100. Don't say anything else, just the number.
+
+Figure 11. Slight variation on the coherence judge prompt template from Chen et al. (2025), which is used on the IFEval benchmark.
+
+
+
+                                                               21
+                                    Steer Like the LLM: Activation Steering that Mimics Prompting
+
+C. Steered Layers
+The layer indexes (starting from 1) where interventions are for the single-layer activation steering methods are listed in
+Tables 4 and 5.
+                   Table 4. Steered layer indices (starting from 1) for each trait and model on the Persona Vectors dataset.
+
+       Trait               meta-llama/Llama-3.2-3B-Instruct      meta-llama/Llama-3.1-8B-Instruct       Qwen/Qwen2.5-7B-Instruct
+       Evil                                16                                     16                                 20
+       Sycophantic                         16                                     16                                 20
+       Hallucinating                       16                                     16                                 16
+
+
+               Table 5. Steered layer indices (starting from 1) for each instruction type and model on the IFEval dataset.
+
+                                                        Phi-3-mini-instruct     Gemma-2-2b-it     Mistral-7B-Instruct     Gemma-2-9b-it
+  instruction id
+  change case:capital word frequency                                        7               10                     16               15
+  change case:english capital                                              27               12                     29               27
+  change case:english lowercase                                            19               18                     19               24
+  detectable format:constrained response                                   16               13                     16               21
+  detectable format:json format                                            16               13                     16               21
+  detectable format:multiple sections                                      16               13                     16               21
+  detectable format:number bullet lists                                    16               16                     16                9
+  detectable format:number highlighted sections                            21               13                     25               39
+  detectable format:title                                                  16               13                     16               21
+  language:response language ar                                            21               13                     16               21
+  language:response language de                                            17               16                     17               21
+  language:response language fa                                            21               13                     16               21
+  language:response language gu                                            16               13                     16               21
+  language:response language hi                                            16               13                     16               24
+  language:response language kn                                            16               13                     16               21
+  language:response language ko                                            16               13                     16               21
+  language:response language mr                                            16               13                     16               27
+  language:response language ne                                            16               13                     16               21
+  language:response language pa                                            16               13                     16               30
+  language:response language ru                                            17               18                     16               24
+  language:response language sw                                            21               13                     16               24
+  language:response language te                                            16               13                     16               21
+  language:response language ur                                            16               18                     16               21
+  punctuation:no comma                                                     21               12                     15               24
+  startend:end checker                                                     16               13                     16               21
+  startend:quotation                                                       21               14                     16               21
+
+
+
+D. Computing Trait Alignment at Target Coherence
+First, we explore the steering coefficient α (as defined in Equations 2 and 7) in areas where the steering method achieves
+coherence close to the target coherence using the binary search procedure outlined in Algorithm 1. Next, we interpolate the
+trait alignment at the target coherence using the trait alignments obtained at the two coherence levels that are immediately
+above and below the target coherence.
+
+
+
+
+                                                                      22
+                             Steer Like the LLM: Activation Steering that Mimics Prompting
+
+
+
+
+Algorithm 1 Binary search for steering coefficient
+  αmin := 0.0
+  αmax := 10.0
+  for i = 1 to Nsteps do
+    α := (αmin + αmax )/2
+    c := evaluate coherence(α) { Average coherence of the predictions from the steering method using α. }
+    if |αmax − αmin | < 0.01 then
+        break
+    end if
+    if c > target coherence then
+        αmin := α
+    else
+        αmax := α
+    end if
+  end for
+
+
+
+
+                                                          23
+                                 Steer Like the LLM: Activation Steering that Mimics Prompting
+
+E. Additional Steering Results
+This appendix provides steering results and analysis that were omitted from the main text for brevity.
+
+E.1. Persona Vectors Additional Results
+Table 6. Results on the Persona Vectors dataset for Llama-3.2-3b-Instruct, Llama-3.1-8b-Instruct, and Qwen2.5-7b-Instruct. For different
+steering methods, we report trait alignment at coherence 80.0 (TA@C80 ) and at prompt steering coherence (TA@Cprompt ), both are
+macro-averaged over the different traits.
+
+                                      Llama-3.2-3b                  Llama-3.1-8b                Qwen2.5-7b-instruct
+                                  TA@C80 TA@Cprompt             TA@C80 TA@Cprompt             TA@C80 TA@Cprompt
+              S-ConstDiM|R             46.1             28.9         49.8             30.2         74.8             34.8
+              S-ConstLL|R              64.8             43.8         87.7             42.9         70.9             52.3
+              S-ConstLL|QR             72.5             42.9         88.4             44.0         69.5             51.8
+              S-ConstM SE|R            78.1             55.2         87.9             51.1         73.5             50.5
+              S-ConstMSE|QR            79.3             57.4         89.0             50.1         71.6             48.8
+              S-PSRLL|R                82.7             49.8         97.4             44.5         85.5             58.1
+              S-PSRLL|QR               89.6             52.6         96.8             45.0         83.3             59.1
+              S-PSRM SE|R              91.8             71.2         99.1             76.5         87.2             61.5
+              S-PSRMSE|QR              91.1             66.8         98.8             74.7         83.3             60.9
+              A-ConstLL|QR             98.2             85.6         98.8             85.9         96.1             73.6
+              A-ConstMSE|QR            98.9             95.8         98.9             91.3         96.1             83.6
+              A-PSRLL|QR               97.5             94.4         98.4             82.3         95.3             65.7
+              A-PSRMSE|QR              98.6             92.5         99.2             96.4         96.8             83.9
+              prompt                      -             91.5            -             95.7            -             71.6
+
+
+
+
+Figure 12. Trait alignment on the Persona Vectors dataset after steering Llama-3.2-3B-Instruct, Llama-3.1-8B-Instruct, and Qwen2.5-7b-
+Instruct. Trait alignments for all steering methods are computed at prompt steering coherence.
+
+
+E.2. IFEval Additional Results
+Table 7 provides results that were omitted from Table 2 in the main text for brevity. Table 8 contains the results on the IFEval
+format dataset after filtering out instruction types that require arguments (e.g., the number of sections to include). Specifically,
+we filtered the following instruction types: multiple sections, number bullet lists, end checker, number highlighted sections,
+and capital word frequency.
+
+E.3. AxBench: Breakdown of Judge Scores
+Table 9 shows the breakdown of the overall steering scores on AxBench in their average concept alignment, coherence, and
+relevance to the base prompt.
+
+
+
+
+                                                                  24
+                                Steer Like the LLM: Activation Steering that Mimics Prompting
+
+
+
+
+Figure 13. Trait alignment-coherence curves for different steering methods on the Persona Vectors dataset. Some curves have a region
+where trait alignment and coherence both go down, this points to oversteering (i.e., when α values are set too high for a method).
+
+
+
+
+                                                                25
+                                   Steer Like the LLM: Activation Steering that Mimics Prompting
+
+Table 7. Complete results on the IFEval format dataset including all configurations. For different steering baselines we report the
+instruction-following accuracy IF Acc. and coherence Coher., both are macro-averaged over the different instruction types. IF Acc.
+is computed using the IFEval script as in Stolfo et al. (2025). Coherence scores are computed following Chen et al. (2025) using
+LLM-as-a-judge. Activation steering results that outperform prompting are underlined. ∗ no activation steering and no instruction in the
+prompt. b Results reproduced with code from Stolfo et al. (2025).
+
+                                       Phi-3-mini-instruct          Gemma-2-2b-it           Mistral-7B-Instruct          Gemma-2-9b-it
+                                     IF Acc.     Coher.        IF Acc.   Coher.           IF Acc.      Coher.       IF Acc.   Coher.
+ no steering∗                          11.9         92.4         10.6         94.3           6.8         90.5         11.4         96.6
+ Stolfo et al. (2025) a                30.1          -           30.1          -            14.1          -           28.9          -
+ Stolfo et al. (2025) b                29.0         86.5         39.1         88.8          19.8         89.8         30.8         96.1
+ S-ConstLL                             11.6         91.6         10.7         94.5          19.0         89.2         13.4         96.7
+ S-ConstMSE                            12.4         93.4         10.6         94.5           8.7         90.1         12.8         96.6
+ S-PSRLL                               62.8         89.1         54.9         89.5          62.7         87.6         66.1         95.5
+ S-PSRMSE                              29.3         91.3         39.0         92.9          22.3         89.0         47.5         96.4
+ A-ConstLL                             61.9         90.0         36.9         90.5          69.2         81.1         50.4         94.4
+ A-ConstMSE                            13.4         93.4         18.4         94.0          37.0         83.9         19.0         96.9
+ A-PSRLL                               69.0         85.4         68.7         90.6          61.1         84.1         71.9         82.3
+ A-PSRMSE                              48.8         87.7         61.2         91.2          54.1         85.7         71.3         95.1
+ prompt                                72.5         84.6         66.8         88.6          61.8         81.5         85.7         94.8
+ Stolfo et al. (2025) +prompt a        78.6          -           76.1          -            63.7          -           86.6          -
+ Stolfo et al. (2025)+prompt b         81.7         79.3         79.0         84.0          62.5         80.6         88.7         94.6
+ S-ConstLL +prompt                     78.9         83.2         74.2         87.1          77.6         77.3         91.5         94.3
+ S-ConstMSE +prompt                    73.8         83.9         78.1         87.9          66.0         78.2         90.9         94.8
+ S-PSRLL +prompt                       89.8         82.2         83.2         84.5          85.5         75.5         93.1         94.6
+ S-PSRMSE +prompt                      81.6         79.9         82.6         87.2          67.8         76.9         91.1         94.0
+ A-ConstLL +prompt                     86.0         79.6         82.3         83.6          77.9         73.5         84.8         91.0
+ A-ConstMSE +prompt                    85.7         80.0         82.8         86.3          76.2         76.8         93.6         93.7
+ A-PSRLL +prompt                       82.8         80.2         86.4         84.6          82.0         76.0         87.6         80.0
+ A-PSRMSE +prompt                      85.2         80.6         81.3         86.1          68.9         78.1         92.4         93.5
+
+
+Table 8. Results on the IFEval format dataset after filtering out instruction types that require arguments (e.g., “Your response must contain
+3 sections”). The best IF Acc. scores for activation steering methods (top) and activation steering with prompting (bottom) are in bold,
+activation steering results that outperform prompting are underlined.
+
+                                      Phi-3-mini-instruct           Gemma-2-2b-it           Mistral-7B-Instruct          Gemma-2-9b-it
+                                    IF Acc.     Coher.         IF Acc.   Coher.           IF Acc.     Coher.        IF Acc.   Coher.
+ no steering∗                         7.1          92.4          1.6          94.2          3.3          89.4         3.4          96.1
+ Stolfo et al. (2025) b               34.0         82.4         39.9          87.0         22.5          88.4         32.1         95.0
+ S-ConstLL                            9.0          91.6          4.8          94.2         17.7          87.9         5.8          96.5
+ S-ConstMSE                           5.5          92.8          4.0          93.9          6.0          89.1         5.8          96.2
+ S-PSRLL                              69.7         86.7         60.7          88.8         72.6          87.6         72.3         94.9
+ S-PSRMSE                             29.3         90.3         42.9          91.2         27.2          88.7         56.7         95.5
+ A-ConstLL                            64.9         88.1         37.9          89.3         76.6          77.7         59.1         95.0
+ A-ConstMSE                           9.4          93.6         13.8          93.7         47.4          80.5         15.2         96.5
+ A-PSRLL                              78.8         81.7         77.6          89.4         68.7          82.2         78.1         82.6
+ A-PSRMSE                             58.4         86.6         65.9          89.6         61.0          84.3         78.7         94.7
+ prompt                               67.6         79.5         67.8          86.1         63.4          79.4         85.4         93.9
+                               b
+ Stolfo et al. (2025)+prompt          79.3         75.1         88.0          79.2         65.2          79.9         90.0         93.5
+ S-ConstLL +prompt                    75.6         79.7         72.9          84.5         80.2          75.0         90.2         93.5
+ S-ConstMSE +prompt                   71.9         79.9         78.5          85.3         70.0          75.9         92.5         93.6
+ S-PSRLL +prompt                      88.8         76.2         90.9          80.1         86.8          73.4         96.6         94.1
+ S-PSRMSE +prompt                     80.4         74.3         86.7          83.7         71.7          75.7         92.7         93.0
+ A-ConstLL +prompt                    89.3         75.2         87.0          78.9         82.2          71.5         85.2         92.0
+ A-ConstMSE +prompt                   86.1         74.4         88.0          84.1         83.4          72.9         95.4         92.9
+ A-PSRLL +prompt                      89.8         75.0         92.1          81.7         83.6          73.2         93.3         79.3
+ A-PSRMSE +prompt                     86.6         75.6         83.1          82.9         81.4          75.1         93.2         92.3
+
+
+
+                                                                    26
+                                  Steer Like the LLM: Activation Steering that Mimics Prompting
+
+
+
+
+Table 9. Breakdown of AxBench steering scores into concept alignment, relevance to the base prompt, coherence, and the combined score
+for the 2BL20 and 9BL20 splits.
+                                                           (a) 2BL20 split.
+
+           prompt     S-ConstLL     S-PSRLL     S-ConstMSE      S-PSRMSE      A-ConstLL     A-PSRLL      A-ConstMSE      A-PSRMSE
+ Jconc.     0.719       0.588         0.794        0.350           0.433        1.010         0.779         1.016          1.064
+ Jrelev.    1.760       1.630         1.466        1.782           1.724        1.435         1.700         1.281          1.427
+ Jcoher.    1.072       0.944         0.990        1.008           1.028        1.040         1.046         1.022          1.042
+ Jcomb.     0.720       0.504         0.618        0.311           0.367        0.792         0.690         0.783          0.871
+
+                                                           (b) 9BL20 split.
+
+           prompt     S-ConstLL     S-PSRLL     S-ConstMSE      S-PSRMSE      A-ConstLL     A-PSRLL      A-ConstMSE      A-PSRMSE
+ Jconc.     1.055       0.821         0.847        1.043           0.998        0.996         0.947         1.260          1.202
+ Jrelev.    1.858       1.338         1.541        1.492           1.620        1.444         1.660         1.550          1.743
+ Jcoher.    1.132       1.023         1.131        1.077           1.096        1.038         1.076         1.044          1.096
+ Jcomb.     1.054       0.633         0.667        0.903           0.896        0.757         0.827         1.053          1.120
+
+
+
+
+                                                                 27
+                                Steer Like the LLM: Activation Steering that Mimics Prompting
+
+F. Faithfulness Additional Results
+Figure 14 shows the relative RMSE between activations produced by prompt steering versus other steering methods, averaged
+on prompt steering predictions on the Persona Vectors evaluation data for Llama-3.2-3B-Instruct, Llama-3.1-8B-Instruct,
+and Qwen2.5-7b-Instruct, respectively.
+
+
+                                                    (a) Llama-3.2-3B-Instruct.
+
+
+
+
+                                                    (b) Llama-3.1-8B-Instruct.
+
+
+
+
+                                                     (c) Qwen2.5-7b-Instruct.
+
+
+
+
+Figure 14. Relative RMSE between activations produced by prompt steering versus other steering methods, averaged on prompt steering
+predictions on the Persona Vectors evaluation data.
+
+
+                                                                28
+                                   Steer Like the LLM: Activation Steering that Mimics Prompting
+
+G. Steering Vectors Comparison
+Figure 15 visualizes the cosine similarity between the steering vectors zattr,l produced by different steering methods at the
+intervention layer l.
+We observe that the all-layer methods learn steering vectors with low pairwise similarity, even in layers where their respective
+activations are faithful to prompt steering (A-PSRMSE vs A-ConstMSE from the early middle layers). Contrasting this with
+the faithfulness results in Figure 14 suggests that activations faithful to prompt steering can be obtained in different ways,
+and that the steering vector of A-PSRMSE or A-ConstMSE at a given layer does not necessarily reflect how prompt steering
+operates in that layer. This can be explained by the fact that the all-layer settings jointly optimize the steering vectors, so
+each layer’s vector is shaped by gradients from later layers rather than reflecting only that layer’s contribution. This is
+desirable when the goal is to produce the most faithful activations or the best steering performance, but complicates the
+interpretation of the steering vectors. We conclude that, to understand prompt steering mechanics in a specific layer, it is
+more suitable to replace and replicate one layer at a time within an otherwise prompt-steered forward pass.11
+Another pattern we observe is that single-layer methods learn steering vectors that are more similar to each other than the
+all-layer methods and the single-layer steering vectors are near-orthogonal to their all-layer counterparts. This is to be
+expected as the single-layer methods are trained to capture the entire effect of prompt steering in a single layer, while the
+all-layer methods can distribute the effect across layers. When comparing the traditional ConstDiM method to the other
+methods, we see most similarity with the PSRMSE variants.
+
+
+
+
+   11
+      Note that this differs from the single-layer + MSE variants in this paper, which aim to capture the entire effect of prompt steering in a
+single layer.
+
+                                                                      29
+                           Steer Like the LLM: Activation Steering that Mimics Prompting
+
+
+                   (a) Pairwise similarities between S-ConstDiM and the all-layer methods across layers.
+
+
+
+
+                  (b) Pairwise similarities between all methods at the single intervention layer (layer 16).
+
+
+
+
+Figure 15. Cosine similarity between steering vectors learned by different methods for sycophancy on Llama-3.2-3B-Instruct.
+
+
+                                                             30
+

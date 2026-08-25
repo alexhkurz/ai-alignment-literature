@@ -6,6 +6,7 @@ Newest first. Full ToC in the [README.md](README.md).
 
 ## 2026-08-24
 
+- Ingested HeRA / HeRD-Merging bibliography into [`interpretability/`](interpretability/README.md): ~40 PDFs (local) + `.txt` extracts, entries appended to `bib.bib`. Consumer: [hera](https://github.com/alexhkurz/hera). Still missing notes; OpenReview-only `sun2025layernavigator`, IEEE `11224465`, and two books without PDFs.
 - Migrated thematic folders and `bib.bib` from `literature-review-and-docs` / `chapman-alignment-faking` into this standalone sister repo (quantale-enriched-literature pattern). Project relevance moved to each consumer’s `literature-relevance/`.
 
 ## 2026-05-20

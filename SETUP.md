@@ -28,6 +28,7 @@ Open both in a multi-root Cursor workspace (e.g. `ai-repos.code-workspace`).
 |------|-------|
 | [chapman-alignment-faking](https://github.com/alexhkurz/chapman-alignment-faking) | milestones / onboarding; relevance in `literature-relevance/` |
 | [planning-and-literature-review](https://github.com/Alignment-Faking-Chapman/planning-and-literature-review) | org planning docs under `Alignment-Faking-Chapman/literature-review-and-docs` |
+| [hera](https://github.com/alexhkurz/hera) | HeRD-Merging LaTeX; bibliography mirrored under `interpretability/` |
 
 ## Editing
 

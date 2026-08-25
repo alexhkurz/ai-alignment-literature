@@ -17,6 +17,7 @@ Canonical paper summaries, text extracts, and `bib.bib` for the AI alignment / a
 - [semantic-vulnerabilities](semantic-vulnerabilities/README.md) — RLHF / semantic vulnerability work (partial ingest).
 - [popular-press](popular-press/README.md) — reporting on AI capabilities, interpretability, and adjacent themes.
 - [philosophy_of_consciousness](philosophy_of_consciousness/README.md) — consciousness, subjective experience, and self-consciousness in humans and AI.
+- [interpretability](interpretability/README.md) — steering, SAEs, LoRA/PEFT, model merging (HeRA bibliography; partial ingest).
 
 ## Papers (A–Z by first author)
 
@@ -40,3 +41,4 @@ Curated summaries (`{citationkey}-notes.md` when present; otherwise partial extr
 - `taylor2025school_reward_hacks` — extract in `alignment-faking/`
 - `sheshadri2026auditbench` — extract in `alignment-auditing/`
 - `mcintosh2024rlhf_semantic_vulnerabilities` — extract in `semantic-vulnerabilities/`
+- HeRA bibliography (~40 extracts) — see [interpretability/README.md](interpretability/README.md)

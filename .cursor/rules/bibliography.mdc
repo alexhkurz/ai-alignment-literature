@@ -38,6 +38,7 @@ Extend an existing theme before creating a new top-level folder:
 - `alignment-faking/`, `sleeper-agents/`, `lie-detection/`
 - `alignment-auditing/`, `semantic-vulnerabilities/`
 - `popular-press/`, `philosophy_of_consciousness/`
+- `interpretability/`
 
 ---
 
