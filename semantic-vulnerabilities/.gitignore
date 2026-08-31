@@ -1,1 +1,5 @@
 *.pdf
+
+# Regenerable text cache — explicit list (public PDF URL in bib.bib / note).
+# Run: ../scripts/ensure-extract.sh KEY
+# Pinned {key}.txt (local PDF only) are omitted here and stay tracked in git.

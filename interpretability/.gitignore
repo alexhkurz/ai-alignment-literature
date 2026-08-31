@@ -1,0 +1,44 @@
+*.pdf
+
+# Regenerable text cache — explicit list (public PDF URL in bib.bib / note).
+# Run: ../scripts/ensure-extract.sh KEY
+# Pinned {key}.txt (local PDF only) are omitted here and stay tracked in git.
+apolinario2026lancelowrankactivation.txt
+bai2025qwen25vltechnicalreport.txt
+braun2025understanding.txt
+cunningham2023sparseautoencodershighlyinterpretable.txt
+ding2023enhancingchatlanguagemodels.txt
+dunefsky2025oneshot.txt
+fang-etal-2026-controllable.txt
+gemmateam2026gemma4technicalreport.txt
+he2023debertav.txt
+heyman2026steer.txt
+hu2021loralowrankadaptation.txt
+ilharco2023editingmodelstaskarithmetic.txt
+kangaslahti2025continuous.txt
+kim2018tcav.txt
+kingma2017adammethodstochasticoptimization.txt
+koike-akino2025quantumpeft.txt
+kong2024aligning.txt
+leask2025inferencetimedecompositionactivationsitda.txt
+li2024llmsasjudgescomprehensivesurveyllmbased.txt
+menon-etal-2025-analyzing.txt
+nelwan2026deployableperinstancemultilayeractivation.txt
+panickssery2024steeringllama2contrastive.txt
+pham-nguyen-2024-householder.txt
+pmlr-v235-singh24d.txt
+prabhakar2024lorasoupsmergingloras.txt
+rodriguez2024controllinglanguagediffusionmodels.txt
+sharkey2025openproblemsmechanisticinterpretability.txt
+sharma2026coldsteer.txt
+shu2025surveysparseautoencodersinterpreting.txt
+soo2025interpretable.txt
+stoica2024modelmergingsvdtie.txt
+tan2024analysing.txt
+turner2024steeringlanguagemodelsactivation.txt
+wortsman2021_neural_subspaces.txt
+xu-etal-2026-steering.txt
+yadav2023tiesmerging.txt
+yu2024language.txt
+zhao2026odesteer.txt
+zou2023representationengineeringtopdownapproach.txt

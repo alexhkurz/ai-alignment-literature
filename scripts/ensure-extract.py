@@ -26,9 +26,11 @@ sys.path.insert(0, str(Path(__file__).resolve().parent))
 
 from literature_extract import (
     fetch_pdf,
+    find_paper_folder,
     find_note,
     iter_note_keys,
     parse_bib_entry,
+    read_note_text,
     repo_root,
 )
 
@@ -50,14 +52,13 @@ def ensure_key(
     dry_run: bool = False,
     force: bool = False,
 ) -> str:
-    note = find_note(root, key)
-    if note is None:
-        raise SystemExit(f"No curated note {key}.md under {root}")
+    folder = find_paper_folder(root, key)
+    if folder is None:
+        raise SystemExit(f"No theme artefacts for {key!r} under {root}")
 
-    folder = note.parent
     pdf_path = folder / f"{key}.pdf"
     txt_path = folder / f"{key}.txt"
-    note_text = note.read_text(encoding="utf-8", errors="replace")
+    note_text = read_note_text(root, key, folder)
     fields = parse_bib_entry(bib_text, key)
 
     if txt_path.is_file() and txt_path.stat().st_size > 0 and not force:
@@ -135,8 +136,10 @@ def main(argv: Iterable[str] | None = None) -> int:
     elif args.missing:
         keys = []
         for key in iter_note_keys(root):
-            note = find_note(root, key)
-            txt_path = note.parent / f"{key}.txt"
+            folder = find_paper_folder(root, key)
+            if folder is None:
+                continue
+            txt_path = folder / f"{key}.txt"
             if not txt_path.is_file() or txt_path.stat().st_size == 0:
                 keys.append(key)
     else:

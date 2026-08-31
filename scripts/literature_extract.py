@@ -21,6 +21,9 @@ FETCHABLE_URL_MARKERS = (
     "ceur-ws.org",
     "drops.dagstuhl.de",
     "openreview.net/pdf",
+    "openreview.net/forum",
+    "aclanthology.org",
+    "proceedings.mlr.press",
     "acm.org/doi/pdf",
     "bibliotecadigital.exactas.uba.ar",
     "library.oapen.org",
@@ -51,18 +54,35 @@ def repo_root() -> Path:
     return Path(__file__).resolve().parent.parent
 
 
+def find_paper_folder(root: Path, key: str) -> Path | None:
+    """Theme folder that holds artefacts for this citation key."""
+    for folder in theme_folders(root):
+        for name in (f"{key}.txt", f"{key}.pdf", f"{key}-notes.md", f"{key}.md"):
+            if (folder / name).is_file():
+                return folder
+    return None
+
+
+def read_note_text(root: Path, key: str, folder: Path | None = None) -> str:
+    folder = folder or find_paper_folder(root, key)
+    if folder is None:
+        return ""
+    for name in (f"{key}-notes.md", f"{key}.md"):
+        path = folder / name
+        if path.is_file():
+            return path.read_text(encoding="utf-8", errors="replace")
+    return ""
+
+
 def find_note(root: Path, key: str) -> Path | None:
-    matches = [
-        p
-        for p in root.rglob(f"{key}.md")
-        if "_marker-work" not in p.parts and not p.name.endswith(".marker.md")
-    ]
-    if not matches:
+    folder = find_paper_folder(root, key)
+    if folder is None:
         return None
-    if len(matches) > 1:
-        paths = "\n".join(f"  {m.relative_to(root)}" for m in matches)
-        raise ValueError(f"Ambiguous citation key {key!r}; multiple notes:\n{paths}")
-    return matches[0]
+    for name in (f"{key}.md", f"{key}-notes.md"):
+        path = folder / name
+        if path.is_file():
+            return path
+    return folder / f"{key}.md"
 
 
 def iter_notes(root: Path) -> Iterator[tuple[str, Path]]:
@@ -75,12 +95,40 @@ def iter_notes(root: Path) -> Iterator[tuple[str, Path]]:
         yield path.stem, path
 
 
+def iter_theme_keys(root: Path) -> Iterator[tuple[str, Path]]:
+    """Yield `(citation_key, theme_folder)` from per-paper artefacts."""
+    for folder in theme_folders(root):
+        keys: set[str] = set()
+        for path in folder.iterdir():
+            if not path.is_file():
+                continue
+            name = path.name
+            if name == "README.md":
+                continue
+            if name.endswith("-notes.md"):
+                keys.add(name[: -len("-notes.md")])
+            elif name.endswith(".marker.md"):
+                continue
+            elif path.suffix in {".txt", ".pdf", ".md"}:
+                keys.add(path.stem)
+        for key in sorted(keys):
+            yield key, folder
+
+
 def iter_note_keys(root: Path) -> Iterator[str]:
-    yield from (key for key, _ in iter_notes(root))
+    seen: set[str] = set()
+    for key, _folder in iter_theme_keys(root):
+        if key not in seen:
+            seen.add(key)
+            yield key
+    for key, _note in iter_notes(root):
+        if key not in seen:
+            seen.add(key)
+            yield key
 
 
 def parse_bib_entry(bib_text: str, key: str) -> dict[str, str]:
-    pattern = rf"@\w+\{{{re.escape(key)}\s*,(.*?)(?=\n@\w+\{{|\Z)"
+    pattern = rf"@\w+\{{\s*{re.escape(key)}\s*,(.*?)(?=\n@\w+\{{|\Z)"
     match = re.search(pattern, bib_text, re.DOTALL)
     if not match:
         return {}
@@ -126,16 +174,27 @@ def has_downloadable_pdf_url(fields: dict[str, str], note_text: str = "") -> boo
     return False
 
 
+def has_arxiv_source(fields: dict[str, str], note_text: str = "") -> bool:
+    """True when bib or note points at arXiv (eprint field or arxiv.org URL)."""
+    eprint = fields.get("eprint", "").strip()
+    if eprint:
+        return True
+    for url in [fields.get("url", ""), *urls_in_note(note_text)]:
+        if url and "arxiv.org" in url.lower():
+            return True
+    return False
+
+
 def classify_txt_policy(
     root: Path, bib_text: str
 ) -> dict[str, tuple[Path, bool]]:
-    """Map citation key -> (note path, gitignore_txt)."""
+    """Map citation key -> (theme folder, gitignore_txt)."""
     result: dict[str, tuple[Path, bool]] = {}
-    for key, note in iter_notes(root):
+    for key, folder in iter_theme_keys(root):
         fields = parse_bib_entry(bib_text, key)
-        note_text = note.read_text(encoding="utf-8", errors="replace")
+        note_text = read_note_text(root, key, folder)
         regenerable = has_downloadable_pdf_url(fields, note_text)
-        result[key] = (note, regenerable)
+        result[key] = (folder, regenerable)
     return result
 
 
@@ -153,6 +212,16 @@ def url_to_pdf_candidates(url: str) -> list[str]:
     lower = url.lower()
     if "arxiv.org/abs/" in lower:
         candidates.insert(0, url.replace("/abs/", "/pdf/") + ".pdf")
+    if "openreview.net/forum?id=" in lower:
+        match = re.search(r"openreview\.net/forum\?id=([^&\s]+)", url, re.IGNORECASE)
+        if match:
+            candidates.insert(0, f"https://openreview.net/pdf?id={match.group(1)}")
+    if "aclanthology.org/" in lower and not lower.endswith(".pdf"):
+        candidates.insert(0, url.rstrip("/") + ".pdf")
+    if "proceedings.mlr.press/" in lower and not lower.endswith(".pdf"):
+        slug = url.rstrip("/").split("/")[-1].replace(".html", "")
+        base = url.rsplit("/", 1)[0]
+        candidates.insert(0, f"{base}/{slug}/{slug}.pdf")
     if "episciences.org/" in lower and not lower.endswith(".pdf"):
         candidates.insert(0, url.rstrip("/") + "/pdf")
     if "tac.mta.ca" in lower and lower.endswith("abs.html"):
@@ -226,7 +295,7 @@ def render_folder_gitignore(regenerable_keys: list[str]) -> str:
     return "\n".join(lines) + "\n"
 
 
-THEME_FOLDER_EXCLUDE = frozenset({"scripts"})
+THEME_FOLDER_EXCLUDE = frozenset({"scripts", "docs"})
 
 
 def theme_folders(root: Path) -> list[Path]:
@@ -241,8 +310,8 @@ def theme_folders(root: Path) -> list[Path]:
 def sync_folder_gitignores(root: Path, bib_text: str, *, dry_run: bool = False) -> list[str]:
     """Rewrite theme-folder .gitignore files from bib + note URL policy."""
     by_folder: dict[Path, list[tuple[str, bool]]] = {}
-    for key, (note, regenerable) in classify_txt_policy(root, bib_text).items():
-        by_folder.setdefault(note.parent, []).append((key, regenerable))
+    for key, (folder, regenerable) in classify_txt_policy(root, bib_text).items():
+        by_folder.setdefault(folder, []).append((key, regenerable))
 
     reports: list[str] = []
     for folder in theme_folders(root):
