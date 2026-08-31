@@ -3,14 +3,21 @@
 # Regenerable text cache — explicit list (public PDF URL in bib.bib / note).
 # Run: ../scripts/ensure-extract.sh KEY
 # Pinned {key}.txt (local PDF only) are omitted here and stay tracked in git.
+aghajanyan2021_intrinsic_dimensionality.txt
 apolinario2026lancelowrankactivation.txt
 bai2025qwen25vltechnicalreport.txt
+belinkov2019_analysis_methods.txt
 braun2025understanding.txt
 cunningham2023sparseautoencodershighlyinterpretable.txt
+dar2022_analyzing_transformers.txt
 ding2023enhancingchatlanguagemodels.txt
 dunefsky2025oneshot.txt
+elhage2022_superposition.txt
 fang-etal-2026-controllable.txt
 gemmateam2026gemma4technicalreport.txt
+geva2021_key_value_memories.txt
+hanna2023_greater_than.txt
+he2016_deep_residual.txt
 he2023debertav.txt
 heyman2026steer.txt
 hu2021loralowrankadaptation.txt
@@ -22,9 +29,14 @@ koike-akino2025quantumpeft.txt
 kong2024aligning.txt
 leask2025inferencetimedecompositionactivationsitda.txt
 li2024llmsasjudgescomprehensivesurveyllmbased.txt
+martens2010_hessian_free.txt
+meng2022_rome.txt
 menon-etal-2025-analyzing.txt
+mikolov2013_word2vec.txt
 nelwan2026deployableperinstancemultilayeractivation.txt
+olsson2022_induction_heads.txt
 panickssery2024steeringllama2contrastive.txt
+pearlmutter1994_fast_hessian.txt
 pham-nguyen-2024-householder.txt
 pmlr-v235-singh24d.txt
 prabhakar2024lorasoupsmergingloras.txt
@@ -35,7 +47,10 @@ shu2025surveysparseautoencodersinterpreting.txt
 soo2025interpretable.txt
 stoica2024modelmergingsvdtie.txt
 tan2024analysing.txt
+tenney2019_bert_pipeline.txt
 turner2024steeringlanguagemodelsactivation.txt
+vaswani2017_attention.txt
+wang2022_ioi.txt
 wortsman2021_neural_subspaces.txt
 xu-etal-2026-steering.txt
 yadav2023tiesmerging.txt

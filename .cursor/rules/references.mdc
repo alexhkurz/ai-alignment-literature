@@ -12,4 +12,4 @@ alwaysApply: false
 - **New keys:** `{lastname}{year}_{memorable_snake}` — underscore immediately after the year.
 - Prefer open-access `url` / `eprint` when available.
 
-Pair with **`bibliography.mdc`** for the note tree and ingestion checklist.
+Pair with **[`docs/bibliography-project.md`](../../docs/bibliography-project.md)** for the note tree and ingestion checklist.

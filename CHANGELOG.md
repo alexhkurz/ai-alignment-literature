@@ -4,6 +4,15 @@ Newest first. Full ToC in the [README.md](README.md).
 
 ---
 
+## 2026-08-31
+
+- Activation steering reader (9 papers) in [`interpretability/`](interpretability/README.md#activation-steering-reader-curated-notes): [`mikolov2013_word2vec`](interpretability/mikolov2013_word2vec-notes.md), [`tenney2019_bert_pipeline`](interpretability/tenney2019_bert_pipeline-notes.md), [`belinkov2019_analysis_methods`](interpretability/belinkov2019_analysis_methods-notes.md), [`kim2018tcav`](interpretability/kim2018tcav-notes.md), [`meng2022_rome`](interpretability/meng2022_rome-notes.md), [`wang2022_ioi`](interpretability/wang2022_ioi-notes.md), [`olsson2022_induction_heads`](interpretability/olsson2022_induction_heads-notes.md), [`elhage2022_superposition`](interpretability/elhage2022_superposition-notes.md), [`hanna2023_greater_than`](interpretability/hanna2023_greater_than-notes.md).
+- Tier A reader background (9 papers) in [`interpretability/`](interpretability/README.md#reader-background-tier-a--curated-notes): [`vaswani2017_attention`](interpretability/vaswani2017_attention-notes.md), [`elhage2021_transformer_circuits`](interpretability/elhage2021_transformer_circuits-notes.md), [`aghajanyan2021_intrinsic_dimensionality`](interpretability/aghajanyan2021_intrinsic_dimensionality-notes.md), [`pearlmutter1994_fast_hessian`](interpretability/pearlmutter1994_fast_hessian-notes.md), [`rumelhart1986_backprop`](interpretability/rumelhart1986_backprop-notes.md), [`geva2021_key_value_memories`](interpretability/geva2021_key_value_memories-notes.md), [`dar2022_analyzing_transformers`](interpretability/dar2022_analyzing_transformers-notes.md), [`he2016_deep_residual`](interpretability/he2016_deep_residual-notes.md), [`martens2010_hessian_free`](interpretability/martens2010_hessian_free-notes.md).
+- Fixed `scripts/literature_extract.py` `download_pdf` to write fetched bytes to disk.
+- Stopped tracking regenerable `{citationkey}.txt` files (47 removed from git; arXiv / OpenReview / ACL Anthology / similar public PDFs in `bib.bib`). Pinned extracts kept for books, popular press, paywalled HTML (`bricken2023towards`), and `mcintosh2024rlhf_semantic_vulnerabilities`.
+- [`AGENTS.md`](AGENTS.md), [`docs/bibliography-styleguide.md`](docs/bibliography-styleguide.md), [`docs/bibliography-project.md`](docs/bibliography-project.md) — bibliography rules aligned with ai-math-formal-methods (`.txt` local-by-default).
+- [`scripts/literature_extract.py`](scripts/literature_extract.py) — fixed `bib.bib` key parsing; classify keys from theme `.txt` artefacts; OpenReview / ACL / PMLR PDF URL helpers.
+
 ## 2026-08-24
 
 - Ingested HeRA / HeRD-Merging bibliography into [`interpretability/`](interpretability/README.md): ~40 PDFs (local) + `.txt` extracts, entries appended to `bib.bib`. Consumer: [hera](https://github.com/alexhkurz/hera). Still missing notes; OpenReview-only `sun2025layernavigator`, IEEE `11224465`, and two books without PDFs.

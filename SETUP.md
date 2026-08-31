@@ -38,27 +38,33 @@ Edit only this repository for shared summaries. Consumer notes link here with re
 
 1. Append `bib.bib` — include `eprint` / open `url` when a downloadable PDF exists.
 2. Write `{citationkey}-notes.md` with metadata, summary, key concepts (no project relevance).
-3. If a public PDF URL exists, prefer regenerable `{citationkey}.txt` via `pdftotext`; keep `{citationkey}.pdf` local (gitignored).
-4. Optional full-text `{citationkey}.md` from the extract pipeline.
-5. Update theme `README.md`, root `README.md` master index, `CHANGELOG.md`.
+3. Fetch or place `{citationkey}.pdf` locally (gitignored); run `./scripts/ensure-extract.sh {citationkey}` for `{citationkey}.txt`.
+4. Run `./scripts/sync-txt-gitignore.sh` so regenerable `.txt` files are not committed.
+5. Update theme `README.md`, root `README.md` master index (when curated), `CHANGELOG.md`.
 6. Do not add `## Relevance` sections here — put relevance in each consumer repo (`literature-relevance/`).
 
-See `.cursor/rules/bibliography.mdc` and [`bib-mcp/docs/styleguide.md`](../bib-mcp/docs/styleguide.md).
+See [AGENTS.md](AGENTS.md), [`docs/bibliography-styleguide.md`](docs/bibliography-styleguide.md), and [`docs/bibliography-project.md`](docs/bibliography-project.md).
 
 ## Text extracts (`.txt`)
 
+Aligned with [ai-math-formal-methods](https://github.com/alexhkurz/ai-math-formal-methods) bibliography policy:
+
 | Source | In git? | How to obtain locally |
 |--------|---------|------------------------|
-| Public PDF URL in bib / note | Prefer cache (may be tracked until sync scripts are wired) | `pdftotext` or `./scripts/ensure-extract.sh {citationkey}` |
-| User-provided PDF only | Yes (pinned) | `pdftotext` during ingest; stays tracked |
+| Public PDF URL in `bib.bib` (`eprint`, arXiv/open `url`) | **No** (regenerable cache) | `./scripts/ensure-extract.sh {citationkey}` or `pdftotext` |
+| No stable public PDF (paywall, print-only, private scan) | **Yes** (`git add -f`) | `pdftotext` during ingest; stays pinned |
 
 ```bash
-./scripts/ensure-extract.sh {citationkey}
+./scripts/ensure-extract.sh {citationkey}    # one paper
+./scripts/ensure-extract.sh --missing        # all keys with notes but no .txt
+./scripts/sync-txt-gitignore.sh              # refresh theme .gitignore after bib/ingest changes
 ```
 
 From a consumer (sibling layout): `../ai-alignment-literature/scripts/ensure-extract.sh {citationkey}`.
 
 Requires `pdftotext` (poppler) and network unless a local PDF already exists.
+
+**Legacy note:** older clones may still have tracked `.txt` files; pull this change and run `ensure-extract.sh` locally to rebuild cache.
 
 ## PDFs
 

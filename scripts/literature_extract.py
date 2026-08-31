@@ -24,6 +24,7 @@ FETCHABLE_URL_MARKERS = (
     "openreview.net/forum",
     "aclanthology.org",
     "proceedings.mlr.press",
+    "icml.cc/Conferences",
     "acm.org/doi/pdf",
     "bibliotecadigital.exactas.uba.ar",
     "library.oapen.org",
@@ -241,6 +242,8 @@ def download_pdf(url: str, dest: Path) -> None:
         data = response.read()
     if not data.startswith(b"%PDF") and "pdf" not in content_type.lower():
         raise ValueError(f"URL did not return a PDF ({content_type or 'unknown type'}): {url}")
+    dest.parent.mkdir(parents=True, exist_ok=True)
+    dest.write_bytes(data)
 
 
 def fetch_pdf(fields: dict[str, str], note_text: str, pdf_path: Path) -> str:

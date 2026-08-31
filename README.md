@@ -2,7 +2,7 @@
 
 Canonical paper summaries, text extracts, and `bib.bib` for the AI alignment / alignment-faking research cluster. Consumer repos (Chapman alignment faking, planning docs, …) use this repository as a sister checkout (same parent directory) — see [SETUP.md](SETUP.md) and each consumer’s `LITERATURE.md`.
 
-**Setup:** [SETUP.md](SETUP.md) · **Ingestion rules:** `.cursor/rules/bibliography.mdc`
+**Setup:** [SETUP.md](SETUP.md) · **Agent rules:** [AGENTS.md](AGENTS.md) · **Ingestion:** [`docs/bibliography-styleguide.md`](docs/bibliography-styleguide.md), [`docs/bibliography-project.md`](docs/bibliography-project.md)
 
 **Ingestion log:** every new or completed paper must get a bullet in [CHANGELOG.md](CHANGELOG.md) and an entry in **Papers (A–Z by first author)** below, at the same time as the note / `bib.bib` / subfolder `README` updates.
 

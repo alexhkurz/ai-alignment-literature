@@ -1,96 +1,15 @@
 ---
-description: Shared AI alignment literature — bib.bib, theme tree, ingestion; no relevance sections
-globs: "**/*.md", CHANGELOG.md, README.md, bib.bib
+description: Bibliography — read docs first; portable copy in docs/bibliography-project.md
+globs: "**/*.md", CHANGELOG.md, README.md, SETUP.md, bib.bib, AGENTS.md, docs/bibliography-*.md
 alwaysApply: false
 ---
 
-# Bibliography (ai-alignment-literature)
+# Bibliography (Cursor)
 
-**This repository is the canonical literature tree.** Theme folders (`alignment-faking/`, `sleeper-agents/`, …) live at the **repo root** (not under a nested `bibliography/`). **`bib.bib`** is at the repo root.
+**Portable rules (all tools):** [`docs/bibliography-styleguide.md`](../../docs/bibliography-styleguide.md) then [`docs/bibliography-project.md`](../../docs/bibliography-project.md).
 
-**Shared mechanics:** [`../../../bib-mcp/docs/styleguide.md`](../../../bib-mcp/docs/styleguide.md) — start with *Rule stack for AI assistants*.
+**Agent index:** [`AGENTS.md`](../../AGENTS.md).
 
-When **bib-mcp** is in the workspace, also follow **`bib-mcp/.cursor/rules/cursor-bibliography-rules.mdc`**.
+Apply everything in **`docs/bibliography-project.md`** when this rule matches. Shared global mechanics: [`../../../bib-mcp/docs/styleguide.md`](../../../bib-mcp/docs/styleguide.md) when **bib-mcp** is in the workspace.
 
----
-
-## Scope
-
-AI alignment, alignment faking, sleeper / deceptive agents, lie detection, auditing, semantic vulnerabilities of RLHF, adjacent popular-press and philosophy-of-consciousness sources. **Paper summaries here are factual only** (metadata, Summary, key concepts).
-
-**Do not** add `## Relevance to …` sections in new or updated `{citationkey}-notes.md` files. Project-specific relevance lives in **consumer repos** (`literature-relevance/`).
-
----
-
-## `bib.bib`
-
-- **Location:** repository root.
-- **Keys:** new entries use **`{lastname}{year}_{memorable_snake}`** (underscore after the year).
-- Keep **`bib.bib`** in sync with filenames and notes when adding or completing a paper.
-- When a **downloadable PDF** exists (arXiv or other stable open host), record it in **`bib.bib`** (`eprint` and/or `url`).
-
----
-
-## Paths and themes
-
-Extend an existing theme before creating a new top-level folder:
-
-- `alignment-faking/`, `sleeper-agents/`, `lie-detection/`
-- `alignment-auditing/`, `semantic-vulnerabilities/`
-- `popular-press/`, `philosophy_of_consciousness/`
-- `interpretability/`
-
----
-
-## Per-paper artefacts
-
-In the correct theme folder: `{citationkey}.pdf` (gitignored), `{citationkey}.txt`, optional `{citationkey}.md`, and `{citationkey}-notes.md` for the curated summary.
-
-### Note file `{citationkey}-notes.md`
-
-```markdown
-# {Title}
-
-**Authors:** …
-**Year:** …
-**Citation key:** `{citationkey}`
-**PDF:** [link](url)
-**arXiv:** … (if applicable)
-
-## Summary
-…
-
-## Authors
-…
-
-## Key concepts
-…
-
-## Notes
-…
-```
-
-Do **not** include `## Relevance` here.
-
----
-
-## README and CHANGELOG
-
-- **`README.md`:** `## Subfolders` + master index **Papers (A–Z by first author)**.
-- **`CHANGELOG.md`:** prepend on every completed ingestion (mandatory).
-
----
-
-## Ingestion checklist
-
-1. Citation key
-2. **`bib.bib`** entry
-3. Theme folder
-4. **`{citationkey}-notes.md`** — metadata, summary, concepts (**no relevance**)
-5. Local PDF if useful (gitignored)
-6. Extract `.txt` / optional `.md`
-7. Subfolder `README.md`
-8. Root **`README.md`** master index
-9. **`CHANGELOG.md`**
-
-See **[SETUP.md](SETUP.md)** for sister-repo consumers.
+**`.txt` policy (summary):** local by default; do not commit when reproducible from a public PDF in `bib.bib`; regenerate with `./scripts/ensure-extract.sh`; run `./scripts/sync-txt-gitignore.sh` after ingest; `git add -f` only when no stable public PDF exists. Full detail in the styleguide § Git.

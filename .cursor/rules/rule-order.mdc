@@ -1,13 +1,18 @@
 ---
-description: Bibliography / citations — read bib-mcp styleguide first, then bibliography.mdc here
+description: Bibliography / citations — read AGENTS.md and docs first, then bib-mcp styleguide
 alwaysApply: true
 ---
 
 # Rule order (ai-alignment-literature)
 
-1. [`../../../bib-mcp/docs/styleguide.md`](../../../bib-mcp/docs/styleguide.md)
-2. **`.cursor/rules/bibliography.mdc`** in this repo
+**Portable entry point:** [`AGENTS.md`](../../AGENTS.md) — read by Codex, Antigravity, Copilot, Claude Code, and Cursor.
 
-Meta: [`../../../bib-mcp/docs/cursor-bibliography-rules.md`](../../../bib-mcp/docs/cursor-bibliography-rules.md).
+For **`bib.bib`**, theme folders, or paper notes:
+
+1. [`docs/bibliography-styleguide.md`](../../docs/bibliography-styleguide.md) — keys, `.bib` hygiene, **Git / `.txt` policy**, note template.
+2. [`docs/bibliography-project.md`](../../docs/bibliography-project.md) — themes, README lines, ingestion checklist, no relevance here.
+3. [`.cursor/rules/references.mdc`](references.mdc) — `bib.bib` path and key examples.
+
+**Global (when bib-mcp is in the workspace):** [`../../../bib-mcp/docs/styleguide.md`](../../../bib-mcp/docs/styleguide.md). Meta: [`../../../bib-mcp/docs/cursor-bibliography-rules.md`](../../../bib-mcp/docs/cursor-bibliography-rules.md).
 
 Chat path prefix: **`workspace.mdc`**.
