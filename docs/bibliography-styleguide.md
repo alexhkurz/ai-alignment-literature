@@ -16,7 +16,7 @@ Shared mechanics for **`bib.bib`**, theme folders, citation keys, ingestion, and
 |------|------|
 | `{citationkey}.pdf` | Local PDF (gitignored) |
 | `{citationkey}.txt` | `pdftotext` extract (see [Git](#git)) |
-| `{citationkey}-notes.md` | **Curated** summary (commit) |
+| `{citationkey}.md` | **Curated** summary (commit) |
 | `{citationkey}.md` | Optional full-text / extract markdown (commit when used) |
 | `{citationkey}.marker.md` | Optional Marker output (opt-in only) |
 
@@ -27,7 +27,7 @@ Shared mechanics for **`bib.bib`**, theme folders, citation keys, ingestion, and
 When a citation key appears as a navigational handle (theme `README`, root `README`, `CHANGELOG`), link the key to the curated note:
 
 ```markdown
-[`{citationkey}`]({citationkey}-notes.md)
+[`{citationkey}`]({citationkey}.md)
 ```
 
 Use a path relative to the linking file. Do **not** add a separate `[Summary](…)` next to a bare key.
@@ -63,15 +63,15 @@ Pandoc does **not** take PDF as input. Default pipeline:
    ```bash
    pdftotext <theme>/{citationkey}.pdf <theme>/{citationkey}.txt
    ```
-3. Write or update **`{citationkey}-notes.md`** from the extract (curated; not a raw dump).
+3. Write or update **`{citationkey}.md`** from the extract (curated; not a raw dump).
 
-**Do not** run Marker unless the user explicitly asks. Default ingestion is **`pdftotext` → `.txt`** plus curated **`-notes.md`**.
+**Do not** run Marker unless the user explicitly asks. Default ingestion is **`pdftotext` → `.txt`** plus curated **`.md`**.
 
 For EPUB/HTML sources, pandoc to `{citationkey}.md` where appropriate.
 
 ---
 
-## Note file template (`{citationkey}-notes.md`)
+## Note file template (`{citationkey}.md`)
 
 Factual only — **no** `## Relevance to …` (consumer repos).
 
@@ -105,7 +105,7 @@ List authors once in the metadata block; do not add a separate `## Authors` sect
 
 | Commit | Do not commit (default) |
 |--------|-------------------------|
-| `{citationkey}-notes.md`, optional `{citationkey}.md`, `bib.bib`, theme `README.md`, `CHANGELOG.md` | `*.pdf` (gitignored in theme folders) |
+| `{citationkey}.md`, optional `{citationkey}.md`, `bib.bib`, theme `README.md`, `CHANGELOG.md` | `*.pdf` (gitignored in theme folders) |
 | | **`*.txt`** when reproducible from a **public** PDF (typical arXiv / open `url` in `bib.bib`) |
 
 ### `{citationkey}.txt` — local by default
@@ -120,7 +120,7 @@ Requires **`pdftotext`** (poppler). Fetch + extract logic: `scripts/ensure-extra
 
 ### Marker
 
-Opt-in only. Output as `{citationkey}.marker.md`; keep separate from curated `-notes.md`.
+Opt-in only. Output as `{citationkey}.marker.md`; keep separate from curated `.md`.
 
 ---
 
@@ -129,7 +129,7 @@ Opt-in only. Output as `{citationkey}.marker.md`; keep separate from curated `-n
 1. Citation key.
 2. Append **`bib.bib`** (with `eprint` / open `url` when available).
 3. Theme folder.
-4. **`{citationkey}-notes.md`**.
+4. **`{citationkey}.md`**.
 5. Local PDF → **`ensure-extract.sh`** or `pdftotext`.
 6. Theme **`README.md`** line.
 7. Root **`README.md`** master index (when curated note exists).

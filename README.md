@@ -21,19 +21,32 @@ Canonical paper summaries, text extracts, and `bib.bib` for the AI alignment / a
 
 ## Papers (A–Z by first author)
 
-Curated summaries (`{citationkey}-notes.md` when present; otherwise partial extract only).
+Curated summaries (`{citationkey}.md` or `{citationkey}.md`).
 
-- [Clymer, Juang & Field — *Poser: Unmasking alignment faking LLMs…* (2024)](alignment-faking/clymer2024poser-notes.md)
-- [Frenkel, Mozur & Satariano — *The escalating global A.I. arms race* (2026)](popular-press/frenkel2026global_ai_arms-notes.md)
-- [Greenblatt et al. — *Alignment faking in large language models* (2024)](alignment-faking/greenblatt2024alignment_faking-notes.md)
-- [Hubinger et al. — *Sleeper agents…* (2024)](sleeper-agents/hubinger2024sleeper_agents-notes.md)
-- [MacDiarmid et al. — *Natural emergent misalignment from reward hacking…* (2025)](alignment-faking/macdiarmid2025emergent_misalignment-notes.md)
-- [Metzinger — *The Ego Tunnel* (2009)](philosophy_of_consciousness/metzinger2009_ego_tunnel-notes.md)
-- [Pacchiardi et al. — *How to catch an AI liar…* (2023)](lie-detection/pacchiardi2023catch_a_liar-notes.md)
-- [Scoles — *You have no choice in reading this article—maybe* (2026)](popular-press/scoles2026free_will_maoz-notes.md)
-- [Seth — *Being You* (2021)](philosophy_of_consciousness/seth2021_being_you-notes.md)
-- [Wang — *Self-awareness, a singularity of AI* (2023)](philosophy_of_consciousness/wang2023_singularity-notes.md)
-- [Whang — *We don't really know how A.I. works…* (2026)](popular-press/whang2026ai_black_box-notes.md)
+- [Apolinario & Roy — *LANCE: Low-rank activation compression for on-device continual learning* (2026)](interpretability/apolinario2026lancelowrankactivation.md)
+- [Bai (Qwen Team) — *Qwen2.5-VL technical report* (2025)](interpretability/bai2025qwen25vltechnicalreport.md)
+- [Braun et al. — *Understanding (un)reliability of steering vectors in language models* (2025)](interpretability/braun2025understanding.md)
+- [Clymer, Juang & Field — *Poser: Unmasking alignment faking LLMs…* (2024)](alignment-faking/clymer2024poser.md)
+- [Cunningham et al. — *Sparse autoencoders find highly interpretable features in language models* (2023)](interpretability/cunningham2023sparseautoencodershighlyinterpretable.md)
+- [Ding et al. — *Enhancing chat language models by scaling high-quality instructional conversations* (2023)](interpretability/ding2023enhancingchatlanguagemodels.md)
+- [Dunefsky & Cohan — *One-shot optimized steering vectors mediate safety-relevant behaviors in LLMs* (2025)](interpretability/dunefsky2025oneshot.md)
+- [Fang et al. — *Controllable LLM reasoning via sparse autoencoder-based steering* (2026)](interpretability/fang-etal-2026-controllable.md)
+- [Frenkel, Mozur & Satariano — *The escalating global A.I. arms race* (2026)](popular-press/frenkel2026global_ai_arms.md)
+- [Gemma Team — *Gemma 4 technical report* (2026)](interpretability/gemmateam2026gemma4technicalreport.md)
+- [Greenblatt et al. — *Alignment faking in large language models* (2024)](alignment-faking/greenblatt2024alignment_faking.md)
+- [He, Gao & Chen — *DeBERTaV3…* (2023)](interpretability/he2023debertav.md)
+- [Heyman & Vandeputte — *Steer like the LLM: activation steering that mimics prompting* (2026)](interpretability/heyman2026steer.md)
+- [Ho et al. — *Language models can control their own attention* (2026)](interpretability/ho2026declarative_attention.md)
+- [Hubinger et al. — *Sleeper agents…* (2024)](sleeper-agents/hubinger2024sleeper_agents.md)
+- [MacDiarmid et al. — *Natural emergent misalignment from reward hacking…* (2025)](alignment-faking/macdiarmid2025emergent_misalignment.md)
+- [Metzinger — *The Ego Tunnel* (2009)](philosophy_of_consciousness/metzinger2009_ego_tunnel.md)
+- [Pacchiardi et al. — *How to catch an AI liar…* (2023)](lie-detection/pacchiardi2023catch_a_liar.md)
+- [Scoles — *You have no choice in reading this article—maybe* (2026)](popular-press/scoles2026free_will_maoz.md)
+- [Seth — *Being You* (2021)](philosophy_of_consciousness/seth2021_being_you.md)
+- [Wang — *Self-awareness, a singularity of AI* (2023)](philosophy_of_consciousness/wang2023_singularity.md)
+- [Whang — *We don't really know how A.I. works…* (2026)](popular-press/whang2026ai_black_box.md)
+
+### Partial / no notes yet
 
 ### Partial / no notes yet
 

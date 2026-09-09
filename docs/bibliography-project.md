@@ -10,7 +10,7 @@ AI alignment, alignment faking, sleeper / deceptive agents, lie detection, audit
 
 **Paper summaries here are factual only** (metadata, Summary, key concepts).
 
-**Do not** add `## Relevance to …` in `{citationkey}-notes.md`. Project-specific relevance lives in **consumer repos** (`literature-relevance/`, reader docs, milestones).
+**Do not** add `## Relevance to …` in `{citationkey}.md`. Project-specific relevance lives in **consumer repos** (`literature-relevance/`, reader docs, milestones).
 
 ---
 
@@ -41,12 +41,12 @@ In the correct theme folder:
 
 - `{citationkey}.pdf` — local only (gitignored)
 - `{citationkey}.txt` — local extract (git policy in styleguide)
-- `{citationkey}-notes.md` — curated summary (**commit**)
+- `{citationkey}.md` — curated summary (**commit**)
 - optional `{citationkey}.md` — full-text markdown when used
 
 ### Git (what goes on the remote)
 
-- **Commit:** `-notes.md`, optional `.md`, `bib.bib`, theme `README.md`, root `CHANGELOG.md`, theme `.gitignore` after `sync-txt-gitignore.sh`.
+- **Commit:** `.md`, optional `.md`, `bib.bib`, theme `README.md`, root `CHANGELOG.md`, theme `.gitignore` after `sync-txt-gitignore.sh`.
 - **Do not commit:** `*.pdf`.
 - **Do not commit `*.txt`** when reproducible from a public PDF in `bib.bib` — regenerate with `./scripts/ensure-extract.sh {citationkey}`.
 - **Exception:** `git add -f <theme>/{citationkey}.txt` when no stable public PDF exists.
@@ -56,10 +56,10 @@ In the correct theme folder:
 Sort theme `README.md` bullets by **publication year ascending** (oldest first).
 
 ```markdown
-- {Author1} & {Author2} - [{Title}](https://scholar.google.com/scholar?q={query}) ({Year}) - [PDF]({url}) - [`{citationkey}`]({citationkey}-notes.md)
+- {Author1} & {Author2} - [{Title}](https://scholar.google.com/scholar?q={query}) ({Year}) - [PDF]({url}) - [`{citationkey}`]({citationkey}.md)
 ```
 
-For **partial ingest** (extract only, no `-notes.md` yet), list the key in a “partial / no notes yet” subsection — see `interpretability/README.md`.
+For **partial ingest** (extract only, no `.md` yet), list the key in a “partial / no notes yet” subsection — see `interpretability/README.md`.
 
 ---
 
@@ -68,7 +68,7 @@ For **partial ingest** (extract only, no `-notes.md` yet), list the key in a “
 1. Citation key — matches all filenames.
 2. **`bib.bib`** entry — include `eprint` / open `url` when a public PDF exists.
 3. Theme folder.
-4. **`{citationkey}-notes.md`** — metadata, summary, key concepts (**no relevance**).
+4. **`{citationkey}.md`** — metadata, summary, key concepts (**no relevance**).
 5. PDF — `{citationkey}.pdf` (gitignored); fetch via `ensure-extract.sh` when possible.
 6. Text — `./scripts/ensure-extract.sh {citationkey}` or `pdftotext` (local; do not commit if regenerable).
 7. **`./scripts/sync-txt-gitignore.sh`** — refresh theme `.gitignore` for `.txt` policy.
@@ -93,6 +93,6 @@ When only an extract exists (common in `interpretability/`):
 1. Ensure **`bib.bib`** entry with open `url` / `eprint`.
 2. Regenerate **`{citationkey}.txt`** locally — do not commit if public PDF exists.
 3. Add theme `README.md` line.
-4. When promoting to full ingest: add **`{citationkey}-notes.md`**, root `README.md` link, `CHANGELOG.md`.
+4. When promoting to full ingest: add **`{citationkey}.md`**, root `README.md` link, `CHANGELOG.md`.
 
 Do not treat tracked legacy `.txt` files as policy — prefer `sync-txt-gitignore.sh` and stop committing new regenerable extracts.

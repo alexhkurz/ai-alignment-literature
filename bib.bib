@@ -244,6 +244,9 @@ url={https://openreview.net/forum?id=S1viikbCW},
     doi = "10.18653/v1/2026.acl-long.974",
     pages = "21290--21305",
     ISBN = "979-8-89176-390-6",
+    eprint = "2507.06261",
+    archivePrefix = "arXiv",
+    primaryClass = "cs.CL",
     abstract = "Large Reasoning Models (LRMs) exhibit human-like cognitive reasoning strategies (e.g. backtracking, cross-verification) during reasoning process, which improves their performance on complex tasks. Currently, reasoning strategies are autonomously selected by LRMs themselves. However, such autonomous selection often produces inefficient or even erroneous reasoning paths. To make reasoning more reliable and flexible, it is important to develop methods for controlling reasoning strategies. Existing methods struggle to control fine-grained reasoning strategies due to conceptual entanglement in LRMs' hidden states. To address this, we leverage Sparse Autoencoders (SAEs) to decompose strategy-entangled hidden states into a disentangled feature space. To identify the few strategy-specific features from the vast pool of SAE features, we propose SAE-Steering, an efficient two-stage feature identification pipeline. SAE-Steering first recalls features that amplify the logits of strategy-specific keywords, filtering out over 99{\%} of features, and then ranks the remaining features by their control effectiveness. Using the identified strategy-specific features as control vectors, SAE-Steering outperforms existing methods by over 15{\%} in control effectiveness. Furthermore, controlling reasoning strategies can redirect LRMs from erroneous paths to correct ones, achieving a 7{\%} absolute accuracy improvement."
 }
 
@@ -783,4 +786,77 @@ url={https://openreview.net/forum?id=6t0Kwf8-jrj}
   pages={735--742},
   year={2010},
   url={https://icml.cc/Conferences/2010/papers/458.pdf}
+}
+
+@inproceedings{tenney2019_edge_probing,
+  title={What do you learn from context? Probing for sentence structure in contextualized word representations},
+  author={Tenney, Ian and Xia, Patrick and Chen, Berlin and Wang, Alex and Poliak, Adam and McCoy, R. Thomas and Kim, Najoung and Van Durme, Benjamin and Bowman, Samuel R. and Das, Dipanjan and Pavlick, Ellie},
+  booktitle={International Conference on Learning Representations},
+  year={2019},
+  eprint={1905.06316},
+  archivePrefix={arXiv},
+  primaryClass={cs.CL}
+}
+
+@misc{ho2026declarative_attention,
+  title={Language Models Can Control Their Own Attention},
+  author={Ho, Namgyu and Ahmad, Huzama and Koh, Woosung and Yun, Se-Young and Schuster, Tal and Nogueira dos Santos, Cicero},
+  year={2026},
+  eprint={2609.02737},
+  archivePrefix={arXiv},
+  primaryClass={cs.CL}
+}
+
+@misc{koorndijk2025alignment_faking_small_llm,
+  title={Empirical Evidence for Alignment Faking in a Small {LLM} and Prompt-Based Mitigation Techniques},
+  author={Koorndijk, Jeanice},
+  year={2025},
+  eprint={2506.21584},
+  archivePrefix={arXiv},
+  primaryClass={cs.CL}
+}
+
+@misc{taylor2025school_reward_hacks,
+  title={School of Reward Hacks: Hacking Harmless Tasks Generalizes to Misaligned Behavior in {LLMs}},
+  author={Taylor, Mia and Chua, James and Betley, Jan and Treutlein, Johannes and Evans, Owain},
+  year={2025},
+  eprint={2508.17511},
+  archivePrefix={arXiv},
+  primaryClass={cs.AI}
+}
+
+@misc{braun2025understanding,
+  title={Understanding (Un)Reliability of Steering Vectors in Language Models},
+  author={Braun, Joschka and Eickhoff, Carsten and Krueger, David and Bahrainian, Seyed Ali and Krasheninnikov, Dmitrii},
+  year={2025},
+  eprint={2505.22637},
+  archivePrefix={arXiv},
+  primaryClass={cs.LG}
+}
+
+@misc{dunefsky2025oneshot,
+  title={One-shot Optimized Steering Vectors Mediate Safety-relevant Behaviors in {LLMs}},
+  author={Dunefsky, Jacob and Cohan, Arman},
+  year={2025},
+  eprint={2502.18862},
+  archivePrefix={arXiv},
+  primaryClass={cs.LG}
+}
+
+@misc{he2023debertav,
+  title={DeBERTa{V3}: Improving {DeBERTa} using {ELECTRA}-Style Pre-Training with Gradient-Disentangled Embedding Sharing},
+  author={He, Pengcheng and Gao, Jianfeng and Chen, Weizhu},
+  year={2023},
+  eprint={2111.09543},
+  archivePrefix={arXiv},
+  primaryClass={cs.CL}
+}
+
+@misc{heyman2026steer,
+  title={Steer Like the {LLM}: Activation Steering that Mimics Prompting},
+  author={Heyman, Geert and Vandeputte, Frederik},
+  year={2026},
+  eprint={2605.03907},
+  archivePrefix={arXiv},
+  primaryClass={cs.CL}
 }

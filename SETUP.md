@@ -37,7 +37,7 @@ Edit only this repository for shared summaries. Consumer notes link here with re
 ## Ingesting a new paper (here)
 
 1. Append `bib.bib` — include `eprint` / open `url` when a downloadable PDF exists.
-2. Write `{citationkey}-notes.md` with metadata, summary, key concepts (no project relevance).
+2. Write `{citationkey}.md` with metadata, summary, key concepts (no project relevance).
 3. Fetch or place `{citationkey}.pdf` locally (gitignored); run `./scripts/ensure-extract.sh {citationkey}` for `{citationkey}.txt`.
 4. Run `./scripts/sync-txt-gitignore.sh` so regenerable `.txt` files are not committed.
 5. Update theme `README.md`, root `README.md` master index (when curated), `CHANGELOG.md`.

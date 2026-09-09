@@ -44,10 +44,11 @@ NON_FETCHABLE_URL_MARKERS = (
 )
 
 GITIGNORE_HEADER = """*.pdf
+*.txt
 
-# Regenerable text cache — explicit list (public PDF URL in bib.bib / note).
-# Run: ../scripts/ensure-extract.sh KEY
-# Pinned {key}.txt (local PDF only) are omitted here and stay tracked in git.
+# .txt is a local cache by default — regenerate with ../scripts/ensure-extract.sh KEY
+# (requires a public PDF URL in bib.bib / the note).
+# Pinned exceptions below: no stable public PDF exists, so these stay tracked.
 """
 
 
@@ -291,10 +292,10 @@ def fetch_pdf(fields: dict[str, str], note_text: str, pdf_path: Path) -> str:
     )
 
 
-def render_folder_gitignore(regenerable_keys: list[str]) -> str:
+def render_folder_gitignore(pinned_keys: list[str]) -> str:
     lines = [GITIGNORE_HEADER.rstrip()]
-    for key in sorted(regenerable_keys):
-        lines.append(f"{key}.txt")
+    for key in sorted(pinned_keys):
+        lines.append(f"!{key}.txt")
     return "\n".join(lines) + "\n"
 
 
@@ -319,10 +320,10 @@ def sync_folder_gitignores(root: Path, bib_text: str, *, dry_run: bool = False) 
     reports: list[str] = []
     for folder in theme_folders(root):
         entries = by_folder.get(folder, [])
-        regenerable_keys = [key for key, regenerable in entries if regenerable]
-        regenerable_count = len(regenerable_keys)
-        pinned_count = len(entries) - regenerable_count
-        content = render_folder_gitignore(regenerable_keys)
+        regenerable_count = sum(1 for _, regenerable in entries if regenerable)
+        pinned_keys = [key for key, regenerable in entries if not regenerable]
+        pinned_count = len(pinned_keys)
+        content = render_folder_gitignore(pinned_keys)
         gitignore_path = folder / ".gitignore"
         rel = gitignore_path.relative_to(root)
         if dry_run:

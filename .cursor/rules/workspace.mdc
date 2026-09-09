@@ -12,6 +12,6 @@ This repository **is** the shared literature tree (theme folders at repo root, p
 When citing files from **this** repository:
 
 - **Always** prefix: `ai-alignment-literature/...`
-- **Never** use bare paths like `alignment-faking/greenblatt2024alignment_faking-notes.md` — another root may have similar layout.
+- **Never** use bare paths like `alignment-faking/greenblatt2024alignment_faking.md` — another root may have similar layout.
 
 Consumers link here with filesystem relatives such as `../../ai-alignment-literature/...` (see each consumer’s **`LITERATURE.md`**).

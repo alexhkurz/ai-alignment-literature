@@ -20,7 +20,7 @@ Global mechanics not duplicated locally: [`../bib-mcp/docs/styleguide.md`](../bi
 
 - **`bib.bib`** at repo root.
 - **Theme folders** at repo root (`alignment-faking/`, `interpretability/`, …) — not a nested `bibliography/`.
-- **Curated notes:** `{citationkey}-notes.md` (factual summary only; no project relevance).
+- **Curated notes:** `{citationkey}.md` (factual summary only; no project relevance).
 - **Per paper:** `{citationkey}.pdf` (local), `{citationkey}.txt` (local extract), optional `{citationkey}.md`.
 
 ---
@@ -36,7 +36,7 @@ Global mechanics not duplicated locally: [`../bib-mcp/docs/styleguide.md`](../bi
 
 ## Ingestion done when
 
-`bib.bib` + `{citationkey}-notes.md` (or completed partial ingest) + theme `README.md` + root **`CHANGELOG.md`** bullet (prepend under `## YYYY-MM-DD`).
+`bib.bib` + `{citationkey}.md` (or completed partial ingest) + theme `README.md` + root **`CHANGELOG.md`** bullet (prepend under `## YYYY-MM-DD`).
 
 **Do not** add `## Relevance to …` in this repo — consumer repos hold `literature-relevance/`.
 
