@@ -32,6 +32,9 @@ AI alignment, alignment faking, sleeper / deceptive agents, lie detection, audit
 - `popular-press/`
 - `philosophy_of_consciousness/`
 - `interpretability/` — steering, SAEs, LoRA/PEFT, model merging (HeRA cluster)
+- `attention/` — attention visualization, BERT geometry, pedagogical transformer walkthroughs, minimal GPT code for instrumentation
+- `j-space/` — Jacobian lens, J-space / global-workspace structure (incl. Gurnee et al.), J-Access, J-CoT, and related critiques
+- `authors/<slug>/` — per-researcher corpora (Google Scholar ingest); see [`authors/README.md`](../authors/README.md)
 
 ---
 
@@ -96,3 +99,13 @@ When only an extract exists (common in `interpretability/`):
 4. When promoting to full ingest: add **`{citationkey}.md`**, root `README.md` link, `CHANGELOG.md`.
 
 Do not treat tracked legacy `.txt` files as policy — prefer `sync-txt-gitignore.sh` and stop committing new regenerable extracts.
+
+---
+
+## Talks
+
+Talk slide decks live in the top-level **`talks/`** folder. They do **not** get a `bib.bib` entry or a `CHANGELOG.md` bullet.
+
+- **Slide file** — local; gitignored by `talks/.gitignore`.
+- **Summary file** — `{base}.md` is committed and links to relevant ingested paper notes.
+- See `talks/README.md` for the full conventions and ingest checklist.

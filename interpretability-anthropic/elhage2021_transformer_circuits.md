@@ -5,12 +5,24 @@
 **Venue:** Transformer Circuits Thread (not peer-reviewed as a journal paper)  
 **Citation key:** `elhage2021_transformer_circuits`  
 **BibTeX entry:** [entry](../../bib.bib#L633)  
+**URL:** [transformer-circuits.pub](https://transformer-circuits.pub/2021/framework/index.html)  
 **PDF:** [thread](https://transformer-circuits.pub/2021/framework/index.html)  
 **Google Scholar:** [Search](https://scholar.google.com/scholar?q=Mathematical+Framework+Transformer+Circuits+Elhage)
 
 ## Summary
 
 Anthropic’s **transformer circuits** framework gives a mechanistic vocabulary for small transformers: the **residual stream** as a shared workspace, **Q/K/V** attention as bilinear routing plus value aggregation, and **MLP** layers as key–value memories writing to the stream. The essay connects attention heads and MLP neurons to interpretable **circuits** (e.g. induction heads) and distinguishes **residual dimensions** from classical “neurons.” It is the interpretability backbone cited throughout the HeRA transformer reader.
+
+## Details
+
+Elhage et al. (2021) decompose each attention head into two circuits:
+
+QK circuit: $W_Q^T W_K$ — this matrix determines what attends to what, purely based on the dot product geometry of keys and queries
+OV circuit: $W_O W_V$ — this matrix determines what information gets moved, independently of the routing decision
+
+These two circuits are independent: one head can route attention based on syntactic role (QK circuit) while passing semantic content (OV circuit). The paper makes the case that this factored structure is the right level at which to analyze what attention is doing.
+
+They also formalize layer composition: the output of layer $l$ is written into the residual stream, and layer $l+1$'s $W_Q$, $W_K$ project from that updated stream — so later heads can condition on what earlier heads computed.
 
 ## Key concepts
 

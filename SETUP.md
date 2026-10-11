@@ -34,6 +34,10 @@ Open both in a multi-root Cursor workspace (e.g. `ai-repos.code-workspace`).
 
 Edit only this repository for shared summaries. Consumer notes link here with relative `../` paths; they do not vendor a nested copy.
 
+**Consumer paper index:** [`publications/README.md`](publications/README.md) lists papers migrated from `literature-review-and-docs` / `chapman-alignment-faking` (theme folders; not HeRA `interpretability/`).
+
+**Author corpora:** [`authors/README.md`](authors/README.md) — e.g. [`authors/rimkevicius/`](authors/rimkevicius/README.md) (Google Scholar ingest).
+
 ## Ingesting a new paper (here)
 
 1. Append `bib.bib` — include `eprint` / open `url` when a downloadable PDF exists.

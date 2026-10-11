@@ -2,6 +2,10 @@
 
 Canonical shared literature tree for the AI alignment / alignment-faking research cluster. Human overview: [README.md](README.md). Sister-repo layout: [SETUP.md](SETUP.md).
 
+## Personal background (PAIA)
+
+If available on the machine, read `/Users/akurz/.agents/paia/BACKGROUND.md` (rule: `/Users/akurz/.agents/paia/AGENTS.md`). Calibrate how much subfield folklore to include in notes. On a machine without that path, ask the user or skip.
+
 ---
 
 ## Rule stack

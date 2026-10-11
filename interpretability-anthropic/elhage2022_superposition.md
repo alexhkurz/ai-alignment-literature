@@ -5,6 +5,7 @@
 **Venue:** Transformer Circuits Thread / arXiv  
 **Citation key:** `elhage2022_superposition`  
 **BibTeX entry:** [entry](../../bib.bib)  
+**URL:** [transformer-circuits.pub](https://transformer-circuits.pub/2022/toy_model/index.html)  
 **PDF:** [arXiv](https://arxiv.org/pdf/2209.10652.pdf)  
 **arXiv:** 2209.10652  
 **Google Scholar:** [Search](https://scholar.google.com/scholar?q=Elhage+Toy+Models+Superposition+2022)

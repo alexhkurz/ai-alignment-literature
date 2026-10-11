@@ -1,0 +1,7 @@
+*.pdf
+*.txt
+
+# .txt is a local cache by default — regenerate with ../scripts/ensure-extract.sh KEY
+# (requires a public PDF URL in bib.bib / the note).
+# Pinned exceptions below: no stable public PDF exists, so these stay tracked.
+!lange2026_jspace_standpoint.txt

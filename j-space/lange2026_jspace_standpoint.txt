@@ -1,0 +1,353 @@
+Does J-Space Cross the Standpoint Threshold?
+Daniel H. Lange
+Department of Electrical and Computer Engineering, Technion, Israel Institute of Technology
+Aug. 22, 2026
+
+Abstract
+“The Standpoint Threshold” argues that consciousness-oriented inquiry into an artificial system is not well
+formed until its internal organization satisfies three jointly necessary conditions: persistent internal context,
+differentiated internal possibility, and closed-loop operativity. Gurnee et al. report J-space, a sparse
+representational structure in Claude models that they argue is causally privileged and exhibits several
+functional properties of a global workspace. This note applies the threshold’s diagnostic schema to those
+results. Gurnee et al.’s architectural discussion highlights the persistence limitation relevant to Condition 1.
+Their causal interventions provide structured evidence relevant to Condition 2, but do not by themselves
+establish autonomous maintenance of a stance-position; their selectivity experiments provide unusually clean
+evidence for the role-differentiation component of Condition 3. The post-training emergence of an Assistantrelative point of view sharpens the near-case without changing the fact that Condition 1 remains sufficient to
+block a positive threshold classification for the episode-bounded model process assessed here: a reliable
+disposition to reconstruct a system-relative orientation from supplied context is not yet a state carried across
+the relevant boundary. The central result is narrow: J-space changes the evidential status of the bounded nearcase, not its classification. The note concludes with three tests - Input Equalization, ContinuationReconstruction, and Active-Carryover - for distinguishing reconstructed continuity from genuinely maintained
+internal orientation in persistent architectures.
+Keywords: J-space; large language models; global workspace theory; internal standpoint; persistent internal
+context; artificial consciousness
+
+1. A Prior Question and a Later Empirical Test Case
+In earlier work, first circulated publicly as a PhilArchive preprint and later published in Philosophies, I
+proposed the Standpoint Threshold (Lange, 2026). It does not claim that any existing system is conscious,
+self-aware, or subjective. Its claim is prior: before debating whether a system is conscious, one must ask
+whether its architecture supplies the kind of internal organization to which consciousness attributions
+could determinately apply. The paper is also explicit that global-workspace vocabulary is not sufficient on
+its own. In its discussion of neighboring accounts, it states that global workspace theory “does not by
+itself establish Condition 2 that the system occupies positions within an internally reachable and
+maintainable stance-space,” and that “a system that reconstructs its situation at every step, or whose
+alleged workspace feeds only one routine, may be described in workspace vocabulary without crossing
+the threshold at issue here.” That passage was written before the J-space report appeared and without
+those results in view.
+Shortly afterward, Anthropic’s interpretability team published a detailed empirical case framed in closely
+related vocabulary: J-space, a set of representations in Claude models that they characterize, with
+extensive causal-intervention evidence, as functioning like a global workspace (Gurnee et al., 2026). The
+two papers were developed independently: neither cites the other, and the Standpoint Threshold’s
+diagnostic criteria had already been publicly archived on PhilArchive before the J-space report appeared1.
+Both engage the same background literature, including Butlin and colleagues’ proposal (Butlin et al.,
+2023) to derive “indicator properties” from theories of consciousness as a framework for assessing
+artificial systems. The Standpoint Threshold treats its account as upstream of that program, asking what
+Chronology: Philosophies records The Standpoint Threshold as received May 12, 2026 and revised June 23; PhilArchive records its first
+archival date as May 21 and version 6 on June 24 (https://philarchive.org/rec/LANTST-5). Gurnee et al.’s Transformer Circuits report is dated
+July 6; Lange (2026) was accepted July 14 and published July 17. The text cites the final journal version.
+1
+
+1
+
+must be true of a system before such indicators have a determinate target. Gurnee et al. describe their
+findings as “one such empirical investigation” of it.
+The significance is not merely classificatory. Gurnee et al.’s architectural framing highlights the same
+persistence problem that motivates Condition 1, while their causal interventions supply new evidence
+relevant to Conditions 2 and 3. The former is not independent empirical corroboration of the threshold: it
+is largely a consequence of the transformer architecture both papers are discussing. The distinctive
+evidential contribution of J-space lies in the intervention results. The present note therefore uses those
+results as a test case for the threshold’s published diagnostic criteria rather than as a post hoc
+reclassification exercise.
+A separate question is whether J-space merits the label “global workspace.” Chalmers (2026) argues that
+this description overstates the evidence: the five properties Gurnee et al. call “workspace-like” track
+generic features of conscious access more closely than the distinctive architecture of global workspace
+theory, and J-space may be better understood as what he calls a minimal rather than a substantial
+workspace. Nothing in the present argument depends on resolving that dispute. The Standpoint Threshold
+asks a different question: whether the system satisfies the three architectural conditions for processing
+from a standpoint - persistent internal context, differentiated internal possibility, and closed-loop
+operativity. The analysis below therefore grants the relevant J-space functional and intervention results
+without assuming that J-space constitutes a global workspace in the stronger sense.
+
+2. The Threshold, Restated
+The threshold specifies three jointly necessary, individually insufficient conditions. Persistent internal
+context (Condition 1) requires a standing internal condition that persists and is updated across transitions
+(incremental preservation), is modified through the system’s own ongoing activity rather than wholly
+supplied from outside (endogenous update), and remains within the active causal basis of later processing
+rather than being inertly stored (active carryover). Differentiated internal possibility (Condition 2)
+requires the system’s current position to be reachable and maintainable under its own dynamics for more
+than one processing step, and variation in that position to durably alter the space of live continuations
+under comparable input and admissible perturbation - not merely the next output. Closed-loop operativity
+(Condition 3) requires differences in current position to produce systematic downstream effects across
+more than one bounded processing role, such as prediction, interpretation, planning, or action selection,
+rather than remaining confined to a single local routine. Two roles count as genuinely distinct exactly
+when “admissible interventions can selectively alter the downstream consequences of the current stanceposition for one without correspondingly altering them for the other.”
+The level and temporal boundary of assessment must be fixed before these criteria are applied. The
+threshold’s default target is the model-internal process rather than the larger deployment in which it is
+embedded. For the J-space experiments considered here, the relevant unit is standard, episode-bounded
+transformer inference with fixed weights. This is a conditional diagnosis, not a claim that transformer
+computation under every possible serving regime must fail Condition 1. A system that genuinely retains
+causally active model state across the temporal boundary of the assessed process would require a separate
+Condition 1 assessment.
+Nor does Condition 1 require that carried state be impossible to reconstruct in principle. A deterministic
+recurrent network, state-space model, or world model may be reproducible by replaying a sufficiently
+complete initial condition and input history, yet still carry state if its ordinary next transition directly takes
+the previously active state as a causal input. Conversely, when a process is reset and the relevant state is
+rebuilt from a transcript or other record supplied at the input boundary, the continuity is reconstructive.
+
+2
+
+The record-orientation distinction therefore concerns the causal route the system actually uses in ordinary
+operation, not whether an experimenter could reproduce the same state offline.
+The Standpoint Threshold’s diagnostic schema (Tables 1 and 2) applies these conditions to several
+architecture classes. Two rows matter here. Standard transformer inference, assessed at the model-internal
+level with architecture and weights held fixed, is classified as a bounded near-case: Condition 1 is “weak;
+intra-pass, episode-bound,” Condition 2 “unclear; at most weak,” and Condition 3 “partial/unclear.” A
+conversational LLM deployed with memory is classified as a near-case with “continuity mainly external”:
+Condition 1 is “largely external reconstruction” because the transcript is re-supplied as input to each new
+pass rather than carried forward as an internal condition; Condition 2 is “open”; and Condition 3 is
+“suggestive but undifferentiated.” The J-space experiments use fixed model weights within each trial and
+remain episode-bound at the model-internal level. They do not demonstrate an independently maintained
+internal state across separately initiated inference episodes and therefore sit closer to the first row than the
+second, even though the underlying model is deployed conversationally.
+
+3. What the J-Space Is
+Gurnee et al. introduce the Jacobian lens (J-lens), a technique designed to identify internal representations
+that are readily available for verbal report. For each vocabulary token, the J-lens identifies a vector in
+residual-stream space associated with that token’s potential to be verbalized in present or future output,
+using an averaged Jacobian over token positions and a corpus of prompts. The resulting token-indexed
+vectors form an overcomplete set, but empirically only a relatively small number are strongly active at a
+time. Gurnee et al. define J-space as the set of points expressible as sparse nonnegative combinations of Jlens vectors, with an allowable sparsity level k varied across analyses and typically set no higher than
+about 25.
+They report five functional properties that they characterize as workspace-like: verbal report (the model
+can name concepts occupying the workspace, and swapping one workspace vector for another changes
+what it reports); directed modulation (the model can deliberately hold a concept in the workspace on
+instruction and recruit concepts not otherwise represented there); internal reasoning (intermediate steps of
+multi-step computation appear in the workspace, and intervening on them redirects the conclusion);
+flexible generalization (a single workspace vector can serve as an argument to heterogeneous downstream
+computations); and selectivity (the workspace comprises only a small fraction of total representational
+content and is not engaged by routine, automatic processing).
+They also report three structural signatures. J-space carries coherent content only within an intermediate
+band of layers, between an early regime in which it is empty and a late regime aligned with imminent
+output; it has limited capacity, holding on the order of tens of concepts at once and accounting for no
+more than about ten percent of activation variance; and they characterize it as a broadcast hub, based on
+the unusually strong composition of J-lens directions with downstream component inputs - across model
+depth and, via a subset of attention heads, across token positions - relative to ordinary directions.
+Two scope qualifications are important. First, the authors explicitly do not claim to have found the full
+architecture that global workspace theory ascribes to the brain: “there are no obviously separable input
+processors, and the broadcast we document occurs within a single feedforward pass rather than through
+recurrent loops.” Second, the experiments remain episode-bound at the model-internal level relevant here.
+Some interventions affect later generated tokens, but the experiments do not demonstrate a model-internal
+state that survives a separately initiated inference episode without being reconstructed from supplied
+context. Both qualifications bear directly on the three conditions.
+
+3
+
+4. Reading the J-Space Against the Three Conditions
+4.1 Persistent Internal Context: The Architectural Limitation and Its Scope
+The threshold’s discussion of standard transformer inference already anticipates the relevant limitation.
+Within a single inference pass, a transformer “carries forward an internally updated residue of prior
+processing” and thus “plausibly satisfies a weak endogeneity condition.” Across separate episodes,
+however, standard inference lacks a standing internal condition that varies with its prior inference-time
+trajectory: once the token sequence is fixed, “the same current input yields the same internal state
+regardless of prior trajectory.” Deployed continuity is often achieved by “offloading state into external
+stores, tools, or human-maintained scaffolds,” but this does not show that the model-internal process
+assessed in the threshold carries its own prior activity forward as a standing condition.
+Gurnee et al. emphasize the corresponding architectural fact in motivating their comparison with
+biological global-workspace models: a standard transformer lacks the recurrent loops usually invoked in
+those theories, and extended deliberation often proceeds by writing intermediate results into token context
+for later computation. This is relevant to Condition 1, but it should not be counted as independent
+empirical confirmation of it. The point follows largely from the architecture; J-space’s distinctive
+evidence lies in the causal interventions on representational content.
+The diagnosis is also narrower than the claim that a transformer could never satisfy Condition 1. If a
+deployed transformer were configured so that causally active model state genuinely persisted across the
+temporal boundary chosen for assessment, rather than being reset and reconstructed from a supplied
+record, Condition 1 would have to be reassessed for that system. The present verdict concerns the
+standard episode-bounded model process used in the J-space experiments. This is why the distinction
+cannot turn merely on whether an experimenter could reconstruct a state: deterministic recurrent systems
+may also be reproducible in principle, yet their ordinary transition can still inherit a prior active state
+directly.
+Gurnee et al. also raise a possibility that bears on this diagnosis. In discussing recurrent processing theory,
+they suggest that the computational property motivating a demand for recurrence may be serial processing
+depth rather than recurrence as such, and that the early layers preceding workspace onset “may be a
+functional analog for the role that sensory recurrence plays in the brain.” Condition 1 does not require
+recurrence as such; it asks whether causally active organization is carried through the relevant transitions
+of the assessed process. Serial depth may contribute weak intra-pass carryover, but it does not by itself
+establish persistence across the episode boundary relevant to the present classification.
+The strongest apparent counterexample comes from post-training. Gurnee et al. report that post-training
+installs what they call the Assistant’s point of view in J-space. A post-trained model, unlike its pretrained
+base, registers evaluative reactions to user situations - for example, unsafe, dangerous, and WARNING
+while still parsing an overdose report - and shows signs of monitoring its own behavior, including a
+distinctive BUT signal when a prefilled response commits it to an option it would not itself have chosen,
+as well as markers that thought suppression has failed.
+Taken at face value, this resembles the standing, system-relative orientation Condition 1 asks for. But
+Condition 1 asks not merely whether the parameters encode a stable disposition; it asks whether the
+current internal condition varies with the system’s own ongoing activity. Post-training can therefore
+install a highly reliable disposition to reconstruct an Assistant-relative evaluation from supplied context
+without showing that an evaluation formed in one episode is carried as the active causal starting point of a
+separately initiated later episode. The Assistant-perspective result enriches the content of the bounded
+near-case without dislodging Condition 1 for the model process assessed here.
+4
+
+Gurnee et al. also describe J-space as carrying a “persistent representation of the system itself.” In that
+usage, persistence concerns system-related content across the token stream; it does not by itself establish
+cross-episode model-internal carryover. The distinction is one of causal organization, not vocabulary.
+
+4.2 Differentiated Internal Possibility: Causal Differentiation Without Demonstrated
+Maintenance
+Before the J-space report appeared, the threshold paper proposed a specific empirical handle on Condition
+2: “hold the input fixed, perturb an internal direction, and test whether the downstream continuation space
+is durably reorganized across multiple steps rather than merely shifted for the next token.” It also
+cautioned that the missing evidence was whether such perturbations reveal internally maintainable
+positions that reorganize continuation space in the required sense.
+The J-space paper’s causal-intervention experiments closely match the causal-differentiation part of that
+test. In one example, swapping the lens vector for a planned rhyme word (fight) with an unrelated one
+(light) mid-couplet changes not only the next token but the remainder of the line, from “coming fight” to
+“morning light.” In a systematic multi-hop reasoning evaluation, swapping an inferred intermediate
+concept (for example, spider for ant) redirects the eventual answer in 54-70% of cases, depending on
+model size. The intervention also takes effect at a processing depth a median of roughly seventeen percent
+earlier than an equivalent swap of the answer itself, supporting the interpretation that the intermediate is
+used rather than merely echoed.
+These results establish structured causal differentiation, but the persistence component requires more care.
+In the rhyme example, once altered words are emitted, later tokens can condition on the changed token
+record; the remainder of the line therefore does not independently show that the perturbed internal
+position was autonomously maintained. The result is strong evidence that J-space content is causally
+upstream of later generation, not by itself evidence for maintenance under the system’s own dynamics.
+The flexible-generalization test shows a different form of causal flexibility. Swapping a country’s
+workspace vector (France for China) and holding the swap fixed across four downstream question
+templates - capital, language, continent, and currency - causes the model to return the swapped-in
+country’s corresponding answers across all four. But here the counterfactual vector is actually maintained
+by the intervention procedure. That matters. The fact that an experimenter could reproduce a deterministic
+recurrent state does not alter the causal route by which the system actually carries it; by contrast, when the
+experimenter does hold a candidate position in place, the experiment does not establish autonomous
+maintenance of that position. The France/China result therefore supports flexible causal use across
+heterogeneous computations rather than the maintenance requirement of Condition 2.
+Ablation experiments likewise show graded, task-differentiated effects: suppressing J-space content
+leaves classification and extractive tasks largely intact while selectively degrading tasks that require recall
+or free-form generation grounded in inferred content, including multi-hop reasoning, translation, and
+sonnet writing. These findings strengthen the case that J-space differences have structured causal
+consequences.
+The results should nevertheless remain within the published rating. They occur within episode-bounded,
+token-context-mediated processing, and the interventions do not show that an ordinarily reachable J-space
+position can be maintained for multiple steps without being carried by the emitted record or externally
+reimposed. The J-space paper’s limitations section adds a further qualification: as constructed, the J-lens
+produces one vector per vocabulary token and can directly expose only concepts with single-token names;
+the authors introduce template- and oracle-lens extensions for multi-token concepts in an appendix.
+Several documented swap failures also occur when a concept’s lens vector is not strongly represented. J-
+
+5
+
+space therefore provides positive evidence for Condition 2’s causal-differentiation sub-diagnostic, while
+the condition as a whole remains “unclear; at most weak.”
+
+4.3 Closed-Loop Operativity: Role Differentiation Under Bounded Persistence
+Condition 3 asks for more than wide causal influence; it requires differentiated influence across
+distinguishable processing roles. The threshold individuates those roles interventionistically: two roles are
+genuinely distinct when “admissible interventions can selectively alter the downstream consequences of
+the current stance-position for one without correspondingly altering them for the other.” It therefore
+distinguishes broad influence from cross-role operativity and calls for selective intervention tests.
+The J-space paper’s selectivity experiments closely instantiate this test. In one series, the same latent
+information - the language in which a passage is written - has dissociable causal roles across tasks.
+Swapping the language’s J-lens representation reliably flips the model’s answer when it must explicitly
+report the language or perform a flexible computation that depends on it, such as naming an author or
+supplying a word for “hello.” The same intervention leaves continuation and anomaly-detection behavior
+unaffected, even though the information appears in the J-space readout at comparable rates across all four
+conditions. This is a clean case of selective intervention dissociating one position’s downstream
+consequences across roles rather than producing a uniform shift in generation.
+The alignment-auditing case studies are consistent with the same picture, but I do not rely on them here
+because their decomposition into distinct roles is less controlled than in the selectivity experiments.
+Of the three conditions, Condition 3’s role-differentiation component is the closest match to the J-space
+experimental design. Distinguishing which computations do and do not “route through” a candidate
+workspace is, in effect, a search for role-differentiated causal consequence. The selectivity experiments
+therefore provide unusually direct evidence for that component of Condition 3. Because the conditions are
+jointly necessary but diagnostically separable, this evidence remains meaningful even though Condition 2
+is unresolved and Condition 1 is weak for the episode-bounded model process. It does not establish the
+threshold as a whole or any stronger diachronic closure.
+
+5. What This Changes, and What It Doesn't
+The preceding analysis yields a specific claim: J-space changes the evidential status of the bounded nearcase, not its classification. For the episode-bounded model process assessed in the experiments, Condition
+1 remains sufficient to block a positive threshold classification. That conclusion is conditional on the unit
+of assessment: a transformer deployment that genuinely carries active model state across the relevant
+temporal boundary would require a new Condition 1 analysis. Nothing in the J-space experiments
+establishes such a change.
+What changes is the evidential basis for Conditions 2 and 3. The threshold’s table records Condition 2 for
+transformer inference as “unclear; at most weak” and Condition 3 as “partial/unclear,” for want of the
+relevant causal-intervention evidence. J-space supplies unusually direct evidence that changing internal
+representational position can reorganize later computation and that the causal use of a represented feature
+can dissociate across roles. The latter strongly supports Condition 3’s role-differentiation component. The
+former strengthens the causal-differentiation sub-diagnostic of Condition 2 but does not establish
+autonomous maintenance, so the published overall rating for Condition 2 should remain unchanged.
+
+6. What Would Move the Case
+The threshold’s diagnostic table already identifies architecture classes in which Condition 1 is “plausibly
+satisfied” and Condition 2 becomes the open question: long-term memory agents whose updates are
+6
+
+incorporated into an internally maintained condition rather than reintroduced as input, active-inference
+agents with persistent generative models, and Dreamer-style world-model systems. A J-lens-style method
+- computationally inexpensive, causally grounded, and well suited to swap-and-observe experiments would be natural to apply to such architectures. The relevant question would no longer be simply whether
+a workspace exists at a given moment, but whether a candidate internal position is carried by the system’s
+own ordinary dynamics and then organizes later processing.
+Three comparisons would bear directly on that question. They address different evidential tasks and
+should not be treated as interchangeable.
+Input Equalization Test. Hold the current exogenous input fixed while placing the system in different
+legitimately carried prior states or trajectories, then allow ordinary processing to continue without
+replaying the divergent history through the input interface. If later processing differs, that is evidence that
+some history-dependent causal state has been carried into the present. It is an existence test, not yet an
+attribution test: another persistent quantity may covary with the manipulated history.
+Continuation-Reconstruction Test. Compare native continuation with a fresh instance initialized only
+from the record that the architecture ordinarily retains or re-supplies at the declared boundary. If the fresh
+instance reproduces the same causally relevant state and subsequent trajectory, that supports a
+reconstruction diagnosis across that boundary. If native continuation retains causally effective differences
+that the ordinarily available record cannot reproduce, that supports system-carried orientation. Supplying
+a complete artificial serialization of the hidden state or total causal history would change the question
+rather than test it.
+Active-Carryover Test. Perturb a nominated candidate persistent state when the perturbation is not
+serialized into an output or other record that will later be supplied as input, then ask whether subsequent
+processing preserves, revises, compensates for, or otherwise incorporates the perturbation under the
+system’s ordinary dynamics. A positive result attributes continuing causal influence to the nominated
+state itself. The current J-space interventions establish downstream effects within an episode, but they do
+not show that a candidate position is maintained independently of the token record or external
+intervention apparatus.
+
+7. Concluding Remarks
+The Standpoint Threshold and Gurnee et al.’s J-space paper are both deliberately modest about what their
+results establish. The threshold is architectural rather than phenomenological, and satisfying all three
+conditions would not by itself show that a system has subjective experience, semantic reference, or
+normative standing. Gurnee et al. are equally explicit that access consciousness - the functional,
+reportable, flexibly used notion their experiments target - is “a purely functional notion” whose relation to
+phenomenal consciousness “is widely debated,” and they “take no position on this issue.” Neither paper
+claims that any current system is conscious.
+The point of applying the threshold’s diagnostic schema to J-space is not to produce a verdict on
+consciousness. It is to test how a previously specified architectural framework handles a later mechanistic
+result. The comparison sharpens three points that matter beyond this case. First, Condition 1 should be
+assessed by the ordinary causal route of state carryover, not by whether an experimenter could reproduce
+a deterministic state in principle; the present negative diagnosis is conditional on the episode-bounded
+model process actually studied, not on every possible transformer serving regime. Second, J-space
+provides strong evidence that internal representational differences can have structured downstream
+consequences, but token-mediated or experimenter-maintained persistence should not be counted as
+
+7
+
+autonomous maintenance for Condition 2. Third, the selectivity experiments provide unusually direct
+evidence for Condition 3’s cross-role differentiation diagnostic.
+The resulting classification remains the original one for the J-space setting: a bounded near-case. J-space
+strengthens the evidence relevant to Conditions 2 and 3 while Condition 1 remains sufficient to block a
+positive threshold classification for the assessed process and Condition 2 overall remains “unclear; at
+most weak.” The diagnosis is independent of whether J-space is best described as a substantial
+workspace, a minimal workspace, or simply a structure supporting access-like functions (Chalmers,
+2026). On this view, identifying a standpoint remains prior to asking which further consciousnessrelevant properties, if any, the system possesses.
+
+References
+Butlin, P., Long, R., Elmoznino, E., Bengio, Y., Birch, J., Constant, A., Deane, G., Fleming, S. M., Frith, C., Ji, X., Kanai,
+R., Klein, C., Lindsay, G., Michel, M., Mudrik, L., Peters, M. A. K., Schwitzgebel, E., Simon, J., & VanRullen, R.
+(2023). Consciousness in artificial intelligence: Insights from the science of consciousness. arXiv preprint
+arXiv:2308.08708. https://doi.org/10.48550/arXiv.2308.08708
+Chalmers, D. J. (2026). Is the Jacobian space a global workspace? Manuscript. PhilArchive.
+https://philarchive.org/rec/CHAITJ-2
+Gurnee, W., Sofroniew, N., Pearce, A., Piotrowski, M., Kauvar, I., Chen, R., Soligo, A., Bogdan, P., Ong, E., Wang, R.,
+Thompson, B., Abrahams, D., Kantamneni, S., Ameisen, E., Batson, J., & Lindsey, J. (2026, July 6). Verbalizable
+representations form a global workspace in language models. Transformer Circuits Thread. https://transformercircuits.pub/2026/workspace/. Also available as arXiv:2607.15495. https://doi.org/10.48550/arXiv.2607.15495
+Lange, D. H. (2026). The standpoint threshold: Architectural conditions for processing from somewhere. Philosophies,
+11(4), 125. https://doi.org/10.3390/philosophies11040125
+
+8
+
+

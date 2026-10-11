@@ -44,6 +44,23 @@ Use a path relative to the linking file. Do **not** add a separate `[Summary](�
 
 Record **`eprint`** and/or an open **`url`** when a downloadable PDF exists — this drives the `.txt` Git policy below.
 
+### Blog / company post / online
+
+```bibtex
+@misc{key,
+  title={{Title of the post}},
+  author={Lastname, Firstname and Lastname, Firstname},
+  year={YYYY},
+  howpublished={Publisher blog},
+  url={https://...}
+}
+```
+
+- Use `@misc` for blog posts, company announcements, and other web-native pieces that do not have a `journal`, `booktitle`, or `eprint`.
+- Record the **permalink** in `url`.
+- Use `howpublished` to name the site or channel (e.g., `Cognition blog`).
+- **Do not** synthesise a `doi` or `eprint` if one is not available.
+
 ---
 
 ## Theme folder layout
@@ -66,6 +83,15 @@ Pandoc does **not** take PDF as input. Default pipeline:
 3. Write or update **`{citationkey}.md`** from the extract (curated; not a raw dump).
 
 **Do not** run Marker unless the user explicitly asks. Default ingestion is **`pdftotext` → `.txt`** plus curated **`.md`**.
+
+### Blog / HTML sources
+
+For blog posts, company announcements, and other HTML-native sources:
+
+- **Do not** fetch or store a PDF.
+- Save the page body as `{citationkey}.txt` (plain text, untracked) in the theme folder. If you keep the raw HTML, call it `{citationkey}.html`; neither file is committed.
+- The public permalink is the stable reader link — record it as `url` in an `@misc` `bib.bib` entry.
+- Write the curated `{citationkey}.md` from the extract as usual.
 
 For EPUB/HTML sources, pandoc to `{citationkey}.md` where appropriate.
 
@@ -130,7 +156,7 @@ Opt-in only. Output as `{citationkey}.marker.md`; keep separate from curated `.m
 2. Append **`bib.bib`** (with `eprint` / open `url` when available).
 3. Theme folder.
 4. **`{citationkey}.md`**.
-5. Local PDF → **`ensure-extract.sh`** or `pdftotext`.
+5. For **PDFs**: local PDF → **`ensure-extract.sh`** or `pdftotext`. For **blogs / HTML pages**: save the page body as `{citationkey}.txt` (or `{citationkey}.html`) and record the `url` in `bib.bib`.
 6. Theme **`README.md`** line.
 7. Root **`README.md`** master index (when curated note exists).
 8. **`CHANGELOG.md`** — mandatory bullet under `## YYYY-MM-DD`.

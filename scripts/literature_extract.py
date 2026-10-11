@@ -2,6 +2,7 @@
 
 from __future__ import annotations
 
+import os
 import re
 import urllib.error
 import urllib.request
@@ -9,6 +10,9 @@ from pathlib import Path
 from typing import Iterator
 
 SKIP_MD_NAMES = frozenset({"README.md", "CHANGELOG.md", "SETUP.md"})
+
+# Folders where the canonical source is an HTML page or blog post, so .txt is always local.
+BLOG_FOLDERS = frozenset({"interpretability-anthropic"})
 
 # Host/path hints that usually serve a downloadable PDF (not merely an abstract page).
 FETCHABLE_URL_MARKERS = (
@@ -57,8 +61,8 @@ def repo_root() -> Path:
 
 
 def find_paper_folder(root: Path, key: str) -> Path | None:
-    """Theme folder that holds artefacts for this citation key."""
-    for folder in theme_folders(root):
+    """Theme or author folder that holds artefacts for this citation key."""
+    for folder in paper_folders(root):
         for name in (f"{key}.txt", f"{key}.pdf", f"{key}-notes.md", f"{key}.md"):
             if (folder / name).is_file():
                 return folder
@@ -99,7 +103,7 @@ def iter_notes(root: Path) -> Iterator[tuple[str, Path]]:
 
 def iter_theme_keys(root: Path) -> Iterator[tuple[str, Path]]:
     """Yield `(citation_key, theme_folder)` from per-paper artefacts."""
-    for folder in theme_folders(root):
+    for folder in paper_folders(root):
         keys: set[str] = set()
         for path in folder.iterdir():
             if not path.is_file():
@@ -193,6 +197,10 @@ def classify_txt_policy(
     """Map citation key -> (theme folder, gitignore_txt)."""
     result: dict[str, tuple[Path, bool]] = {}
     for key, folder in iter_theme_keys(root):
+        if folder.name in BLOG_FOLDERS:
+            # Blog / HTML sources have no .pdf; .txt is always local and ignored.
+            result[key] = (folder, True)
+            continue
         fields = parse_bib_entry(bib_text, key)
         note_text = read_note_text(root, key, folder)
         regenerable = has_downloadable_pdf_url(fields, note_text)
@@ -292,14 +300,35 @@ def fetch_pdf(fields: dict[str, str], note_text: str, pdf_path: Path) -> str:
     )
 
 
-def render_folder_gitignore(pinned_keys: list[str]) -> str:
-    lines = [GITIGNORE_HEADER.rstrip()]
+def render_folder_gitignore(pinned_keys: list[str], *, folder: Path, root: Path) -> str:
+    script_ref = Path(os.path.relpath(root / "scripts", folder)).as_posix()
+    lines = [
+        "*.pdf",
+        "*.txt",
+        "",
+        f"# .txt is a local cache by default — regenerate with {script_ref}/ensure-extract.sh KEY",
+        "# (requires a public PDF URL in bib.bib / the note).",
+        "# Pinned exceptions below: no stable public PDF exists, so these stay tracked.",
+    ]
     for key in sorted(pinned_keys):
         lines.append(f"!{key}.txt")
     return "\n".join(lines) + "\n"
 
 
-THEME_FOLDER_EXCLUDE = frozenset({"scripts", "docs"})
+THEME_FOLDER_EXCLUDE = frozenset({"scripts", "docs", "authors", "publications", "readers", "talks"})
+
+
+def author_folders(root: Path) -> list[Path]:
+    """Per-researcher artefact folders under authors/."""
+    authors = root / "authors"
+    if not authors.is_dir():
+        return []
+    return sorted(p for p in authors.iterdir() if p.is_dir() and not p.name.startswith("."))
+
+
+def paper_folders(root: Path) -> list[Path]:
+    """Theme folders plus authors/<researcher>/ subfolders."""
+    return theme_folders(root) + author_folders(root)
 
 
 def theme_folders(root: Path) -> list[Path]:
@@ -318,12 +347,12 @@ def sync_folder_gitignores(root: Path, bib_text: str, *, dry_run: bool = False) 
         by_folder.setdefault(folder, []).append((key, regenerable))
 
     reports: list[str] = []
-    for folder in theme_folders(root):
+    for folder in paper_folders(root):
         entries = by_folder.get(folder, [])
         regenerable_count = sum(1 for _, regenerable in entries if regenerable)
         pinned_keys = [key for key, regenerable in entries if not regenerable]
         pinned_count = len(pinned_keys)
-        content = render_folder_gitignore(pinned_keys)
+        content = render_folder_gitignore(pinned_keys, folder=folder, root=root)
         gitignore_path = folder / ".gitignore"
         rel = gitignore_path.relative_to(root)
         if dry_run:

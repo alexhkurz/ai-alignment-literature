@@ -1,0 +1,21 @@
+*.pdf
+*.txt
+
+# .txt is a local cache by default — regenerate with ../../scripts/ensure-extract.sh KEY
+# (requires a public PDF URL in bib.bib / the note).
+# Pinned exceptions below: no stable public PDF exists, so these stay tracked.
+!beinorius2022beyond_free_will.txt
+!berninas2021weirdness_free_will.txt
+!berninas2023bound_share_care.txt
+!berninas2024prosocial_happy.txt
+!oliver2026beliefs_free_will_libre_arbitre.txt
+!pech2026endogenous_input_volition.txt
+!rimkevicius2014fenomenologijos.txt
+!rimkevicius2016psichologizmas.txt
+!rimkevicius2019interpretive_sensory_simplicity.txt
+!rimkevicius2019opacity_mind.txt
+!rimkevicius2019samones_neskaidrumas.txt
+!rimkevicius2020interpretive_sensory_access.txt
+!rimkevicius2021mental_imagery_will.txt
+!rimkevicius2025experience_deciding.txt
+!rimkevicius_symposium_ai_moral_responsibility.txt
