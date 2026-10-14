@@ -1,0 +1,6 @@
+# Figure crops from the paper: authors' figures, public repo — keep local.
+# Regenerate with ./make-images.sh (needs ../ho2026declarative_attention.pdf).
+images/
+
+# Exported chat transcript (personal Q&A) — keep local.
+Declarative_Attention_Protocol_Explained.md

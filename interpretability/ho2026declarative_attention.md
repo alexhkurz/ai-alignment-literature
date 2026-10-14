@@ -4,9 +4,8 @@
 **Year:** 2026  
 **Venue:** arXiv preprint (KAIST AI, Google DeepMind; Google co-authors advisory only)  
 **Citation key:** `ho2026declarative_attention`  
-**BibTeX entry:** [entry](../../bib.bib)  
-**PDF:** [arXiv](https://arxiv.org/pdf/2609.02737)  
-**arXiv:** 2609.02737  
+**BibTeX entry:** [entry](../bib.bib)  
+**Open access:** [arXiv:2609.02737](https://arxiv.org/abs/2609.02737)  
 **Google Scholar:** [Search](https://scholar.google.com/scholar?q=Language+Models+Can+Control+Their+Own+Attention+Ho+2026)
 
 ## Summary
