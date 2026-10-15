@@ -173,7 +173,7 @@ Written "from failure modes observed during prompt development": models guess fr
 | Level | What the paper is |
 | :--- | :--- |
 | Engineering | a way to read less of the KV cache during decoding |
-| Systems | a vLLM integration: block-aligned masking, no kernel changes |
+| Systems | runs in a standard inference engine without new GPU code |
 | Empirical | 15 long-context tasks, 6 models, 2 model families |
 | Conceptual | sparse attention as a reasoning problem: "system-2 sparse attention" |
 | Scientific | evidence about what models know about where information is |
