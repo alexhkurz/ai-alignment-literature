@@ -12,18 +12,19 @@ The paper is from KAIST AI and Google DeepMind (Google co-authors advisory). It 
 
 ---
 
-## Big Questions
+## Introduction
 
-**Story.** Start with the question the authors start with: wouldn't the model already know which parts of the context are relevant? There are two ways to hear it.
+**Story.** Start with the question the authors start with: wouldn't the model already know which parts of the context are relevant? The general idea behind it is old: only pay attention to what is important. The paper can be seen from three angles.
 
-- The **engineering** question: long conversations are expensive because the model re-reads everything for every word it writes. The stored past tokens are the KV cache, and reading it dominates decoding time at long context. If the model knows where the relevant part is, we can let it skip the rest of the cache.
-- The **metacognition** question: does a language model know something about its own knowledge, here about *where* in its context the information it needs is? Can it say so, and is what it says true?
+- The **engineering** view: long conversations are expensive because the model re-reads everything for every word it writes. The stored past tokens are the KV cache, and reading it dominates decoding time at long context. If the model knows where the relevant part is, we can let it skip the rest of the cache.
+- The **method** view: the model's own text controls the inference engine. A few tags written in the answer (`<focus>`, `<local>`) change what the engine lets the model read next. With chain-of-thought, only the model reads its notes; here the engine also reads them and acts on them.
+- The **metacognition** view: does a language model know something about its own knowledge, here about *where* in its context the information it needs is? Can it say so, and is what it says true?
 
-The talk takes the engineering result seriously and asks what it tells us about the second question.
+The method view is the bridge between the other two. Because the engine acts on what the model says, the engineering result can tell us something about the metacognitive question.
 
 **For later.** Inside the metacognition question sits a further one ("Discussion"): if the model's statements about where to look are good, is that because of something like metacognition, or because of pattern matching on surface cues? The engineering result is neutral between these two; it only needs the statements to be good enough (commentary Q2).
 
-**Question for this talk.** Is the efficiency result a behavioural test of a metacognitive claim? The case for yes: because the system *acts* on what the model says, wrong statements would cost accuracy. Pose it as a question, not a claim: the authors make no metacognitive claim, so this is our reading, to be examined. "Efficiency as a Measure of Self-Knowledge" makes the test precise; the conclusion answers the question.
+**Question for this talk** (say it; no longer on the slide). Is the efficiency result a behavioural test of a metacognitive claim? The case for yes: because the system *acts* on what the model says, wrong statements would cost accuracy. Pose it as a question, not a claim: the authors make no metacognitive claim, so this is our reading, to be examined. "Efficiency as a Measure of Self-Knowledge" makes the test precise; the conclusion answers the question.
 
 **Transition.** First the engineering problem.
 
@@ -57,7 +58,7 @@ DA adds one step. Explain the table row by row.
 
 - **Who reads the text.** In CoT the only reader of the trace is the model itself (and us). In DA a second reader is added: a small program in the inference engine that scans the output for tags.
 - **What the text changes.** A CoT sentence such as "the answer is in the section on fine-tuning" changes what the model computes next, but only *inside* the network: it is one more piece of context, and the next token still reads the whole KV cache; attention may weigh the fine-tuning section more, but nothing is skipped. The same statement written as `<focus magic_chunks="1">` is acted on *outside* the network: the engine removes all other chunks from the set of cache blocks the next token reads. The model cannot attend to what is not loaded. So DA text does both: as context it changes what the model computes, like any CoT; as a command it changes what the model *sees* at all. CoT shifts the soft attention weights, at best; DA also changes the hard set of what is read.
-- **Visible vs. executable** (say it; not on the slide). "Visible": CoT lets us read the reasoning, but the text has no effect except through the model, and it need not be faithful to what the model actually computed. "Executable": DA's text works like an instruction in a program. It has a fixed meaning to an interpreter (the engine), and it has that effect whether or not it reflects anything inside the model. This is what makes the efficiency result a test (the question on Big Questions): a declaration that is acted on can be wrong in a way that costs accuracy.
+- **Visible vs. executable** (say it; not on the slide). "Visible": CoT lets us read the reasoning, but the text has no effect except through the model, and it need not be faithful to what the model actually computed. "Executable": DA's text works like an instruction in a program. It has a fixed meaning to an interpreter (the engine), and it has that effect whether or not it reflects anything inside the model. This is what makes the efficiency result a test (the question for this talk, under Introduction): a declaration that is acted on can be wrong in a way that costs accuracy.
 
 The analogy for the mathematicians and software engineers: CoT is a comment, DA is code.
 
