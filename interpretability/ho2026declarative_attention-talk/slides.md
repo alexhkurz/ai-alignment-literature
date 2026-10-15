@@ -107,6 +107,15 @@ R1 global (0% saved), R2 focus on chunk B1 (86.5% saved), R3 local (95.6% saved)
 
 ---
 
+## On Focus vs Local
+
+The following quote from the prompt explains the rationale behind focus and local:
+
+![DA instruction, soft requirements](images/prompt-soft-requirements.png)
+
+
+---
+
 ## Models
 
 | | Gemma-4-31B | Qwen-3.6-27B |
@@ -160,23 +169,12 @@ Plus smaller models for scaling: Gemma-4-12B, Gemma-4-E4B, Qwen-3.5-9B, Qwen-3.5
 
 ---
 
-## What the Prompt Reveals
-
-![DA instruction, soft requirements](images/prompt-soft-requirements.png)
-
-Written "from failure modes observed during prompt development": models guess from memory instead of looking.
-
----
-
 ## Conclusion
 
-| Level | What the paper is |
-| :--- | :--- |
-| Engineering | a way to read less of the KV cache during decoding |
-| Systems | runs in a standard inference engine without new GPU code |
-| Empirical | 15 long-context tasks, 6 models, 2 model families |
-| Conceptual | sparse attention as a reasoning problem: "system-2 sparse attention" |
-| Scientific | evidence about what models know about where information is |
-
 > a model can control its own attention span in text a person can also read, turning selective attention from a pattern inferred inside the network into one the model states out loud, enabling long-context inference that is at once legible and more efficient. (Ho et al., conclusion)
+
+**Questions:** 
+- Does the successful engineering optimization of the attention mechanism tell us sth about what the LLM knows about itself?
+- Can one think about other ways of the LLM programming the inference engine?
+- What about agents modifying the attention of other agents?
 
