@@ -41,6 +41,7 @@ Questions raised while building [slides.md](slides.md), with answers. Newest at 
 - [Q33. Where do the results show the difference between focus and local?](#q33-where-do-the-results-show-the-difference-between-focus-and-local)
 - [Q34. For my message the focus/local difference seems unimportant. Is there something I should say?](#q34-for-my-message-the-focuslocal-difference-seems-unimportant-is-there-something-i-should-say)
 - [Q35. Can the two views go under their own heading, with the engineering view about the KV cache?](#q35-can-the-two-views-go-under-their-own-heading-with-the-engineering-view-about-the-kv-cache)
+- [Q36. What does "kernel" refer to in "no kernel changes"?](#q36-what-does-kernel-refer-to-in-no-kernel-changes)
 
 ---
 
@@ -901,3 +902,15 @@ On average a focus token reads about 12% and a local token about 6% of what a va
 **Short answer.** Yes. The quote stays under "Big Questions"; the two views now sit under a subheading "Two Readings", matching the two readings of the paper in Q2 (the engineering reading there is already "fewer KV-cache reads"). The engineering bullet now reads "optimizing the KV cache: read less of it for each new token", which names the problem DA solves, where "how to not pay attention to everything" described the method.
 
 **Consequence for Q10.** Q10 suggested keeping the term "KV cache" off the slides. Since the Conclusion slide already uses it and the opening slide now does too, the term is introduced once, on The Problem slide: "re-reads all previous tokens (stored in the KV cache)". Nothing more about the cache is needed on the slides.
+
+---
+
+## Q36. What does "kernel" refer to in "no kernel changes"?
+
+*Slide: Conclusion (Systems row).*
+
+**Short answer.** A **GPU kernel** is a function compiled to run in parallel on the GPU (written in CUDA or Triton). Attention in an inference engine such as vLLM is computed by one such kernel, for example FlashAttention or vLLM's PagedAttention kernel. It is not the operating-system kernel, and not "kernel" in the sense of kernel methods or convolution kernels.
+
+**Why "no kernel changes" matters.** Many sparse-attention methods need a custom kernel, because they skip individual tokens, and the standard kernels read the cache in fixed-size blocks. Custom kernels are costly to write, specific to one kind of hardware, and have to be maintained as engines change. DA avoids this: its mask is rounded outward to whole cache blocks (16–32 tokens), so it can be applied by changing which blocks the existing kernel is given to read. The engine's bookkeeping changes; the GPU code does not. The price is that a few tokens at chunk edges are read even though they are outside the declared scope.
+
+**For the slide.** "Kernel" is jargon for most of the audience. A plain alternative: "a vLLM integration: no new GPU code". The narrative's Details paragraph on block alignment carries the rest, for questions.
