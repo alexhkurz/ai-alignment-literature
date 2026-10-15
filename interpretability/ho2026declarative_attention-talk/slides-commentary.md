@@ -40,6 +40,7 @@ Questions raised while building [slides.md](slides.md), with answers. Newest at 
 - [Q32. Should I read the mask in Fig. 1 as a picture of what can attend to what?](#q32-should-i-read-the-mask-in-fig-1-as-a-picture-of-what-can-attend-to-what)
 - [Q33. Where do the results show the difference between focus and local?](#q33-where-do-the-results-show-the-difference-between-focus-and-local)
 - [Q34. For my message the focus/local difference seems unimportant. Is there something I should say?](#q34-for-my-message-the-focuslocal-difference-seems-unimportant-is-there-something-i-should-say)
+- [Q35. Can the two views go under their own heading, with the engineering view about the KV cache?](#q35-can-the-two-views-go-under-their-own-heading-with-the-engineering-view-about-the-kv-cache)
 
 ---
 
@@ -890,3 +891,13 @@ On average a focus token reads about 12% and a local token about 6% of what a va
 - **The data cannot separate the two cases.** When local mode produces a wrong answer, the paper does not tell us whether the model closed the book too early (a sufficiency error) or chose the wrong chunk earlier (a navigation error).
 
 **Where to put it.** One sentence on the A Simple Example slide when introducing `<local>` ("closing the book is a judgement that you have enough"), and the prompt's warnings as a bullet in the narrative of "When Does Self-Knowledge Work?" or Skeptical Points.
+
+---
+
+## Q35. Can the two views go under their own heading, with the engineering view about the KV cache?
+
+*Slide: Big Questions.*
+
+**Short answer.** Yes. The quote stays under "Big Questions"; the two views now sit under a subheading "Two Readings", matching the two readings of the paper in Q2 (the engineering reading there is already "fewer KV-cache reads"). The engineering bullet now reads "optimizing the KV cache: read less of it for each new token", which names the problem DA solves, where "how to not pay attention to everything" described the method.
+
+**Consequence for Q10.** Q10 suggested keeping the term "KV cache" off the slides. Since the Conclusion slide already uses it and the opening slide now does too, the term is introduced once, on The Problem slide: "re-reads all previous tokens (stored in the KV cache)". Nothing more about the cache is needed on the slides.

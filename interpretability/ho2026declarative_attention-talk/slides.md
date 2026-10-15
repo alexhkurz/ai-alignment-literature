@@ -47,8 +47,10 @@ slideOptions:
 
 > "wouldn't the model already know which parts of the context are relevant?" (Ho et al., abstract)
 
-- **Engineering View:** How to not pay attention to everything.
-- **Metacognition View:** What does the LLM know about itself?
+#### Two Readings
+
+- **Engineering:** optimizing the KV cache: read less of it for each new token.
+- **Metacognition:** what does the LLM know about itself?
 
 **Question for this talk:** Is the efficiency result a behavioural test of a metacognitive claim?
 
@@ -58,7 +60,7 @@ slideOptions:
 
 Generating one token = one pass through the network.
 
-- Every global attention layer re-reads all previous tokens.
+- Every global attention layer re-reads all previous tokens (stored in the KV cache).
 - At long context this read dominates decoding time (73–86% in the paper's estimates).
 - But the model only attends to a small part of its context.
 

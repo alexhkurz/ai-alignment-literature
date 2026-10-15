@@ -16,7 +16,7 @@ The paper is from KAIST AI and Google DeepMind (Google co-authors advisory). It 
 
 **Story.** Start with the question the authors start with: wouldn't the model already know which parts of the context are relevant? There are two ways to hear it.
 
-- The **engineering** question: long conversations are expensive because the model re-reads everything for every word it writes. If the model knows where the relevant part is, we can let it skip the rest.
+- The **engineering** question: long conversations are expensive because the model re-reads everything for every word it writes. The stored past tokens are the KV cache, and reading it dominates decoding time at long context. If the model knows where the relevant part is, we can let it skip the rest of the cache.
 - The **metacognition** question: does a language model know something about its own knowledge, here about *where* in its context the information it needs is? Can it say so, and is what it says true?
 
 The talk takes the engineering result seriously and asks what it tells us about the second question.
