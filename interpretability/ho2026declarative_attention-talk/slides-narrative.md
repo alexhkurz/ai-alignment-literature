@@ -125,7 +125,7 @@ This is an illustration written by the authors ("a response … could look like"
 
 ---
 
-## Example
+## The Attention Mask
 
 **Story.** Recall the three modes from the Acme example, pointing at R1–R3 in the figure. The model splits its reasoning into spans, each tagged with a mode:
 
