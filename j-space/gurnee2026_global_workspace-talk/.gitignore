@@ -1,0 +1,5 @@
+# Figure crops from the paper: authors' figures — keep local.
+images/
+
+# Exported chat transcripts (personal Q&A) — keep local.
+*_Explained.md
